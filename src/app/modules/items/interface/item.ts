@@ -1,6 +1,10 @@
 export interface Item {
+  _id: string;
   name: string;
-  category: string;
   description: string;
   price: number;
+  category: {
+    id: string;
+    name: string;
+  };
 }

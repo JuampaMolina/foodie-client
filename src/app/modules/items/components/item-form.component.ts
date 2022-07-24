@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Item } from '../interface/item';
+import { CreateItemCommand } from '../interface/createItemCommand';
 
 @Component({
   selector: 'app-item-form',
@@ -32,7 +33,7 @@ export class ItemFormComponent implements OnInit {
 
   itemForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    category: new FormControl('', Validators.required),
+    categoryId: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     price: new FormControl(undefined, Validators.required)
   })

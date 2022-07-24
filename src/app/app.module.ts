@@ -9,6 +9,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducers } from './store/app.reducers';
 import { appEffects } from './store/app.effects';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { appEffects } from './store/app.effects';
     AppRoutingModule,
     HttpClientModule,
     ItemsModule,
+    CategoriesModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(appEffects)
   ],
