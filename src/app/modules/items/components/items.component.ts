@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemsApiService } from '../services/items-api.service';
 import { Item } from '../interface/item';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducers';
+import { getItems } from '../store/items.actions';
 
 @Component({
   selector: 'app-items',
@@ -13,6 +16,11 @@ import { Item } from '../interface/item';
       <button (click)="create = !create" *ngIf="create" class="px-4 py-2 cursor-pointer bg-slate-200 rounded-md hover:bg-slate-300 transition duration-150">
         Cerrar
       </button>
+
+      <!-- todo: separar componente -->
+      <div *ngIf="error">
+        {{error}}
+      </div>
 
       <ng-container *ngIf="create">
         <app-item-form (formValue)="createItem($event)"></app-item-form>
@@ -29,18 +37,25 @@ export class ItemsComponent implements OnInit {
   create: boolean = false;
 
   items: Item[] = [];
+  error: any;
 
-  constructor(private itemsApi: ItemsApiService) { }
+  constructor(private itemsApi: ItemsApiService, private store: Store<AppState>) { }
 
   createItem(item: Item) {
     this.itemsApi.createItem(item).subscribe(res => console.log(res));
   }
 
+  getItems() {
+    this.store.dispatch(getItems());
+  }
+
+  // todo: crear selectores
   ngOnInit(): void {
-    this.itemsApi.getItems().subscribe(items => {
-      console.log(items);
-      this.items = items
-    })
+    this.store.subscribe(({ items }) => {
+      this.items = items.items
+      this.error = items.error
+    });
+    this.getItems();
   }
 
 }
