@@ -3,7 +3,7 @@ import { ItemsApiService } from '../services/items-api.service';
 import { Item } from '../interface/item';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { getItems } from '../store/items.actions';
+import { getItems, createItem } from '../store/items.actions';
 
 @Component({
   selector: 'app-items',
@@ -42,7 +42,7 @@ export class ItemsComponent implements OnInit {
   constructor(private itemsApi: ItemsApiService, private store: Store<AppState>) { }
 
   createItem(item: Item) {
-    this.itemsApi.createItem(item).subscribe(res => console.log(res));
+    this.store.dispatch(createItem({ item }))
   }
 
   getItems() {

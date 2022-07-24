@@ -5,6 +5,6 @@ export const getItems = createAction('[Items] getItems');
 export const getItemsError = createAction('[Items] getItemsError', props<{ error: any }>());
 export const getItemsSuccess = createAction('[Items] getItemsSuccess', props<{ items: Item[] }>());
 
-export const createItem = createAction('[Items] createItem');
+export const createItem = createAction('[Items] createItem', props<{ item: Item }>());
 export const createItemError = createAction('[Items] createItemError', props<{ error: any }>());
-export const createItemSuccess = createAction('[Items] createItemSuccess', props<{ item: Item }>());
+export const createItemSuccess = createAction('[Items] createItemSuccess', props<{ item: any }>());
