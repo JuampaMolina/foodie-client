@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ItemsModule } from './modules/items/items.module';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ItemsModule } from './modules/items/items.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ItemsModule
+    ItemsModule,
+    StoreModule.forRoot({}, {})
   ],
   providers: [],
   bootstrap: [AppComponent]
