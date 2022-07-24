@@ -4,13 +4,19 @@ import { Category } from '../interface/category';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { getCategories, createCategory } from '../store/categories.actions';
+import { getItemsByCategoryId, getItems } from '../../items/store/items.actions';
 
 @Component({
   selector: 'app-categories',
   template: `
     <div class="mx-auto w-11/12 my-16">
       <div class="w-full my-8 grid grid-cols-6 gap-4">
-        <app-category-card *ngFor="let category of categories" [category]="category"></app-category-card>
+        <app-category-card *ngFor="let category of categories"
+                          [category]="category"
+                          [selectedCategory]="selectedCategory"
+                          (categorySelected)="selectCategory($event)">
+
+        </app-category-card>
       </div>
     </div>
   `
@@ -19,10 +25,23 @@ export class CategoriesComponent implements OnInit {
 
   create: boolean = false;
 
+  selectedCategory: string = '';
+
   categories: Category[] = [];
   error: any;
 
   constructor(private categoriesApi: CategoriesApiService, private store: Store<AppState>) { }
+
+  selectCategory = (category: string) => {
+    if (this.selectedCategory !== category) {
+      this.selectedCategory = category;
+      this.getItemsByCategoryId(category);
+    } else {
+      this.selectedCategory = '';
+      this.store.dispatch(getItems());
+    }
+  }
+
 
   createCategory(category: string) {
     this.store.dispatch(createCategory({ category }))
@@ -30,6 +49,10 @@ export class CategoriesComponent implements OnInit {
 
   getCategories() {
     this.store.dispatch(getCategories());
+  }
+
+  getItemsByCategoryId(categoryId: string) {
+    this.store.dispatch(getItemsByCategoryId({ categoryId }))
   }
 
   // todo: crear selectores

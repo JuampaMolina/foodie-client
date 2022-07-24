@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { getItems, getItemsError, getItemsSuccess, createItem, createItemError, createItemSuccess } from './items.actions';
+import { getItems, getItemsError, getItemsSuccess, createItem, createItemError, createItemSuccess, getItemsByCategoryId, getItemsByCategoryIdError, getItemsByCategoryIdSuccess } from './items.actions';
 import { ItemsState } from '../interface/items-state';
 
 export const itemsInitalState: ItemsState = {
@@ -25,6 +25,25 @@ export const itemsReducer = createReducer(
   })),
 
   on(getItemsSuccess, (state, { items }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    items: items
+  })),
+
+  on(getItemsByCategoryId, (state) => ({
+    ...state,
+    loading: true,
+  })),
+
+  on(getItemsByCategoryIdError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message
+  })),
+
+  on(getItemsByCategoryIdSuccess, (state, { items }) => ({
     ...state,
     loading: false,
     loaded: true,

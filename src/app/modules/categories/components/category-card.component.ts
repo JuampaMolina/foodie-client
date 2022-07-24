@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Category } from '../interface/category';
 
 @Component({
@@ -6,7 +6,9 @@ import { Category } from '../interface/category';
   template: `
    <div
     *ngIf="category"
-    class="bg-slate-200 text-slate-800 rounded-md p-4">
+    (click)=selectCategory()
+    class="bg-slate-200 text-slate-800 hover:bg-slate-300 transition duration-150 cursor-pointer rounded-md p-4"
+    [class]="selectedCategory === this.category._id ? 'bg-slate-300' : ''">
     <span class="font-semibold">{{category.name}}</span>
    </div>
   `,
@@ -16,6 +18,10 @@ import { Category } from '../interface/category';
 export class CategoryCardComponent implements OnInit {
 
   @Input() category?: Category;
+  @Input() selectedCategory: string = '';
+  @Output() categorySelected = new EventEmitter<string>();
+
+  selectCategory = () => { this.categorySelected.emit(this.category?._id) }
 
   constructor() { }
 

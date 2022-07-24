@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { ItemsApiService } from '../services/items-api.service';
-import { getItems, getItemsError, getItemsSuccess, createItem, createItemSuccess, createItemError } from './items.actions';
+import { getItems, getItemsError, getItemsSuccess, createItem, createItemSuccess, createItemError, getItemsByCategoryId, getItemsByCategoryIdSuccess, getItemsByCategoryIdError } from './items.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 
@@ -22,6 +22,15 @@ export class ItemsEffects {
       .pipe(
         map((items) => (getItemsSuccess({ items }))),
         catchError((error) => of(getItemsError(error)))
+      ))
+  ))
+
+  getItemsByCategoryId$ = createEffect(() => this.actions$.pipe(
+    ofType(getItemsByCategoryId,),
+    mergeMap((action) => this.itemsApi.getItemsByCategoryId(action.categoryId)
+      .pipe(
+        map((items) => (getItemsByCategoryIdSuccess({ items }))),
+        catchError((error) => of(getItemsByCategoryIdError(error)))
       ))
   ))
 

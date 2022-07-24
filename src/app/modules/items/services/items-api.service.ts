@@ -22,8 +22,8 @@ export class ItemsApiService {
     return this.http.post(itemsApi, item)
   }
 
-  getItemsByCategory(categoryId: string) {
-    return this.http.get(itemsApi + `/category/${categoryId}`)
+  getItemsByCategoryId(categoryId: string): Observable<Item[]> {
+    return this.http.get<Item[]>(itemsApi + `/category/${categoryId}`)
   }
 
   addCategoryToItem(categoryId: string, itemId: string) {

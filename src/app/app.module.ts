@@ -10,6 +10,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { appReducers } from './store/app.reducers';
 import { appEffects } from './store/app.effects';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { HomeComponent } from './views/home/home.component';
+import { HomeModule } from './views/home/home.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
     HttpClientModule,
     ItemsModule,
     CategoriesModule,
+    HomeModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(appEffects)
   ],
