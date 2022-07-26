@@ -5,18 +5,9 @@ import { ItemCardComponent } from './components/item-card.component';
 import { ItemFormComponent } from './components/item-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
-  declarations: [
-    ItemsComponent,
-    ItemCardComponent,
-    ItemFormComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-  ],
-  exports: [ItemsComponent]
+  declarations: [ItemsComponent, ItemCardComponent, ItemFormComponent],
+  imports: [CommonModule, ReactiveFormsModule],
+  exports: [ItemsComponent],
 })
-export class ItemsModule { }
+export class ItemsModule {}

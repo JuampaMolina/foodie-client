@@ -1,18 +1,28 @@
 import { createReducer, on } from '@ngrx/store';
-import { getItems, getItemsError, getItemsSuccess, createItem, createItemError, createItemSuccess, getItemsByCategoryId, getItemsByCategoryIdError, getItemsByCategoryIdSuccess } from './items.actions';
+import {
+  getItems,
+  getItemsError,
+  getItemsSuccess,
+  createItem,
+  createItemError,
+  createItemSuccess,
+  getItemsByCategoryId,
+  getItemsByCategoryIdError,
+  getItemsByCategoryIdSuccess,
+} from './items.actions';
 import { ItemsState } from '../interface/items-state';
 
 export const itemsInitalState: ItemsState = {
   items: [],
   loading: false,
   loaded: false,
-  error: undefined
+  error: undefined,
 };
 
 export const itemsReducer = createReducer(
   itemsInitalState,
 
-  on(getItems, (state) => ({
+  on(getItems, state => ({
     ...state,
     loading: true,
   })),
@@ -21,17 +31,17 @@ export const itemsReducer = createReducer(
     ...state,
     loading: false,
     loaded: false,
-    error: error.message
+    error: error.message,
   })),
 
   on(getItemsSuccess, (state, { items }) => ({
     ...state,
     loading: false,
     loaded: true,
-    items: items
+    items: items,
   })),
 
-  on(getItemsByCategoryId, (state) => ({
+  on(getItemsByCategoryId, state => ({
     ...state,
     loading: true,
   })),
@@ -40,13 +50,13 @@ export const itemsReducer = createReducer(
     ...state,
     loading: false,
     loaded: false,
-    error: error.message
+    error: error.message,
   })),
 
   on(getItemsByCategoryIdSuccess, (state, { items }) => ({
     ...state,
     loading: false,
     loaded: true,
-    items: items
+    items: items,
   }))
-)
+);

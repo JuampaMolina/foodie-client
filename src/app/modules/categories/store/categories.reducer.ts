@@ -1,18 +1,25 @@
 import { createReducer, on } from '@ngrx/store';
-import { getCategories, getCategoriesError, getCategoriesSuccess, createCategory, createCategoryError, createCategorySuccess } from './categories.actions';
+import {
+  getCategories,
+  getCategoriesError,
+  getCategoriesSuccess,
+  createCategory,
+  createCategoryError,
+  createCategorySuccess,
+} from './categories.actions';
 import { CategoriesState } from '../interface/category-state';
 
 export const categoriesInitalState: CategoriesState = {
   categories: [],
   loading: false,
   loaded: false,
-  error: undefined
+  error: undefined,
 };
 
 export const categoriesReducer = createReducer(
   categoriesInitalState,
 
-  on(getCategories, (state) => ({
+  on(getCategories, state => ({
     ...state,
     loading: true,
   })),
@@ -21,13 +28,13 @@ export const categoriesReducer = createReducer(
     ...state,
     loading: false,
     loaded: false,
-    error: error.message
+    error: error.message,
   })),
 
   on(getCategoriesSuccess, (state, { categories }) => ({
     ...state,
     loading: false,
     loaded: true,
-    categories: categories
+    categories: categories,
   }))
-)
+);

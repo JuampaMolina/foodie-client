@@ -5,4 +5,4 @@ export interface ItemsState {
   loading: boolean;
   loaded: boolean;
   error: any;
-};
+}

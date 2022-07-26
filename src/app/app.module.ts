@@ -14,9 +14,7 @@ import { HomeComponent } from './views/home/home.component';
 import { HomeModule } from './views/home/home.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,9 +23,9 @@ import { HomeModule } from './views/home/home.module';
     CategoriesModule,
     HomeModule,
     StoreModule.forRoot(appReducers),
-    EffectsModule.forRoot(appEffects)
+    EffectsModule.forRoot(appEffects),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

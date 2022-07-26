@@ -6,16 +6,8 @@ import { HomeComponent } from './home.component';
 import { CategoriesModule } from '../../modules/categories/categories.module';
 import { ItemsModule } from '../../modules/items/items.module';
 
-
 @NgModule({
-  declarations: [
-    HomeComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule,
-    CategoriesModule,
-    ItemsModule
-  ]
+  declarations: [HomeComponent],
+  imports: [CommonModule, HomeRoutingModule, CategoriesModule, ItemsModule],
 })
-export class HomeModule { }
+export class HomeModule {}

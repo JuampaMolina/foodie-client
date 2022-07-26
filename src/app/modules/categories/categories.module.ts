@@ -5,18 +5,13 @@ import { CategoryCardComponent } from './components/category-card.component';
 import { CategoryFormComponent } from './components/category-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
   declarations: [
     CategoriesComponent,
     CategoryCardComponent,
-    CategoryFormComponent
+    CategoryFormComponent,
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-  ],
-  exports: [CategoriesComponent]
+  imports: [CommonModule, ReactiveFormsModule],
+  exports: [CategoriesComponent],
 })
-export class CategoriesModule { }
+export class CategoriesModule {}

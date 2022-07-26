@@ -8,14 +8,8 @@ import { AppState } from '../../store/app.reducers';
     <app-categories></app-categories>
     <app-items></app-items>
   `,
-  styles: [
-  ]
+  styles: [],
 })
-export class HomeComponent implements OnInit {
-
-  constructor(private store: Store<AppState>) { }
-
-  ngOnInit(): void {
-  }
-
+export class HomeComponent {
+  constructor(private store: Store<AppState>) {}
 }

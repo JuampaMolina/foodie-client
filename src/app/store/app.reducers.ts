@@ -5,11 +5,11 @@ import { CategoriesState } from '../modules/categories/interface/category-state'
 import { categoriesReducer } from '../modules/categories/store/categories.reducer';
 
 export interface AppState {
-  items: ItemsState,
-  categories: CategoriesState
+  items: ItemsState;
+  categories: CategoriesState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
   items: itemsReducer,
-  categories: categoriesReducer
-}
+  categories: categoriesReducer,
+};
