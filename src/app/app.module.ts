@@ -12,6 +12,9 @@ import { appEffects } from './store/app.effects';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { HomeComponent } from './views/home/home.component';
 import { HomeModule } from './views/home/home.module';
+import { NavbarModule } from './shared/navbar/navbar.module';
+import { AdminModule } from './views/admin/admin.module';
+import { AdminRoutingModule } from './views/admin/admin-routing.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +25,8 @@ import { HomeModule } from './views/home/home.module';
     ItemsModule,
     CategoriesModule,
     HomeModule,
+    AdminModule,
+    NavbarModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(appEffects),
   ],

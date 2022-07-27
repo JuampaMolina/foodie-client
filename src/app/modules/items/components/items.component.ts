@@ -9,7 +9,7 @@ import { CreateItemCommand } from '../interface/createItemCommand';
 @Component({
   selector: 'app-items',
   template: `
-    <div class="mx-auto my-16 w-11/12">
+    <div>
       <!-- <button (click)="create = !create" *ngIf="!create" class="px-4 py-2 cursor-pointer bg-slate-200 rounded-md hover:bg-slate-300 transition duration-150">
         Añadir
       </button>
@@ -27,14 +27,16 @@ import { CreateItemCommand } from '../interface/createItemCommand';
         {{ error }}
       </div>
 
-      <div class="my-8 grid w-full grid-cols-4 gap-4">
+      <div class="grid-responsive-container-xl">
         <app-item-card *ngFor="let item of items" [item]="item"></app-item-card>
       </div>
     </div>
   `,
+  styles: [''],
 })
 export class ItemsComponent implements OnInit {
   create: boolean = false;
+  // isAdmin: boolean = true;
 
   items: Item[] = [];
   error: any;

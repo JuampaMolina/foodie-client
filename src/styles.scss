@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer utilities {
+
+  .grid-responsive-container-md {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(176px, 1fr) );
+    gap: 1rem
+  }
+
+  .grid-responsive-container-xl {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(320px, 1fr) );
+    gap: 1rem
+  }
+}
+

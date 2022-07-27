@@ -5,8 +5,10 @@ import { AppState } from '../../store/app.reducers';
 @Component({
   selector: 'app-home',
   template: `
-    <app-categories></app-categories>
-    <app-items></app-items>
+    <div class="flex flex-col space-y-8">
+      <app-categories></app-categories>
+      <app-items></app-items>
+    </div>
   `,
   styles: [],
 })

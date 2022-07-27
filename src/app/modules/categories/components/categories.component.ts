@@ -12,15 +12,13 @@ import {
 @Component({
   selector: 'app-categories',
   template: `
-    <div class="mx-auto my-16 w-11/12">
-      <div class="my-8 grid w-full grid-cols-6 gap-4">
-        <app-category-card
-          *ngFor="let category of categories"
-          [category]="category"
-          [selectedCategory]="selectedCategory"
-          (categorySelected)="selectCategory($event)">
-        </app-category-card>
-      </div>
+    <div class="grid-responsive-container-md">
+      <app-category-card
+        *ngFor="let category of categories"
+        [category]="category"
+        [selectedCategory]="selectedCategory"
+        (categorySelected)="selectCategory($event)">
+      </app-category-card>
     </div>
   `,
 })
