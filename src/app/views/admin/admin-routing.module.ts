@@ -8,6 +8,9 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    data: {
+      isAdmin: true,
+    },
     children: [
       {
         path: 'productos',

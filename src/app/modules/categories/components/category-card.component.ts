@@ -7,7 +7,7 @@ import { Category } from '../interface/category';
     <div
       *ngIf="category"
       (click)="selectCategory()"
-      class="cursor-pointer rounded-md bg-slate-200 p-4 text-center text-slate-800 transition duration-150 hover:bg-slate-300"
+      class="h-14 cursor-pointer rounded-md bg-slate-200 p-4 text-center text-slate-800 transition duration-150 hover:bg-slate-300"
       [class]="selectedCategory === this.category._id ? 'bg-slate-300' : ''">
       <span class="font-semibold">{{ category.name }}</span>
     </div>

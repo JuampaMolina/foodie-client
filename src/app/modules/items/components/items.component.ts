@@ -5,20 +5,13 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { getItems, createItem } from '../store/items.actions';
 import { CreateItemCommand } from '../interface/createItemCommand';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-items',
   template: `
     <div>
-      <!-- <button (click)="create = !create" *ngIf="!create" class="px-4 py-2 cursor-pointer bg-slate-200 rounded-md hover:bg-slate-300 transition duration-150">
-        Añadir
-      </button>
-
-      <button (click)="create = !create" *ngIf="create" class="px-4 py-2 cursor-pointer bg-slate-200 rounded-md hover:bg-slate-300 transition duration-150">
-        Cerrar
-      </button>
-
-      <ng-container *ngIf="create">
+      <!-- <ng-container *ngIf="create">
         <app-item-form (formValue)="createItem($event)"></app-item-form>
       </ng-container> -->
 
@@ -28,6 +21,10 @@ import { CreateItemCommand } from '../interface/createItemCommand';
       </div>
 
       <div class="grid-responsive-container-xl">
+        <div
+          class="flex h-32 items-center justify-center rounded-md bg-slate-800 p-4 text-slate-100">
+          <i class="fa-solid fa-circle-plus text-3xl"></i>
+        </div>
         <app-item-card *ngFor="let item of items" [item]="item"></app-item-card>
       </div>
     </div>
@@ -35,14 +32,15 @@ import { CreateItemCommand } from '../interface/createItemCommand';
   styles: [''],
 })
 export class ItemsComponent implements OnInit {
+  isAdmin: boolean = false;
   create: boolean = false;
-  // isAdmin: boolean = true;
 
   items: Item[] = [];
   error: any;
 
   constructor(
     private itemsApi: ItemsApiService,
+    private route: ActivatedRoute,
     private store: Store<AppState>
   ) {}
 
@@ -54,8 +52,16 @@ export class ItemsComponent implements OnInit {
     this.store.dispatch(getItems());
   }
 
+  checkAdmin() {
+    const isAdmin = this.route.parent?.snapshot.data;
+    if (isAdmin?.['isAdmin']) {
+      this.isAdmin = isAdmin?.['isAdmin'];
+    }
+  }
+
   // todo: crear selectores
   ngOnInit(): void {
+    this.checkAdmin();
     this.store.subscribe(({ items }) => {
       this.items = items.items;
       this.error = items.error;
