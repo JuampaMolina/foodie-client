@@ -22,6 +22,7 @@ export const categoriesReducer = createReducer(
   on(getCategories, state => ({
     ...state,
     loading: true,
+    loaded: false,
   })),
 
   on(getCategoriesError, (state, { error }) => ({

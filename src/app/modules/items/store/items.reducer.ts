@@ -25,6 +25,7 @@ export const itemsReducer = createReducer(
   on(getItems, state => ({
     ...state,
     loading: true,
+    loaded: false,
   })),
 
   on(getItemsError, (state, { error }) => ({
@@ -44,6 +45,7 @@ export const itemsReducer = createReducer(
   on(getItemsByCategoryId, state => ({
     ...state,
     loading: true,
+    loaded: false,
   })),
 
   on(getItemsByCategoryIdError, (state, { error }) => ({
