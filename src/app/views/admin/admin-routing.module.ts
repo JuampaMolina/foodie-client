@@ -7,6 +7,10 @@ import { AdminComponent } from './admin.component';
 const routes: Routes = [
   {
     path: 'admin',
+    redirectTo: 'admin/productos',
+  },
+  {
+    path: 'admin',
     component: AdminComponent,
     data: {
       isAdmin: true,

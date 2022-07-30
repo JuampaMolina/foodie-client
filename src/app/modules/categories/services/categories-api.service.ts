@@ -17,6 +17,9 @@ export class CategoriesApiService {
   }
 
   createCategory(category: string) {
-    return this.http.post(categoriesApi, category);
+    const body = {
+      name: category,
+    };
+    return this.http.post(categoriesApi, body);
   }
 }

@@ -4,6 +4,7 @@ import { CategoriesComponent } from './components/categories.component';
 import { CategoryCardComponent } from './components/category-card.component';
 import { CategoryFormComponent } from './components/category-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CategoryCardComponent,
     CategoryFormComponent,
   ],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, DialogModule],
   exports: [CategoriesComponent],
 })
 export class CategoriesModule {}

@@ -4,11 +4,21 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-category-form',
   template: `
-    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
-      <label for="name">Nombre: </label>
-      <input id="name" type="text" formControlName="name" />
-
-      <button class="" type="submit" [disabled]="!categoryForm.valid">
+    <form
+      class="mx-auto flex w-2/3 items-center justify-center gap-4"
+      [formGroup]="categoryForm"
+      (ngSubmit)="onSubmit()">
+      <label class="form-label" for="name">Nombre </label>
+      <input
+        class="form-input"
+        id="name"
+        type="text"
+        placeholder="Nombre de la categoría"
+        formControlName="name" />
+      <button
+        class="primary-button"
+        type="submit"
+        [disabled]="!categoryForm.valid">
         Enviar
       </button>
     </form>
@@ -25,6 +35,6 @@ export class CategoryFormComponent {
   constructor() {}
 
   onSubmit() {
-    this.formValue.emit(this.categoryForm.value);
+    this.formValue.emit(this.categoryForm.value.name);
   }
 }

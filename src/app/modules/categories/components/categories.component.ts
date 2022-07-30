@@ -14,10 +14,7 @@ import {
   selector: 'app-categories',
   template: `
     <div class="grid-responsive-container-md">
-      <div
-        *ngIf="isAdmin"
-        (click)="create = true"
-        class="h-14 cursor-pointer rounded-md bg-slate-800 p-4 text-center text-slate-100 transition duration-150 hover:bg-slate-700">
+      <div *ngIf="isAdmin" (click)="create = true" class="primary-button">
         <i class="fa-solid fa-circle-plus text-xl"></i>
       </div>
       <app-category-card
@@ -26,6 +23,16 @@ import {
         [selectedCategory]="selectedCategory"
         (categorySelected)="selectCategory($event)">
       </app-category-card>
+      <p-dialog
+        header="Añadir nueva categoría"
+        [(visible)]="create"
+        [modal]="true"
+        [style]="{ width: '50vw' }"
+        [draggable]="false"
+        [resizable]="false">
+        <app-category-form
+          (formValue)="createCategory($event)"></app-category-form>
+      </p-dialog>
     </div>
   `,
 })
@@ -38,13 +45,10 @@ export class CategoriesComponent implements OnInit {
   categories: Category[] = [];
   error: any;
 
-  constructor(
-    private categoriesApi: CategoriesApiService,
-    private route: ActivatedRoute,
-    private store: Store<AppState>
-  ) {}
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
 
   selectCategory = (category: string) => {
+    if (this.isAdmin) return;
     if (this.selectedCategory !== category) {
       this.selectedCategory = category;
       this.getItemsByCategoryId(category);
@@ -56,6 +60,8 @@ export class CategoriesComponent implements OnInit {
 
   createCategory(category: string) {
     this.store.dispatch(createCategory({ category }));
+    // todo: debería cerrarse solo si es success?
+    this.create = false;
   }
 
   getCategories() {
