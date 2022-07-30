@@ -1,25 +1,63 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Item } from '../interface/item';
-import { CreateItemCommand } from '../interface/createItemCommand';
+import { Category } from '../../categories/interface/category';
 
 @Component({
   selector: 'app-item-form',
   template: `
-    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-      <label for="name">Nombre: </label>
-      <input id="name" type="text" formControlName="name" />
+    <form
+      class="grid grid-cols-3 gap-4"
+      [formGroup]="itemForm"
+      (ngSubmit)="onSubmit()">
+      <div>
+        <label class="form-label mb-1" for="name">Nombre </label>
+        <input
+          placeholder="Nombre"
+          class="form-input"
+          id="name"
+          type="text"
+          formControlName="name" />
+      </div>
 
-      <label for="description">Descripción: </label>
-      <input id="description" type="text" formControlName="description" />
+      <div>
+        <label class="form-label mb-1" for="price">Precio</label>
+        <input
+          placeholder="Precio en EUR"
+          class="form-input"
+          id="price"
+          type="number"
+          formControlName="price" />
+      </div>
 
-      <label for="category">Categoría: </label>
-      <input id="category" type="text" formControlName="category" />
+      <div>
+        <label class="form-label mb-1" for="category">Categoría </label>
+        <select
+          class="select-background form-input cursor-pointer"
+          name="category"
+          id="category"
+          formControlName="categoryId">
+          <option
+            *ngFor="let category of categories"
+            value="{{ category._id }}">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
 
-      <label for="price">Precio:</label>
-      <input id="price" type="number" formControlName="price" />
+      <div class="col-span-3">
+        <label class="form-label mb-1" for="description">Descripción </label>
+        <textarea
+          placeholder="Descripción del producto"
+          class="form-input resize-none"
+          name="description"
+          id="description"
+          formControlName="description"></textarea>
+      </div>
 
-      <button class="" type="submit" [disabled]="!itemForm.valid">
+      <button
+        class="primary-button col-start-2"
+        type="submit"
+        [disabled]="!itemForm.valid">
         Enviar
       </button>
     </form>
@@ -27,6 +65,7 @@ import { CreateItemCommand } from '../interface/createItemCommand';
   styles: [],
 })
 export class ItemFormComponent {
+  @Input() categories: Category[] = [];
   @Output() formValue = new EventEmitter<any>();
 
   itemForm = new FormGroup({

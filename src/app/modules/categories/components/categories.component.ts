@@ -23,17 +23,17 @@ import {
         [selectedCategory]="selectedCategory"
         (categorySelected)="selectCategory($event)">
       </app-category-card>
-      <p-dialog
-        header="Añadir nueva categoría"
-        [(visible)]="create"
-        [modal]="true"
-        [style]="{ width: '50vw' }"
-        [draggable]="false"
-        [resizable]="false">
-        <app-category-form
-          (formValue)="createCategory($event)"></app-category-form>
-      </p-dialog>
     </div>
+    <p-dialog
+      header="Añadir nueva categoría"
+      [(visible)]="create"
+      [modal]="true"
+      [style]="{ width: '50vw' }"
+      [draggable]="false"
+      [resizable]="false">
+      <app-category-form (formValue)="createCategory($event)">
+      </app-category-form>
+    </p-dialog>
   `,
 })
 export class CategoriesComponent implements OnInit {

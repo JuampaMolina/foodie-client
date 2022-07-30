@@ -4,10 +4,11 @@ import { ItemsComponent } from './components/items.component';
 import { ItemCardComponent } from './components/item-card.component';
 import { ItemFormComponent } from './components/item-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [ItemsComponent, ItemCardComponent, ItemFormComponent],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, DialogModule],
   exports: [ItemsComponent],
 })
 export class ItemsModule {}

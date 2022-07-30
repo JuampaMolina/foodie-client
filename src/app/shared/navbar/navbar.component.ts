@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-navbar',
   template: `
     <nav
-      class="mb-8 flex items-baseline justify-between rounded-md bg-slate-800 p-4 text-slate-200">
+      class="mb-8 flex items-baseline justify-between rounded bg-slate-800 p-4 text-slate-200">
       <h1 class="font-mukta text-4xl font-extrabold">
         {{ title }}
       </h1>

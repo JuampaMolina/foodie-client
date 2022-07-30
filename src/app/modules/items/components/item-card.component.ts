@@ -6,7 +6,7 @@ import { Item } from '../interface/item';
   template: `
     <div
       *ngIf="item"
-      class="flex h-32 flex-col rounded-md bg-slate-200 p-4 text-slate-800">
+      class="flex h-32 flex-col rounded bg-slate-200 p-4 text-slate-800">
       <div class="space-x-2">
         <span class="font-semibold">{{ item.name }}</span>
         <span class="text-xs font-extralight">{{ item.category.name }}</span>
