@@ -15,11 +15,13 @@ import { HomeModule } from './views/home/home.module';
 import { appReducers } from './store/app.reducers';
 import { appEffects } from './store/app.effects';
 import { environment } from '../environments/environment.prod';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ItemsModule,
