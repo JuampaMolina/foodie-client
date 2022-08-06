@@ -1,14 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from '../../categories/interface/category';
+import { Item } from '../interface/item';
 
 @Component({
   selector: 'app-item-form',
   template: `
-    <form
-      class="grid grid-cols-3 gap-4"
-      [formGroup]="itemForm"
-      (ngSubmit)="onSubmit()">
+    <form class="grid grid-cols-3 gap-4" [formGroup]="itemForm">
       <div>
         <label class="form-label mb-1" for="name">Nombre </label>
         <input
@@ -35,10 +33,9 @@ import { Category } from '../../categories/interface/category';
           class="select-background form-input cursor-pointer"
           name="category"
           id="category"
-          formControlName="categoryId">
-          <option
-            *ngFor="let category of categories"
-            value="{{ category._id }}">
+          [compareWith]="compareFn"
+          formControlName="category">
+          <option *ngFor="let category of categories" [ngValue]="category">
             {{ category.name }}
           </option>
         </select>
@@ -54,30 +51,90 @@ import { Category } from '../../categories/interface/category';
           formControlName="description"></textarea>
       </div>
 
+      <!-- mejor dos botones, tipo button, uno llama create y otro modify -->
       <button
+        *ngIf="!updating"
+        (click)="create()"
         class="primary-button col-start-2"
-        type="submit"
+        type="button"
         [disabled]="!itemForm.valid">
         Enviar
       </button>
+      <div *ngIf="updating" class="col-span-3 mx-auto flex space-x-4">
+        <button
+          (click)="delete()"
+          class="secondary-button"
+          type="button"
+          [disabled]="!itemId">
+          Eliminar
+        </button>
+        <button
+          (click)="update()"
+          class="primary-button"
+          type="button"
+          [disabled]="!itemForm.valid">
+          Modificar
+        </button>
+      </div>
     </form>
   `,
   styles: [],
 })
 export class ItemFormComponent {
+  @Input() set modify(item: Item | undefined) {
+    if (item) {
+      this.itemForm.patchValue({
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        category: item.category,
+      });
+      this.updating = true;
+      this.itemId = item._id;
+    }
+  }
+
   @Input() categories: Category[] = [];
-  @Output() formValue = new EventEmitter<any>();
+  @Output() createEvent = new EventEmitter<any>();
+  @Output() updateEvent = new EventEmitter<any>();
+  @Output() deleteEvent = new EventEmitter<any>();
+  updating: boolean = false;
+  itemId: string = '';
 
   itemForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    categoryId: new FormControl('', Validators.required),
+    category: new FormControl(this.categories[0], Validators.required),
     description: new FormControl('', Validators.required),
-    price: new FormControl(undefined, Validators.required),
+    price: new FormControl(NaN, Validators.required),
   });
 
   constructor() {}
 
+  compareFn(c1: Category, c2: Category): boolean {
+    return c1 && c2 ? c1._id === c2._id : c1 === c2;
+  }
+
+  create() {
+    this.createEvent.emit(this.itemForm.value);
+    this.itemForm.reset();
+  }
+
+  update() {
+    this.updateEvent.emit({ itemId: this.itemId, item: this.itemForm.value });
+    this.itemForm.reset();
+    this.updating = false;
+    this.itemId = '';
+  }
+
+  delete() {
+    this.deleteEvent.emit(this.itemId);
+    this.itemForm.reset();
+    this.updating = false;
+    this.itemId = '';
+  }
+
   onSubmit() {
-    this.formValue.emit(this.itemForm.value);
+    console.log(this.itemForm.value);
+    // this.formValue.emit(this.itemForm.value);
   }
 }

@@ -4,6 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { Item } from '../interface/item';
 import { Observable } from 'rxjs';
 import { CreateItemCommand } from '../interface/createItemCommand';
+import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 const itemsApi = environment.apiBaseUri + '/items';
 
@@ -17,12 +18,24 @@ export class ItemsApiService {
     return this.http.get<Item[]>(itemsApi);
   }
 
-  createItem(item: CreateItemCommand) {
-    return this.http.post(itemsApi, item);
-  }
-
   getItemsByCategoryId(categoryId: string): Observable<Item[]> {
     return this.http.get<Item[]>(itemsApi + `/category/${categoryId}`);
+  }
+
+  createItem(item: CreateItemCommand): Observable<Item> {
+    return this.http.post<Item>(itemsApi, item);
+  }
+
+  updateItem(itemUpdate: UpdateItemCommand): Observable<Item> {
+    const { itemId, item } = itemUpdate;
+    const url = itemsApi + '/' + itemId;
+
+    return this.http.put<Item>(url, item);
+  }
+
+  deleteItem(itemId: string): Observable<Item> {
+    const url = itemsApi + '/' + itemId;
+    return this.http.delete<Item>(url);
   }
 
   addCategoryToItem(categoryId: string, itemId: string) {

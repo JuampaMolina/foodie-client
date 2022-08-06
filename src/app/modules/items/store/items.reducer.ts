@@ -3,14 +3,20 @@ import {
   getItems,
   getItemsError,
   getItemsSuccess,
-  createItem,
-  createItemError,
-  createItemSuccess,
   getItemsByCategoryId,
   getItemsByCategoryIdError,
   getItemsByCategoryIdSuccess,
+  createItem,
+  createItemError,
+  createItemSuccess,
+  updateItem,
+  updateItemError,
+  updateItemSuccess,
+  deleteItemError,
+  deleteItemSuccess,
 } from './items.actions';
 import { ItemsState } from '../interface/items-state';
+import { deleteItem } from './items.actions';
 
 export const itemsInitalState: ItemsState = {
   items: [],
@@ -60,5 +66,65 @@ export const itemsReducer = createReducer(
     loading: false,
     loaded: true,
     items: items,
+  })),
+
+  on(createItem, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+  })),
+
+  on(createItemError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message,
+  })),
+
+  on(createItemSuccess, (state, { item }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    items: [...state.items, item],
+  })),
+
+  on(updateItem, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+  })),
+
+  on(updateItemError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message,
+  })),
+
+  on(updateItemSuccess, (state, { item }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    items: state.items.map(i => (i._id === item._id ? item : i)),
+  })),
+
+  on(deleteItem, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+  })),
+
+  on(deleteItemError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message,
+  })),
+
+  on(deleteItemSuccess, (state, { item }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    items: state.items.filter(i => i._id !== item._id),
   }))
 );

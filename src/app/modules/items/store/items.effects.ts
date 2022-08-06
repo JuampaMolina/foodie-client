@@ -6,12 +6,18 @@ import {
   getItems,
   getItemsError,
   getItemsSuccess,
-  createItem,
-  createItemSuccess,
-  createItemError,
   getItemsByCategoryId,
   getItemsByCategoryIdSuccess,
   getItemsByCategoryIdError,
+  createItem,
+  createItemSuccess,
+  createItemError,
+  updateItem,
+  updateItemSuccess,
+  updateItemError,
+  deleteItem,
+  deleteItemError,
+  deleteItemSuccess,
 } from './items.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
@@ -26,7 +32,7 @@ export class ItemsEffects {
 
   getItems$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getItems, createItemSuccess),
+      ofType(getItems),
       mergeMap(() =>
         this.itemsApi.getItems().pipe(
           map(items => getItemsSuccess({ items })),
@@ -55,6 +61,30 @@ export class ItemsEffects {
         this.itemsApi.createItem(action.item).pipe(
           map(item => createItemSuccess({ item })),
           catchError(error => of(createItemError(error)))
+        )
+      )
+    )
+  );
+
+  updateItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateItem),
+      mergeMap(action =>
+        this.itemsApi.updateItem(action.itemUpdate).pipe(
+          map(item => updateItemSuccess({ item })),
+          catchError(error => of(updateItemError(error)))
+        )
+      )
+    )
+  );
+
+  deleteItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteItem),
+      mergeMap(action =>
+        this.itemsApi.deleteItem(action.itemId).pipe(
+          map(item => deleteItemSuccess({ item })),
+          catchError(error => of(deleteItemError(error)))
         )
       )
     )

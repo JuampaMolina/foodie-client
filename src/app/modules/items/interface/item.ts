@@ -4,7 +4,7 @@ export interface Item {
   description: string;
   price: number;
   category: {
-    id: string;
+    _id: string;
     name: string;
   };
 }

@@ -3,11 +3,17 @@ import { ItemsApiService } from '../services/items-api.service';
 import { Item } from '../interface/item';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { getItems, createItem } from '../store/items.actions';
+import {
+  getItems,
+  createItem,
+  updateItem,
+  deleteItem,
+} from '../store/items.actions';
 import { getCategories } from '../../categories/store/categories.actions';
 import { CreateItemCommand } from '../interface/createItemCommand';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../categories/interface/category';
+import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 @Component({
   selector: 'app-items',
@@ -16,7 +22,10 @@ import { Category } from '../../categories/interface/category';
       <div *ngIf="isAdmin" (click)="create = true" class="primary-button h-32">
         <i class="fa-solid fa-circle-plus text-3xl"></i>
       </div>
-      <app-item-card *ngFor="let item of items" [item]="item"></app-item-card>
+      <app-item-card
+        (click)="modify = item"
+        *ngFor="let item of items"
+        [item]="item"></app-item-card>
     </div>
     <p-dialog
       header="Añadir nuevo producto"
@@ -25,7 +34,23 @@ import { Category } from '../../categories/interface/category';
       [style]="{ width: '50vw' }"
       [draggable]="false"
       [resizable]="false">
-      <app-item-form [categories]="categories" (formValue)="createItem($event)">
+      <app-item-form
+        [categories]="categories"
+        (createEvent)="createItem($event)">
+      </app-item-form>
+    </p-dialog>
+    <p-dialog
+      header="Modificar producto"
+      [(visible)]="modify"
+      [modal]="true"
+      [style]="{ width: '50vw' }"
+      [draggable]="false"
+      [resizable]="false">
+      <app-item-form
+        [modify]="modify"
+        [categories]="categories"
+        (updateEvent)="updateItem($event)"
+        (deleteEvent)="deleteItem($event)">
       </app-item-form>
     </p-dialog>
   `,
@@ -34,6 +59,7 @@ import { Category } from '../../categories/interface/category';
 export class ItemsComponent implements OnInit {
   isAdmin: boolean = false;
   create: boolean = false;
+  modify?: Item;
 
   items: Item[] = [];
   categories: Category[] = [];
@@ -43,8 +69,21 @@ export class ItemsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
 
   createItem(item: CreateItemCommand) {
+    console.log('create: ', item);
     this.store.dispatch(createItem({ item }));
     this.create = false;
+  }
+
+  updateItem(itemUpdate: UpdateItemCommand) {
+    this.store.dispatch(updateItem({ itemUpdate }));
+    console.log('update: ', itemUpdate);
+    this.modify = undefined;
+  }
+
+  deleteItem(itemId: string) {
+    this.store.dispatch(deleteItem({ itemId }));
+    console.log('delete: ', itemId);
+    this.modify = undefined;
   }
 
   getItems() {
