@@ -19,10 +19,7 @@ export class CategoriesApiService {
   }
 
   createCategory(category: CreateCategoryCommand): Observable<Category> {
-    const body = {
-      name: category,
-    };
-    return this.http.post<Category>(categoriesApi, body);
+    return this.http.post<Category>(categoriesApi, category);
   }
 
   updateCategory(categoryUpdate: UpdateCategoryCommand): Observable<Category> {

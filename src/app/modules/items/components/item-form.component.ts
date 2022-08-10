@@ -93,6 +93,12 @@ export class ItemFormComponent {
     }
   }
 
+  @Input() set reset(reset: boolean) {
+    if (reset) {
+      this.itemForm.reset();
+    }
+  }
+
   @Input() categories: Category[] = [];
   @Output() createEvent = new EventEmitter<any>();
   @Output() updateEvent = new EventEmitter<any>();

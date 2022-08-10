@@ -37,8 +37,9 @@ import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
       [modal]="true"
       [style]="{ width: '50vw' }"
       [draggable]="false"
-      [resizable]="false">
-      <app-category-form (createEvent)="createCategory($event)">
+      [resizable]="false"
+      (onHide)="reset = true">
+      <app-category-form [reset]="reset" (createEvent)="createCategory($event)">
       </app-category-form>
     </p-dialog>
     <p-dialog
@@ -59,6 +60,7 @@ import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
 export class CategoriesComponent implements OnInit {
   isAdmin: boolean = false;
   create: boolean = false;
+  reset: boolean = false;
   modify?: Category;
 
   selectedCategory: string = '';

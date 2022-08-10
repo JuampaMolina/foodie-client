@@ -55,6 +55,12 @@ export class CategoryFormComponent {
     }
   }
 
+  @Input() set reset(reset: boolean) {
+    if (reset) {
+      this.categoryForm.reset();
+    }
+  }
+
   @Output() createEvent = new EventEmitter<any>();
   @Output() updateEvent = new EventEmitter<any>();
   @Output() deleteEvent = new EventEmitter<any>();

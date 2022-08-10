@@ -3,7 +3,7 @@ export interface Item {
   name: string;
   description: string;
   price: number;
-  category: {
+  category?: {
     _id: string;
     name: string;
   };

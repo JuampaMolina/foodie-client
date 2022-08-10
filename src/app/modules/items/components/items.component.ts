@@ -33,9 +33,11 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
       [modal]="true"
       [style]="{ width: '50vw' }"
       [draggable]="false"
-      [resizable]="false">
+      [resizable]="false"
+      (onHide)="reset = true">
       <app-item-form
         [categories]="categories"
+        [reset]="reset"
         (createEvent)="createItem($event)">
       </app-item-form>
     </p-dialog>
@@ -59,6 +61,7 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
 export class ItemsComponent implements OnInit {
   isAdmin: boolean = false;
   create: boolean = false;
+  reset: boolean = false;
   modify?: Item;
 
   items: Item[] = [];
