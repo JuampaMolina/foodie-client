@@ -9,6 +9,12 @@ import {
   createCategory,
   createCategorySuccess,
   createCategoryError,
+  updateCategory,
+  updateCategorySuccess,
+  updateCategoryError,
+  deleteCategory,
+  deleteCategorySuccess,
+  deleteCategoryError,
 } from './categories.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
@@ -40,6 +46,30 @@ export class CategoriesEffects {
         this.categoriesApi.createCategory(action.category).pipe(
           map(category => createCategorySuccess({ category })),
           catchError(error => of(createCategoryError(error)))
+        )
+      )
+    )
+  );
+
+  updateCategory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateCategory),
+      mergeMap(action =>
+        this.categoriesApi.updateCategory(action.categoryUpdate).pipe(
+          map(category => updateCategorySuccess({ category })),
+          catchError(error => of(updateCategoryError(error)))
+        )
+      )
+    )
+  );
+
+  deleteCategory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteCategory),
+      mergeMap(action =>
+        this.categoriesApi.deleteCategory(action.categoryId).pipe(
+          map(category => deleteCategorySuccess({ category })),
+          catchError(error => of(deleteCategoryError(error)))
         )
       )
     )

@@ -17,10 +17,10 @@ import { Category } from '../interface/category';
 export class CategoryCardComponent {
   @Input() category?: Category;
   @Input() selectedCategory: string = '';
-  @Output() categorySelected = new EventEmitter<string>();
+  @Output() categorySelected = new EventEmitter<Category>();
 
   selectCategory = () => {
-    this.categorySelected.emit(this.category?._id);
+    this.categorySelected.emit(this.category);
   };
 
   constructor() {}

@@ -23,8 +23,8 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
         <i class="fa-solid fa-circle-plus text-3xl"></i>
       </div>
       <app-item-card
-        (click)="modify = item"
         *ngFor="let item of items"
+        (click)="selectItem(item)"
         [item]="item"></app-item-card>
     </div>
     <p-dialog
@@ -67,6 +67,12 @@ export class ItemsComponent implements OnInit {
   error: any;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
+
+  selectItem = (item: Item) => {
+    if (this.isAdmin) {
+      this.modify = item;
+    }
+  };
 
   createItem(item: CreateItemCommand) {
     console.log('create: ', item);

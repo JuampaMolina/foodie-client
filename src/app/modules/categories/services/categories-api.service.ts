@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Category } from '../interface/category';
 import { Observable } from 'rxjs';
+import { CreateCategoryCommand } from '../interface/createCategoryCommand';
+import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
 
 const categoriesApi = environment.apiBaseUri + '/categories';
 
@@ -16,10 +18,22 @@ export class CategoriesApiService {
     return this.http.get<Category[]>(categoriesApi);
   }
 
-  createCategory(category: string) {
+  createCategory(category: CreateCategoryCommand): Observable<Category> {
     const body = {
       name: category,
     };
-    return this.http.post(categoriesApi, body);
+    return this.http.post<Category>(categoriesApi, body);
+  }
+
+  updateCategory(categoryUpdate: UpdateCategoryCommand): Observable<Category> {
+    const { categoryId, category } = categoryUpdate;
+    const url = categoriesApi + '/' + categoryId;
+
+    return this.http.put<Category>(url, category);
+  }
+
+  deleteCategory(categoryId: string): Observable<Category> {
+    const url = categoriesApi + '/' + categoryId;
+    return this.http.delete<Category>(url);
   }
 }

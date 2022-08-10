@@ -51,7 +51,6 @@ import { Item } from '../interface/item';
           formControlName="description"></textarea>
       </div>
 
-      <!-- mejor dos botones, tipo button, uno llama create y otro modify -->
       <button
         *ngIf="!updating"
         (click)="create()"

@@ -3,12 +3,19 @@ import { CategoriesApiService } from '../services/categories-api.service';
 import { Category } from '../interface/category';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { getCategories, createCategory } from '../store/categories.actions';
-import { ActivatedRoute } from '@angular/router';
 import {
-  getItemsByCategoryId,
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from '../store/categories.actions';
+import {
   getItems,
-} from '../../items/store/items.actions';
+  getItemsByCategoryId,
+} from '../../../modules/items/store/items.actions';
+import { ActivatedRoute } from '@angular/router';
+import { CreateCategoryCommand } from '../interface/createCategoryCommand';
+import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
 
 @Component({
   selector: 'app-categories',
@@ -31,7 +38,20 @@ import {
       [style]="{ width: '50vw' }"
       [draggable]="false"
       [resizable]="false">
-      <app-category-form (formValue)="createCategory($event)">
+      <app-category-form (createEvent)="createCategory($event)">
+      </app-category-form>
+    </p-dialog>
+    <p-dialog
+      header="Modificar categoría"
+      [(visible)]="modify"
+      [modal]="true"
+      [style]="{ width: '50vw' }"
+      [draggable]="false"
+      [resizable]="false">
+      <app-category-form
+        [modify]="modify"
+        (updateEvent)="updateCategory($event)"
+        (deleteEvent)="deleteCategory($event)">
       </app-category-form>
     </p-dialog>
   `,
@@ -39,29 +59,46 @@ import {
 export class CategoriesComponent implements OnInit {
   isAdmin: boolean = false;
   create: boolean = false;
+  modify?: Category;
 
   selectedCategory: string = '';
-
   categories: Category[] = [];
+
   error: any;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
 
-  selectCategory = (category: string) => {
-    if (this.isAdmin) return;
-    if (this.selectedCategory !== category) {
-      this.selectedCategory = category;
-      this.getItemsByCategoryId(category);
+  selectCategory = (category: Category) => {
+    // refactorizar
+    if (this.isAdmin) {
+      this.modify = category;
     } else {
-      this.selectedCategory = '';
-      this.store.dispatch(getItems());
+      if (this.selectedCategory !== category._id) {
+        this.selectedCategory = category._id;
+        this.getItemsByCategoryId(category._id);
+      } else {
+        this.selectedCategory = '';
+        this.store.dispatch(getItems());
+      }
     }
   };
 
-  createCategory(category: string) {
+  createCategory(category: CreateCategoryCommand) {
+    console.log('create: ', category);
     this.store.dispatch(createCategory({ category }));
-    // todo: debería cerrarse solo si es success?
     this.create = false;
+  }
+
+  updateCategory(categoryUpdate: UpdateCategoryCommand) {
+    this.store.dispatch(updateCategory({ categoryUpdate }));
+    console.log('update: ', categoryUpdate);
+    this.modify = undefined;
+  }
+
+  deleteCategory(categoryId: string) {
+    this.store.dispatch(deleteCategory({ categoryId }));
+    console.log('delete: ', categoryId);
+    this.modify = undefined;
   }
 
   getCategories() {

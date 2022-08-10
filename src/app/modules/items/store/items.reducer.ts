@@ -12,11 +12,11 @@ import {
   updateItem,
   updateItemError,
   updateItemSuccess,
+  deleteItem,
   deleteItemError,
   deleteItemSuccess,
 } from './items.actions';
 import { ItemsState } from '../interface/items-state';
-import { deleteItem } from './items.actions';
 
 export const itemsInitalState: ItemsState = {
   items: [],
