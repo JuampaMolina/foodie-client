@@ -13,7 +13,7 @@ import {
   deleteCategoryError,
   deleteCategorySuccess,
 } from './categories.actions';
-import { CategoriesState } from '../interface/category-state';
+import { CategoriesState } from '../interface/categories-state';
 
 export const categoriesInitalState: CategoriesState = {
   categories: [],

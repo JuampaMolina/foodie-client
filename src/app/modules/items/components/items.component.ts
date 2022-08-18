@@ -9,11 +9,16 @@ import {
   updateItem,
   deleteItem,
 } from '../store/items.actions';
+
 import { getCategories } from '../../categories/store/categories.actions';
 import { CreateItemCommand } from '../interface/createItemCommand';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../categories/interface/category';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
+import {
+  addItemToCart,
+  removeItemFromCart,
+} from '../../orders/store/orders.actions';
 
 @Component({
   selector: 'app-items',
@@ -24,8 +29,13 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
       </div>
       <app-item-card
         *ngFor="let item of items"
-        (click)="selectItem(item)"
-        [item]="item"></app-item-card>
+        (modifyItemEvent)="modifyItem($event)"
+        (addItemEvent)="addItem($event)"
+        (removeItemEvent)="removeItem($event)"
+        [isAdmin]="isAdmin"
+        [item]="item"
+        [inCart]="inCart(item._id)">
+      </app-item-card>
     </div>
     <p-dialog
       header="Añadir nuevo producto"
@@ -65,17 +75,30 @@ export class ItemsComponent implements OnInit {
   modify?: Item;
 
   items: Item[] = [];
+  cart: Item[] = [];
   categories: Category[] = [];
 
   error: any;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
 
-  selectItem = (item: Item) => {
+  modifyItem(item: Item) {
     if (this.isAdmin) {
       this.modify = item;
     }
-  };
+  }
+
+  addItem(item: Item) {
+    this.store.dispatch(addItemToCart({ item }));
+  }
+
+  removeItem(itemId: string) {
+    this.store.dispatch(removeItemFromCart({ itemId }));
+  }
+
+  inCart(itemId: string) {
+    return this.cart.filter(item => item._id === itemId).length;
+  }
 
   createItem(item: CreateItemCommand) {
     console.log('create: ', item);
@@ -120,6 +143,10 @@ export class ItemsComponent implements OnInit {
 
     this.store.subscribe(({ categories }) => {
       this.categories = categories.categories;
+    });
+
+    this.store.subscribe(({ orders }) => {
+      this.cart = orders.cart;
     });
 
     this.getItems();
