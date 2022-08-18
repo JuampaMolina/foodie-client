@@ -9,6 +9,6 @@ import { DialogModule } from 'primeng/dialog';
 @NgModule({
   declarations: [ItemsComponent, ItemCardComponent, ItemFormComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, DialogModule],
-  exports: [ItemsComponent],
+  exports: [ItemsComponent, ItemCardComponent],
 })
 export class ItemsModule {}

@@ -11,6 +11,9 @@ import { Component, Input } from '@angular/core';
       <span class="space-x-4 text-lg">
         <button routerLink="/">Home</button>
         <button routerLink="admin">Admin</button>
+        <button routerLink="cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </button>
       </span>
     </nav>
   `,

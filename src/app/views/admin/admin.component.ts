@@ -12,7 +12,6 @@ import { Component, OnInit } from '@angular/core';
       </div>
     </div>
   `,
-  // styles: ['div { display: grid; grid-template-columns: 288px auto }'],
 })
 export class AdminComponent {
   constructor() {}

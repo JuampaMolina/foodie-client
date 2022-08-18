@@ -6,7 +6,7 @@ import { Item } from '../interface/item';
   template: `
     <div
       *ngIf="item"
-      class="flex h-32 cursor-pointer flex-col rounded bg-slate-200 p-4 text-slate-800">
+      class="flex h-32 flex-col rounded bg-slate-200 p-4 text-slate-800">
       <div class="space-x-2">
         <span class="font-semibold">{{ item.name }}</span>
         <span class="text-xs font-extralight">{{ item.category?.name }}</span>
@@ -20,14 +20,18 @@ import { Item } from '../interface/item';
           <i
             *ngIf="inCart > 0"
             (click)="removeItem()"
-            class="fa-solid fa-square-minus"></i>
+            class="fa-solid fa-square-minus cursor-pointer"></i>
           <span *ngIf="inCart > 0" class="select-none text-base">{{
             inCart
           }}</span>
-          <i (click)="addItem()" class="fa-solid fa-square-plus"></i>
+          <i
+            (click)="addItem()"
+            class="fa-solid fa-square-plus cursor-pointer"></i>
         </span>
         <span *ngIf="isAdmin">
-          <i (click)="modifyItem()" class="fa-solid fa-square-pen text-2xl"></i>
+          <i
+            (click)="modifyItem()"
+            class="fa-solid fa-square-pen cursor-pointer text-2xl"></i>
         </span>
       </span>
     </div>

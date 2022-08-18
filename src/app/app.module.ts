@@ -11,7 +11,7 @@ import { ItemsModule } from './modules/items/items.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { NavbarModule } from './shared/navbar/navbar.module';
 import { AdminModule } from './views/admin/admin.module';
-import { HomeModule } from './views/home/home.module';
+import { PublicModule } from './views/public/public.module';
 import { appReducers } from './store/app.reducers';
 import { appEffects } from './store/app.effects';
 import { environment } from '../environments/environment.prod';
@@ -26,7 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     ItemsModule,
     CategoriesModule,
-    HomeModule,
+    PublicModule,
     AdminModule,
     NavbarModule,
     StoreModule.forRoot(appReducers),

@@ -17,7 +17,48 @@ import { Item } from '../../items/interface/item';
 
 export const ordersInitalState: OrdersState = {
   orders: [],
-  cart: [],
+  cart: [
+    // {
+    //   _id: '62f91cae8c35d8245d3cb172',
+    //   name: 'Agua con Gas',
+    //   description: 'Agua con gas',
+    //   price: 2,
+    //   category: {
+    //     _id: '62f9191cb0d4fa314b35414b',
+    //     name: 'Bebidas',
+    //   },
+    // },
+    // {
+    //   _id: '62f91cae8c35d8245d3cb172',
+    //   name: 'Agua con Gas',
+    //   description: 'Agua con gas',
+    //   price: 2,
+    //   category: {
+    //     _id: '62f9191cb0d4fa314b35414b',
+    //     name: 'Bebidas',
+    //   },
+    // },
+    // {
+    //   _id: '62f91cae8c35d8245d3cb172',
+    //   name: 'Agua con Gas',
+    //   description: 'Agua con gas',
+    //   price: 2,
+    //   category: {
+    //     _id: '62f9191cb0d4fa314b35414b',
+    //     name: 'Bebidas',
+    //   },
+    // },
+    // {
+    //   _id: '62f91cae8c35d8245d3cb172',
+    //   name: 'Agua con Gas',
+    //   description: 'Agua con gas',
+    //   price: 2,
+    //   category: {
+    //     _id: '62f9191cb0d4fa314b35414b',
+    //     name: 'Bebidas',
+    //   },
+    // },
+  ],
   loading: false,
   loaded: false,
   error: undefined,
@@ -92,9 +133,8 @@ export const ordersReducer = createReducer(
   })),
 
   on(removeItemFromCart, (state, { itemId }) => {
-    const cart: Item[] = JSON.parse(JSON.stringify(state.cart));
-    const index = cart.findIndex(item => item._id === itemId);
-    cart.splice(index, 1);
+    let index = state.cart.findIndex(item => item._id === itemId);
+    let cart = [...state.cart.slice(0, index), ...state.cart.slice(index + 1)];
 
     return {
       ...state,

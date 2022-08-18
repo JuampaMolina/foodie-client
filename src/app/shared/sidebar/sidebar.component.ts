@@ -7,8 +7,7 @@ import { map } from 'rxjs/operators';
   selector: 'app-sidebar',
   template: `
     <div class="w-52">
-      <nav
-        class="flex flex-col rounded border-2 border-slate-800 bg-slate-100">
+      <nav class="flex flex-col rounded border-2 border-slate-800 bg-slate-100">
         <!-- <app-sidebar-item [title]="'Productos'"></app-sidebar-item>
         <app-sidebar-item [title]="'Categorías'"></app-sidebar-item>
         <app-sidebar-item [title]="'Pedidos'"></app-sidebar-item> -->
