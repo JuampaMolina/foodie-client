@@ -7,15 +7,17 @@ import { ItemsModule } from '../../modules/items/items.module';
 import { CategoriesModule } from '../../modules/categories/categories.module';
 import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
+import { OrdersModule } from '../../modules/orders/orders.module';
 
 @NgModule({
   declarations: [AdminComponent],
   imports: [
     CommonModule,
+    AdminRoutingModule,
     SidebarModule,
     ItemsModule,
     CategoriesModule,
-    AdminRoutingModule,
+    OrdersModule,
   ],
 })
 export class AdminModule {}

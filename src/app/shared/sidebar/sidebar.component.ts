@@ -17,7 +17,9 @@ import { map } from 'rxjs/operators';
         <button routerLink="categorias" routerLinkActive="active-link">
           Categorías
         </button>
-        <button>Pedidos</button>
+        <button routerLink="pedidos" routerLinkActive="active-link">
+          Pedidos
+        </button>
       </nav>
     </div>
   `,

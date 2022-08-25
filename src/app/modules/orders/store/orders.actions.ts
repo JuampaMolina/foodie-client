@@ -15,7 +15,7 @@ export const getOrdersSuccess = createAction(
 
 export const getOrdersByUserId = createAction(
   '[Orders] getOrdersByUserId',
-  props<{ categoryId: string }>()
+  props<{ userId: string }>()
 );
 export const getOrdersByUserIdError = createAction(
   '[Orders] getOrdersByUserIdError',

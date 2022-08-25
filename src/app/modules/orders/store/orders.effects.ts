@@ -42,7 +42,7 @@ export class OrdersEffects {
     this.actions$.pipe(
       ofType(getOrdersByUserId),
       mergeMap(action =>
-        this.ordersApi.getOrdersByUserId(action.categoryId).pipe(
+        this.ordersApi.getOrdersByUserId(action.userId).pipe(
           map(orders => getOrdersByUserIdSuccess({ orders })),
           catchError(error => of(getOrdersByUserIdError(error)))
         )
