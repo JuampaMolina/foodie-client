@@ -125,11 +125,14 @@ export const ordersReducer = createReducer(
     loading: false,
     loaded: true,
     orders: [...state.orders, order],
+    cart: [],
   })),
 
   on(addItemToCart, (state, { item }) => ({
     ...state,
-    cart: [...state.cart, item],
+    cart: [...state.cart, item].sort((a, b) =>
+      a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+    ),
   })),
 
   on(removeItemFromCart, (state, { itemId }) => {
@@ -138,7 +141,9 @@ export const ordersReducer = createReducer(
 
     return {
       ...state,
-      cart: cart,
+      cart: cart.sort((a, b) =>
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+      ),
     };
   })
 );

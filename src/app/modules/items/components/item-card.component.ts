@@ -18,16 +18,25 @@ import { Item } from '../interface/item';
           *ngIf="!isAdmin"
           class="flex items-center justify-center space-x-2 text-xl">
           <i
-            *ngIf="inCart > 0"
+            *ngIf="quantity > 0"
+            (click)="removeItem(quantity)"
+            class="fa-solid fa-square-xmark cursor-pointer"></i>
+          <i
+            *ngIf="quantity > 0 && modifyQuantity"
             (click)="removeItem()"
             class="fa-solid fa-square-minus cursor-pointer"></i>
-          <span *ngIf="inCart > 0" class="select-none text-base">{{
-            inCart
-          }}</span>
+          <span
+            *ngIf="quantity > 0 && modifyQuantity"
+            class="select-none text-base"
+            >{{ quantity }}
+          </span>
           <i
+            *ngIf="quantity < 1 || modifyQuantity"
             (click)="addItem()"
-            class="fa-solid fa-square-plus cursor-pointer"></i>
+            class="fa-solid fa-square-plus cursor-pointer">
+          </i>
         </span>
+
         <span *ngIf="isAdmin">
           <i
             (click)="modifyItem()"
@@ -40,7 +49,8 @@ import { Item } from '../interface/item';
 })
 export class ItemCardComponent {
   @Input() item?: Item;
-  @Input() inCart: number = 0;
+  @Input() quantity: number = 0;
+  @Input() modifyQuantity: boolean = false;
   @Input() isAdmin: boolean = false;
 
   @Output() addItemEvent = new EventEmitter<Item>();
@@ -55,8 +65,10 @@ export class ItemCardComponent {
     this.modifyItemEvent.emit(this.item!);
   }
 
-  removeItem() {
-    this.removeItemEvent.emit(this.item!._id);
+  removeItem(quantity: number = 1) {
+    for (let index = quantity; index > 0; index--) {
+      this.removeItemEvent.emit(this.item!._id);
+    }
   }
 
   constructor() {}

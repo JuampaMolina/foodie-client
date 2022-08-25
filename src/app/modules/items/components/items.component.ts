@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ItemsApiService } from '../services/items-api.service';
 import { Item } from '../interface/item';
 import { Store } from '@ngrx/store';
@@ -19,6 +19,12 @@ import {
   addItemToCart,
   removeItemFromCart,
 } from '../../orders/store/orders.actions';
+import {
+  selectCart,
+  selectCartUniqueItems,
+} from '../../orders/store/orders.selectors';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-items',
@@ -34,7 +40,7 @@ import {
         (removeItemEvent)="removeItem($event)"
         [isAdmin]="isAdmin"
         [item]="item"
-        [inCart]="inCart(item._id)">
+        [quantity]="getQuantity(item._id)">
       </app-item-card>
     </div>
     <p-dialog
@@ -68,7 +74,7 @@ import {
   `,
   styles: [''],
 })
-export class ItemsComponent implements OnInit {
+export class ItemsComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   create: boolean = false;
   reset: boolean = false;
@@ -79,6 +85,8 @@ export class ItemsComponent implements OnInit {
   categories: Category[] = [];
 
   error: any;
+
+  private onDestroy = new Subject<void>();
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
 
@@ -96,7 +104,7 @@ export class ItemsComponent implements OnInit {
     this.store.dispatch(removeItemFromCart({ itemId }));
   }
 
-  inCart(itemId: string) {
+  getQuantity(itemId: string) {
     return this.cart.filter(item => item._id === itemId).length;
   }
 
@@ -145,11 +153,19 @@ export class ItemsComponent implements OnInit {
       this.categories = categories.categories;
     });
 
-    this.store.subscribe(({ orders }) => {
-      this.cart = orders.cart;
-    });
+    this.store
+      .select(selectCart)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(cart => (this.cart = cart));
 
     this.getItems();
-    this.getCategories();
+    if (this.isAdmin) {
+      this.getCategories();
+    }
+  }
+  ngOnDestroy(): void {
+    console.log('bye');
+    this.onDestroy.next();
+    this.onDestroy.complete();
   }
 }

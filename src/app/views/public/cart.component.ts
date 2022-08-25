@@ -1,37 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Item } from 'src/app/modules/items/interface/item';
 import {
   addItemToCart,
+  createOrder,
   removeItemFromCart,
 } from 'src/app/modules/orders/store/orders.actions';
 import { AppState } from 'src/app/store/app.reducers';
+import {
+  selectCartTotalPrice,
+  selectCartCount,
+} from '../../modules/orders/store/orders.selectors';
+import {
+  selectCart,
+  selectCartUniqueItems,
+} from '../../modules/orders/store/orders.selectors';
 
 @Component({
   selector: 'app-cart',
-  template: ` <h2 class="my-2 text-5xl font-bold tracking-wide text-slate-800">
-      Carrito
-    </h2>
+  template: `
+    <div class="my-2 flex items-center gap-2">
+      <h2 class=" text-5xl font-bold tracking-wide text-slate-800">Carrito</h2>
+      <span
+        *ngIf="cartCount > 0"
+        class="rounded bg-slate-300 px-2 py-1 text-xl font-bold"
+        >{{ cartCount }}</span
+      >
+    </div>
+    <span *ngIf="cartCount < 1" class="text-xl font-semibold"
+      >El carrito está vacío</span
+    >
     <div class="flex flex-col gap-4">
       <app-item-card
-        *ngFor="let item of toUnique(cart)"
+        *ngFor="let item of uniqueItems"
         (addItemEvent)="addItem($event)"
         (removeItemEvent)="removeItem($event)"
         [item]="item"
-        [inCart]="inCart(item._id)">
+        [quantity]="getQuantity(item._id)"
+        [modifyQuantity]="true">
       </app-item-card>
     </div>
     <span
       class="my-2 flex justify-end text-2xl font-semibold text-slate-800"
       *ngIf="cart.length > 0"
-      >Total: {{ totalPrice }} EUR</span
-    >`,
+      >Total: {{ totalPrice }} EUR
+    </span>
+    <button
+      (click)="createOrder()"
+      *ngIf="cartCount > 0"
+      class="primary-button">
+      Realizar pedido
+    </button>
+  `,
   styles: [],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   cart: Item[] = [];
+  uniqueItems: Item[] = [];
+  cartCount: number = 0;
   totalPrice: number = 0;
-  // uniqueItems: Item[] = [];
+
+  private onDestroy = new Subject<void>();
 
   constructor(private store: Store<AppState>) {}
 
@@ -39,26 +70,56 @@ export class CartComponent implements OnInit {
     return items.filter((x, i, a) => a.indexOf(x) == i);
   }
 
+  createOrder() {
+    let order = {
+      items: this.cart.map(item => item._id),
+      totalPrice: this.totalPrice,
+      date: new Date().toLocaleDateString(),
+      user: '62fe46704304b8c4aa11d516',
+    };
+    this.store.dispatch(createOrder({ order }));
+  }
+
   addItem(item: Item) {
     this.store.dispatch(addItemToCart({ item }));
-    // console.log(this.cart);
   }
 
   removeItem(itemId: string) {
     this.store.dispatch(removeItemFromCart({ itemId }));
   }
 
-  inCart(itemId: string) {
+  getQuantity(itemId: string) {
     return this.cart.filter(item => item._id === itemId).length;
   }
 
+  clearCart() {
+    this.cart = [];
+    this.uniqueItems = [];
+  }
+
   ngOnInit() {
-    this.store.subscribe(({ orders }) => {
-      this.cart = orders.cart;
-      this.totalPrice = 0;
-      orders.cart.map(i => {
-        this.totalPrice = this.totalPrice + i.price;
-      });
-    });
+    this.store
+      .select(selectCart)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(cart => (this.cart = cart));
+    this.store
+      .select(selectCartUniqueItems)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(cart => (this.uniqueItems = cart));
+    this.store
+      .select(selectCartTotalPrice)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(totalPrice => (this.totalPrice = totalPrice));
+    this.store
+      .select(selectCartCount)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(cartCount => (this.cartCount = cartCount));
+  }
+
+  ngOnDestroy(): void {
+    console.log('bye');
+    this.onDestroy.next();
+    this.onDestroy.complete();
+    this.clearCart();
   }
 }
