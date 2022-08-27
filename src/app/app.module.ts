@@ -9,13 +9,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ItemsModule } from './modules/items/items.module';
 import { CategoriesModule } from './modules/categories/categories.module';
-import { NavbarModule } from './shared/navbar/navbar.module';
+import { NavbarModule } from './shared/components/navbar/navbar.module';
 import { AdminModule } from './views/admin/admin.module';
 import { PublicModule } from './views/public/public.module';
 import { appReducers } from './store/app.reducers';
 import { appEffects } from './store/app.effects';
 import { environment } from '../environments/environment.prod';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UsersModule } from './modules/users/users.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     ItemsModule,
     CategoriesModule,
+    UsersModule,
     PublicModule,
     AdminModule,
     NavbarModule,

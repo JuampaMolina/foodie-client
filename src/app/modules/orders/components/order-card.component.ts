@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { User } from '../../users/interface/user';
+import { User } from '../../users/interface/User';
 import { Order } from '../interface/order';
 
 @Component({
@@ -38,22 +38,22 @@ import { Order } from '../interface/order';
       [resizable]="false">
       <div class="space-y-4" *ngIf="order">
         <div>
-          <h2 class="text-lg font-semibold">Id</h2>
+          <p class="text-lg font-semibold">Id</p>
           <span>{{ order._id }}</span>
         </div>
 
         <div>
-          <h2 class="text-lg font-semibold">Fecha</h2>
+          <p class="text-lg font-semibold">Fecha</p>
           <span>{{ order.date }}</span>
         </div>
 
         <div>
-          <h2 class="text-lg font-semibold">Usuario</h2>
+          <p class="text-lg font-semibold">Usuario</p>
           <span>{{ order.user?.name }}</span>
         </div>
 
         <div>
-          <h2 class="text-lg font-semibold">Contenido</h2>
+          <p class="text-lg font-semibold">Contenido</p>
           <div class="space-x-2" *ngFor="let item of order.items">
             <span>{{ item.name }}</span>
             <span>x {{ getQuantity(item._id) }}</span>

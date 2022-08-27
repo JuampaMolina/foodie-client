@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
 import { AppState } from 'src/app/store/app.reducers';
+import { selectUser } from '../../../modules/users/store/users.selectors';
 
 @Component({
   selector: 'app-navbar',
@@ -13,8 +14,12 @@ import { AppState } from 'src/app/store/app.reducers';
       </h1>
       <span class="mr-2 space-x-4 text-xl">
         <button routerLink="/">Home</button>
-        <button routerLink="admin">Admin</button>
-        <button class="relative" routerLink="cart">
+        <button routerLink="/admin">Admin</button>
+        <button [routerLink]="userName ? '/user' : '/user/login'">
+          <span *ngIf="userName" class="mr-2 ml-4">{{ userName }}</span>
+          <i class="fa-solid fa-user"></i>
+        </button>
+        <button class="relative" routerLink="/cart">
           <i class="fa-solid fa-cart-shopping"></i>
           <span
             *ngIf="cartCount > 0"
@@ -29,6 +34,7 @@ import { AppState } from 'src/app/store/app.reducers';
 })
 export class NavbarComponent implements OnInit {
   @Input() title: string = '';
+  userName: string = '';
   cartCount: number = 0;
 
   constructor(private store: Store<AppState>) {}
@@ -37,5 +43,9 @@ export class NavbarComponent implements OnInit {
     this.store
       .select(selectCartCount)
       .subscribe(cartCount => (this.cartCount = cartCount));
+
+    this.store
+      .select(selectUser)
+      .subscribe(user => (this.userName = user?.name ?? ''));
   }
 }

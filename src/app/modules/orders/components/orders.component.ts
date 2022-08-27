@@ -6,7 +6,7 @@ import { AppState } from 'src/app/store/app.reducers';
 import { Order } from '../interface/order';
 import { getOrders, getOrdersByUserId } from '../store/orders.actions';
 import { selectOrders } from '../store/orders.selectors';
-import { User } from '../../users/interface/user';
+import { User } from '../../users/interface/User';
 
 @Component({
   selector: 'app-orders',

@@ -1,5 +1,5 @@
 import { Item } from '../../items/interface/item';
-import { User } from '../../users/interface/user';
+import { User } from '../../users/interface/User';
 
 export interface Order {
   _id: string;

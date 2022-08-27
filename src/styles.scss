@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 
+@layer base {
+
+  .title-2 {
+    @apply text-4xl font-bold tracking-wide text-slate-800
+  }
+}
+
 @layer utilities {
 
   .grid-responsive-container-md {

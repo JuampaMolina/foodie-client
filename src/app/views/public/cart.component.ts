@@ -22,7 +22,7 @@ import {
   selector: 'app-cart',
   template: `
     <div class="my-2 flex items-center gap-2">
-      <h2 class=" text-5xl font-bold tracking-wide text-slate-800">Carrito</h2>
+      <h2 class="title-2">Carrito</h2>
       <span
         *ngIf="cartCount > 0"
         class="rounded bg-slate-300 px-2 py-1 text-xl font-bold"
