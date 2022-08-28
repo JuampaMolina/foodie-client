@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { PrimeNGConfig } from 'primeng/api';
 import { AppState } from './store/app.reducers';
-import { selectUsersState } from './modules/users/store/users.selectors';
-import {
-  loginUser,
-  loginUserSuccess,
-} from './modules/users/store/users.actions';
-import { LoginUserCommand } from './modules/users/interface/LoginUserCommand';
+import { loginUserSuccess } from './modules/users/store/users.actions';
 import { ofType } from '@ngrx/effects';
 import { UserSession } from './modules/users/interface/UserSession';
 import { User } from './modules/users/interface/User';
@@ -34,6 +28,11 @@ export class AppComponent implements OnInit {
       .subscribe(({ userSession }) => {
         localStorage.setItem('user', JSON.stringify(userSession.user));
         localStorage.setItem('token', JSON.stringify(userSession.token));
+        if (userSession.user.role === 'admin') {
+          this.router.navigateByUrl('/admin');
+        } else {
+          this.router.navigateByUrl('/');
+        }
       });
   }
 

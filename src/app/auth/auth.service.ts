@@ -1,9 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { first, map, mergeMap } from 'rxjs';
+import { map } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducers';
-import { selectToken } from '../../modules/users/store/users.selectors';
+import { selectToken } from '../modules/users/store/users.selectors';
 
 @Injectable({
   providedIn: 'root',

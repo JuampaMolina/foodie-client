@@ -4,6 +4,7 @@ import { CategoriesComponent } from 'src/app/modules/categories/components/categ
 import { ItemsComponent } from 'src/app/modules/items/components/items.component';
 import { AdminComponent } from './admin.component';
 import { OrdersComponent } from '../../modules/orders/components/orders.component';
+import { AdminGuard } from '../../auth/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [AdminGuard],
     component: AdminComponent,
     data: {
       isAdmin: true,

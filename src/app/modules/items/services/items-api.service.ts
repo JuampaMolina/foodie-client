@@ -5,7 +5,7 @@ import { Item } from '../interface/item';
 import { Observable } from 'rxjs';
 import { CreateItemCommand } from '../interface/createItemCommand';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 const itemsApi = environment.apiBaseUri + '/items';
 

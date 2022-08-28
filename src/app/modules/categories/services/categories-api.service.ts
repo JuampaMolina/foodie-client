@@ -5,7 +5,7 @@ import { Category } from '../interface/category';
 import { Observable } from 'rxjs';
 import { CreateCategoryCommand } from '../interface/createCategoryCommand';
 import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
-import { AuthService } from '../../../shared/services/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 
 const categoriesApi = environment.apiBaseUri + '/categories';
 

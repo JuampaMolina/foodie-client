@@ -2,24 +2,35 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
 import { AppState } from 'src/app/store/app.reducers';
-import { selectUser } from '../../../modules/users/store/users.selectors';
+import {
+  selectUser,
+  selectIsAdmin,
+} from '../../../modules/users/store/users.selectors';
 
 @Component({
   selector: 'app-navbar',
   template: `
     <nav
       class="mb-8 flex items-baseline justify-between rounded bg-slate-800 p-4 text-slate-200">
-      <h1 class="font-mukta text-4xl font-extrabold">
-        {{ title }}
-      </h1>
-      <span class="mr-2 space-x-4 text-xl">
-        <button routerLink="/">Home</button>
-        <button routerLink="/admin">Admin</button>
+      <div class="flex gap-4">
+        <h1 class="font-mukta text-4xl font-extrabold">
+          {{ title }}
+        </h1>
+        <button
+          *ngIf="isAdmin"
+          class="rounded bg-slate-600 p-2 font-semibold"
+          routerLink="/admin">
+          Admin
+        </button>
+      </div>
+      <span class="mr-2 space-x-6 text-xl">
+        <button *ngIf="!isAdmin" routerLink="/">
+          <i class="fa-solid fa-house"></i>
+        </button>
         <button [routerLink]="userName ? '/user' : '/login'">
-          <span *ngIf="userName" class="mr-2 ml-4">{{ userName }}</span>
           <i class="fa-solid fa-user"></i>
         </button>
-        <button class="relative" routerLink="/cart">
+        <button *ngIf="!isAdmin" class="relative" routerLink="/cart">
           <i class="fa-solid fa-cart-shopping"></i>
           <span
             *ngIf="cartCount > 0"
@@ -35,6 +46,7 @@ import { selectUser } from '../../../modules/users/store/users.selectors';
 export class NavbarComponent implements OnInit {
   @Input() title: string = '';
   userName: string = '';
+  isAdmin: boolean = false;
   cartCount: number = 0;
 
   constructor(private store: Store<AppState>) {}
@@ -47,5 +59,9 @@ export class NavbarComponent implements OnInit {
     this.store
       .select(selectUser)
       .subscribe(user => (this.userName = user?.name ?? ''));
+
+    this.store
+      .select(selectIsAdmin)
+      .subscribe(isAdmin => (this.isAdmin = isAdmin));
   }
 }

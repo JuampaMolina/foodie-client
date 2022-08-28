@@ -6,8 +6,9 @@ import { logoutUser } from '../store/users.actions';
 
 @Component({
   selector: 'app-user',
-  template: ` <h2 class="title-2">Hola {{ userName }}!</h2>
-    <button (click)="logout()" class="primary-button">Cerrar Sesión</button>`,
+  template: ` <button (click)="logout()" class="primary-button">
+    Cerrar Sesión
+  </button>`,
   styles: [],
 })
 export class UserComponent implements OnInit {

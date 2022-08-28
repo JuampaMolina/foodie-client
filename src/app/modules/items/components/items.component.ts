@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ItemsApiService } from '../services/items-api.service';
 import { Item } from '../interface/item';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
@@ -19,10 +18,7 @@ import {
   addItemToCart,
   removeItemFromCart,
 } from '../../orders/store/orders.actions';
-import {
-  selectCart,
-  selectCartUniqueItems,
-} from '../../orders/store/orders.selectors';
+import { selectCart } from '../../orders/store/orders.selectors';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -164,7 +160,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    console.log('bye');
     this.onDestroy.next();
     this.onDestroy.complete();
   }
