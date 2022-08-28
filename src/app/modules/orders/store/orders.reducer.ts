@@ -17,51 +17,11 @@ import { Item } from '../../items/interface/item';
 
 export const ordersInitalState: OrdersState = {
   orders: [],
-  cart: [
-    // {
-    //   _id: '62f91cae8c35d8245d3cb172',
-    //   name: 'Agua con Gas',
-    //   description: 'Agua con gas',
-    //   price: 2,
-    //   category: {
-    //     _id: '62f9191cb0d4fa314b35414b',
-    //     name: 'Bebidas',
-    //   },
-    // },
-    // {
-    //   _id: '62f91cae8c35d8245d3cb172',
-    //   name: 'Agua con Gas',
-    //   description: 'Agua con gas',
-    //   price: 2,
-    //   category: {
-    //     _id: '62f9191cb0d4fa314b35414b',
-    //     name: 'Bebidas',
-    //   },
-    // },
-    // {
-    //   _id: '62f91cae8c35d8245d3cb172',
-    //   name: 'Agua con Gas',
-    //   description: 'Agua con gas',
-    //   price: 2,
-    //   category: {
-    //     _id: '62f9191cb0d4fa314b35414b',
-    //     name: 'Bebidas',
-    //   },
-    // },
-    // {
-    //   _id: '62f91cae8c35d8245d3cb172',
-    //   name: 'Agua con Gas',
-    //   description: 'Agua con gas',
-    //   price: 2,
-    //   category: {
-    //     _id: '62f9191cb0d4fa314b35414b',
-    //     name: 'Bebidas',
-    //   },
-    // },
-  ],
+  cart: [],
   loading: false,
   loaded: false,
-  error: undefined,
+  error: '',
+  message: '',
 };
 
 export const ordersReducer = createReducer(
@@ -111,6 +71,8 @@ export const ordersReducer = createReducer(
     ...state,
     loading: true,
     loaded: false,
+    error: '',
+    message: '',
   })),
 
   on(createOrderError, (state, { error }) => ({
@@ -125,6 +87,7 @@ export const ordersReducer = createReducer(
     loading: false,
     loaded: true,
     orders: [...state.orders, order],
+    message: 'El pedido se ha realizado correctamente',
     cart: [],
   })),
 

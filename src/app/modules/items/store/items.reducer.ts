@@ -22,7 +22,8 @@ export const itemsInitalState: ItemsState = {
   items: [],
   loading: false,
   loaded: false,
-  error: undefined,
+  error: '',
+  message: '',
 };
 
 export const itemsReducer = createReducer(

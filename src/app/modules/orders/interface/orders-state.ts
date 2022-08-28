@@ -6,5 +6,6 @@ export interface OrdersState {
   cart: Item[];
   loading: boolean;
   loaded: boolean;
-  error: any;
+  error: string;
+  message: string;
 }

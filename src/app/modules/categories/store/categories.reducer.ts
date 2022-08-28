@@ -19,7 +19,8 @@ export const categoriesInitalState: CategoriesState = {
   categories: [],
   loading: false,
   loaded: false,
-  error: undefined,
+  error: '',
+  message: '',
 };
 
 export const categoriesReducer = createReducer(

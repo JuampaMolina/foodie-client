@@ -7,6 +7,13 @@ import { UserSession } from './modules/users/interface/UserSession';
 import { User } from './modules/users/interface/User';
 import { logoutUser } from './modules/users/store/users.actions';
 import { Router } from '@angular/router';
+import { merge } from 'rxjs';
+import {
+  selectOrdersError,
+  selectOrdersMessage,
+} from './modules/orders/store/orders.selectors';
+import { selectItemsError } from './modules/items/store/items.selectors';
+import { selectCategoriesError } from './modules/categories/store/categories.selectors';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +22,8 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = "foodie's";
+  message = '';
+  error = '';
 
   constructor(
     private store: Store<AppState>,
@@ -26,8 +35,9 @@ export class AppComponent implements OnInit {
     this.actionListener
       .pipe(ofType(loginUserSuccess))
       .subscribe(({ userSession }) => {
+        localStorage.clear();
         localStorage.setItem('user', JSON.stringify(userSession.user));
-        localStorage.setItem('token', JSON.stringify(userSession.token));
+        localStorage.setItem('token', userSession.token);
         if (userSession.user.role === 'admin') {
           this.router.navigateByUrl('/admin');
         } else {
@@ -56,9 +66,39 @@ export class AppComponent implements OnInit {
     }
   }
 
+  handleErrors(e: string) {
+    clearTimeout();
+    if (e === 'jwt expired') {
+      this.router.navigateByUrl('/login');
+      this.error = 'La sesión ha caducado, vuelve a iniciar sesión';
+    }
+    setTimeout(() => {
+      this.error = '';
+    }, 5000);
+  }
+
+  handleMessage(m: string) {
+    clearTimeout();
+    this.router.navigateByUrl('/');
+    this.message = m;
+    setTimeout(() => {
+      this.message = '';
+    }, 5000);
+  }
+
   ngOnInit(): void {
     this.listenLogin();
     this.listenLogout();
     this.getLocalUser();
+
+    merge(
+      this.store.select(selectItemsError),
+      this.store.select(selectOrdersError),
+      this.store.select(selectCategoriesError)
+    ).subscribe(error => this.handleErrors(error));
+
+    merge(this.store.select(selectOrdersMessage)).subscribe(message =>
+      this.handleMessage(message)
+    );
   }
 }

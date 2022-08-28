@@ -1,4 +1,11 @@
 <div class="p-8">
   <app-navbar [title]="title"></app-navbar>
   <router-outlet></router-outlet>
+  <div [class]="error ? 'animate' : 'opacity-0'" class="toast-error">
+    {{ error }}
+  </div>
+
+  <div [class]="message ? 'animate' : 'opacity-0'" class="toast-message">
+    {{ message }}
+  </div>
 </div>

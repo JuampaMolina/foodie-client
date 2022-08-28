@@ -9,6 +9,16 @@ export const selectOrdersState = createSelector(
   (state: OrdersState) => state
 );
 
+export const selectOrdersMessage = createSelector(
+  _selectOrdersState,
+  (state: OrdersState) => state.message
+);
+
+export const selectOrdersError = createSelector(
+  _selectOrdersState,
+  (state: OrdersState) => state.error
+);
+
 export const selectOrders = createSelector(
   _selectOrdersState,
   (state: OrdersState) => state.orders

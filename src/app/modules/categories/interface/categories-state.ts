@@ -4,5 +4,6 @@ export interface CategoriesState {
   categories: Category[];
   loading: boolean;
   loaded: boolean;
-  error: any;
+  error: string;
+  message: string;
 }

@@ -43,6 +43,14 @@
     @apply block font-semibold text-slate-800
   }
 
+  .toast-error {
+    @apply absolute right-8 bottom-8 rounded bg-red-500 p-2 text-white shadow-md shadow-red-200
+  }
+
+  .toast-message {
+    @apply absolute right-8 bottom-8 rounded bg-green-500 p-2 text-white shadow-md shadow-green-200
+  }
+
   .select-background {
     -webkit-appearance: none;
     -moz-appearance: none;
