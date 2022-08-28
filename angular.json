@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "statsJson": true,
             "outputPath": "dist/foodie-client",
             "index": "src/index.html",
             "main": "src/main.ts",

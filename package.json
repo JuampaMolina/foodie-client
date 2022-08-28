@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix"
+    "lint:fix": "ng lint --fix",
+    "analyse": "webpack-bundle-analyzer dist/foodie-client/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +57,7 @@
     "prettier-eslint": "^15.0.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "tailwindcss": "^3.1.6",
-    "typescript": "~4.7.2"
+    "typescript": "~4.7.2",
+    "webpack-bundle-analyzer": "^4.6.1"
   }
 }
