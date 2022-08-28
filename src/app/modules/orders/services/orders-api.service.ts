@@ -4,6 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { Order } from '../interface/order';
 import { Observable } from 'rxjs';
 import { CreateOrderCommand } from '../interface/createOrderCommand';
+import { AuthService } from 'src/app/auth/auth.service';
 
 const ordersApi = environment.apiBaseUri + '/orders';
 
@@ -11,7 +12,7 @@ const ordersApi = environment.apiBaseUri + '/orders';
   providedIn: 'root',
 })
 export class OrdersApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(ordersApi);
@@ -22,6 +23,6 @@ export class OrdersApiService {
   }
 
   createOrder(order: CreateOrderCommand): Observable<Order> {
-    return this.http.post<Order>(ordersApi, order);
+    return this.http.post<Order>(ordersApi, order, this.auth.getHeaders());
   }
 }

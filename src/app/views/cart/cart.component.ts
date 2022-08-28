@@ -21,8 +21,8 @@ import {
 @Component({
   selector: 'app-cart',
   template: `
-    <div class="flex items-center gap-2">
-      <h2 class="title-2">Carrito</h2>
+    <div class="mb-4 flex items-center gap-2">
+      <h2 class="title-2 ">Carrito</h2>
       <span
         *ngIf="cartCount > 0"
         class="rounded bg-slate-300 px-2 py-1 text-xl font-bold"
@@ -75,7 +75,6 @@ export class CartComponent implements OnInit, OnDestroy {
       items: this.cart.map(item => item._id),
       totalPrice: this.totalPrice,
       date: new Date().toLocaleDateString(),
-      user: '62fe46704304b8c4aa11d516',
     };
     this.store.dispatch(createOrder({ order }));
   }
