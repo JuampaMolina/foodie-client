@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { loginUser } from '../store/users.actions';
-import { LoginUserCommand } from '../interface/LoginUserCommand';
+import { loginUser } from '../../../modules/users/store/users.actions';
+import { LoginUserCommand } from '../../../modules/users/interface/LoginUserCommand';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +40,7 @@ import { LoginUserCommand } from '../interface/LoginUserCommand';
           Enviar
         </button>
       </form>
-      <a class="text-center hover:underline" routerLink="/user/register"
+      <a class="text-center hover:underline" routerLink="/register"
         >Crea una cuenta</a
       >
     </div>
@@ -55,11 +55,11 @@ export class LoginComponent {
   constructor(private store: Store<AppState>) {}
 
   onSubmit() {
-    console.log(this.loginForm.value);
     let user: LoginUserCommand = {
       email: this.loginForm.value.email!,
       password: this.loginForm.value.password!,
     };
     this.store.dispatch(loginUser({ user }));
+    this.loginForm.reset();
   }
 }

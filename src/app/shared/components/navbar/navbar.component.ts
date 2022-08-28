@@ -15,7 +15,7 @@ import { selectUser } from '../../../modules/users/store/users.selectors';
       <span class="mr-2 space-x-4 text-xl">
         <button routerLink="/">Home</button>
         <button routerLink="/admin">Admin</button>
-        <button [routerLink]="userName ? '/user' : '/user/login'">
+        <button [routerLink]="userName ? '/user' : '/login'">
           <span *ngIf="userName" class="mr-2 ml-4">{{ userName }}</span>
           <i class="fa-solid fa-user"></i>
         </button>

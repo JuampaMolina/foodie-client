@@ -11,12 +11,14 @@ import { ItemsModule } from './modules/items/items.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { NavbarModule } from './shared/components/navbar/navbar.module';
 import { AdminModule } from './views/admin/admin.module';
-import { PublicModule } from './views/public/public.module';
+import { HomeModule } from './views/home/home.module';
 import { appReducers } from './store/app.reducers';
 import { appEffects } from './store/app.effects';
 import { environment } from '../environments/environment.prod';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsersModule } from './modules/users/users.module';
+import { CartModule } from './views/cart/cart.module';
+import { AuthModule } from './views/auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,10 +27,12 @@ import { UsersModule } from './modules/users/users.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    AuthModule,
     ItemsModule,
     CategoriesModule,
+    CartModule,
     UsersModule,
-    PublicModule,
+    HomeModule,
     AdminModule,
     NavbarModule,
     StoreModule.forRoot(appReducers),

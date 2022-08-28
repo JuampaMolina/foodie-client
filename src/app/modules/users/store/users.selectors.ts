@@ -18,3 +18,8 @@ export const selectToken = createSelector(
   _selectUsersState,
   (state: UsersState) => state.token
 );
+
+export const selectIsAdmin = createSelector(
+  _selectUsersState,
+  (state: UsersState) => (state.user?.role === 'admin' ? true : false)
+);

@@ -4,10 +4,9 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { CategoriesModule } from '../../modules/categories/categories.module';
 import { ItemsModule } from '../../modules/items/items.module';
-import { CartComponent } from './cart.component';
 
 @NgModule({
-  declarations: [HomeComponent, CartComponent],
+  declarations: [HomeComponent],
   imports: [CommonModule, CategoriesModule, ItemsModule],
 })
-export class PublicModule {}
+export class HomeModule {}

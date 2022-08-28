@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminComponent } from './admin.component';
-import { SidebarModule } from '../../shared/components/sidebar/sidebar.module';
+import { SidebarModule } from './sidebar/sidebar.module';
 import { ItemsModule } from '../../modules/items/items.module';
 import { CategoriesModule } from '../../modules/categories/categories.module';
-import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 import { OrdersModule } from '../../modules/orders/orders.module';
 

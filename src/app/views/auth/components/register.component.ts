@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { RegisterUserCommand } from 'src/app/modules/users/interface/RegisterUserCommand';
+import { registerUser } from 'src/app/modules/users/store/users.actions';
 import { AppState } from 'src/app/store/app.reducers';
-import { RegisterUserCommand } from '../interface/RegisterUserCommand';
-import { registerUser } from '../store/users.actions';
 
 @Component({
   selector: 'app-register',
@@ -84,7 +84,7 @@ import { registerUser } from '../store/users.actions';
         </div>
         <button class="primary-button col-start-2" type="submit">Enviar</button>
       </form>
-      <a class="text-center hover:underline" routerLink="/user/login"
+      <a class="text-center hover:underline" routerLink="/login"
         >Iniciar Sesión</a
       >
     </div>
@@ -111,12 +111,12 @@ export class RegisterComponent {
       return;
     }
     this.showErrors = false;
-    console.log(this.registerForm.value);
     let user: RegisterUserCommand = {
       name: this.registerForm.value.name!,
       email: this.registerForm.value.email!,
       password: this.registerForm.value.password!,
     };
     this.store.dispatch(registerUser({ user }));
+    this.registerForm.reset();
   }
 }

@@ -21,7 +21,7 @@ import {
 @Component({
   selector: 'app-cart',
   template: `
-    <div class="my-2 flex items-center gap-2">
+    <div class="flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>
       <span
         *ngIf="cartCount > 0"
@@ -117,9 +117,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('bye');
     this.onDestroy.next();
     this.onDestroy.complete();
-    this.clearCart();
   }
 }
