@@ -5,6 +5,7 @@ import { HomeComponent } from './views/home/home.component';
 import { UserComponent } from './modules/users/components/user.component';
 import { NotAdminGuard } from './auth/guards/not-admin.guard';
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard';
+import { AdminGuard } from './auth/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -21,6 +22,12 @@ const routes: Routes = [
     path: 'user',
     component: UserComponent,
     canActivate: [AuthenticatedGuard],
+  },
+  {
+    path: 'admin',
+    canActivate: [AdminGuard],
+    loadChildren: () =>
+      import('./views/admin/admin.module').then(m => m.AdminModule),
   },
 ];
 

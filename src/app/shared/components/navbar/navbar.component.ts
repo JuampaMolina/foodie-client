@@ -27,7 +27,7 @@ import {
         <button *ngIf="!isAdmin" routerLink="/">
           <i class="fa-solid fa-house"></i>
         </button>
-        <button [routerLink]="userName ? '/user' : '/login'">
+        <button routerLink="/user">
           <i class="fa-solid fa-user"></i>
         </button>
         <button *ngIf="!isAdmin" class="relative" routerLink="/cart">

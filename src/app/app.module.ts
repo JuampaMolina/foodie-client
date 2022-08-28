@@ -33,7 +33,6 @@ import { AuthModule } from './auth/auth.module';
     CartModule,
     UsersModule,
     HomeModule,
-    AdminModule,
     NavbarModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(appEffects),

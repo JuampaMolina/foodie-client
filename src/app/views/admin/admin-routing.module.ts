@@ -8,12 +8,12 @@ import { AdminGuard } from '../../auth/guards/admin.guard';
 
 const routes: Routes = [
   {
-    path: 'admin',
-    redirectTo: 'admin/productos',
+    path: '',
+    redirectTo: 'productos',
+    pathMatch: 'full',
   },
   {
-    path: 'admin',
-    canActivate: [AdminGuard],
+    path: '',
     component: AdminComponent,
     data: {
       isAdmin: true,

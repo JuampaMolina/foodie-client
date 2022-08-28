@@ -25,7 +25,7 @@ export class AuthenticatedGuard implements CanActivate {
     return this.store.select(selectIsAuthenticated).pipe(
       map(isAuthenticated => {
         if (!isAuthenticated) {
-          return this.router.createUrlTree(['/']);
+          return this.router.createUrlTree(['/login']);
         }
         return true;
       })
