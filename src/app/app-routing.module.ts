@@ -16,12 +16,12 @@ const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
-    canActivate: [NotAdminGuard],
+    canActivate: [NotAdminGuard, AuthenticatedGuard],
   },
   {
     path: 'user',
     component: UserComponent,
-    canActivate: [AuthenticatedGuard],
+    canActivate: [NotAdminGuard, AuthenticatedGuard],
   },
   {
     path: 'admin',

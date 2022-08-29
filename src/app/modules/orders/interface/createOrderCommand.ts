@@ -1,5 +1,5 @@
 export interface CreateOrderCommand {
   totalPrice: number;
-  date: string;
+  date: Date;
   items: string[];
 }

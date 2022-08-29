@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
 import { AppState } from 'src/app/store/app.reducers';
+import { logoutUser } from '../../../modules/users/store/users.actions';
 import {
   selectUser,
   selectIsAdmin,
@@ -23,14 +24,17 @@ import {
           Admin
         </button>
       </div>
-      <span class="mr-2 space-x-6 text-xl">
-        <button *ngIf="!isAdmin" routerLink="/">
+      <button (click)="logout()" *ngIf="isAdmin">
+        <i class="fa-solid fa-right-from-bracket text-xl"></i>
+      </button>
+      <div *ngIf="!isAdmin" class="mr-2 space-x-6 text-xl">
+        <button routerLink="/">
           <i class="fa-solid fa-house"></i>
         </button>
         <button routerLink="/user">
           <i class="fa-solid fa-user"></i>
         </button>
-        <button *ngIf="!isAdmin" class="relative" routerLink="/cart">
+        <button class="relative" routerLink="/cart">
           <i class="fa-solid fa-cart-shopping"></i>
           <span
             *ngIf="cartCount > 0"
@@ -38,7 +42,7 @@ import {
             >{{ cartCount }}</span
           >
         </button>
-      </span>
+      </div>
     </nav>
   `,
   styles: [],
@@ -50,6 +54,10 @@ export class NavbarComponent implements OnInit {
   cartCount: number = 0;
 
   constructor(private store: Store<AppState>) {}
+
+  logout() {
+    this.store.dispatch(logoutUser());
+  }
 
   ngOnInit() {
     this.store

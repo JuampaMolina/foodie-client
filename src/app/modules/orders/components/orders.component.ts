@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -6,43 +6,32 @@ import { AppState } from 'src/app/store/app.reducers';
 import { Order } from '../interface/order';
 import { getOrders, getOrdersByUserId } from '../store/orders.actions';
 import { selectOrders } from '../store/orders.selectors';
-import { User } from '../../users/interface/User';
 
 @Component({
   selector: 'app-orders',
-  template: ` <div *ngIf="user" class="mb-4">
-      <span class=" text-xl font-semibold">
-        Mostrando pedidos de {{ user }}
-      </span>
-      <i
-        (click)="getOrders()"
-        class="fa-solid fa-square-xmark cursor-pointer"></i>
-    </div>
+  template: `
+    <h2 *ngIf="orders.length > 0" class="title-2 mb-4">Mis Pedidos</h2>
     <div class="flex flex-col gap-4">
-      <app-order-card
-        *ngFor="let order of orders"
-        [order]="order"
-        (filterUser)="getOrdersByUserId($event)">
+      <app-order-card *ngFor="let order of orders" [order]="order">
       </app-order-card>
-    </div>`,
+    </div>
+  `,
   styles: [],
 })
 export class OrdersComponent implements OnInit, OnDestroy {
+  @Input() userId: string = '';
   orders: Order[] = [];
-  user: string = '';
 
   private onDestroy = new Subject<void>();
 
   constructor(private store: Store<AppState>) {}
 
   getOrders() {
-    this.store.dispatch(getOrders());
-    this.user = '';
-  }
-
-  getOrdersByUserId(user: User) {
-    this.store.dispatch(getOrdersByUserId({ userId: user._id }));
-    this.user = user.name;
+    if (!this.userId) {
+      this.store.dispatch(getOrders());
+    } else {
+      this.store.dispatch(getOrdersByUserId({ userId: this.userId }));
+    }
   }
 
   ngOnInit() {

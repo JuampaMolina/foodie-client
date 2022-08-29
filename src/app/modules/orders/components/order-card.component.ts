@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { User } from '../../users/interface/User';
+import { Component, Input } from '@angular/core';
 import { Order } from '../interface/order';
 
 @Component({
@@ -20,12 +19,10 @@ import { Order } from '../interface/order';
       >
 
       <span class="font-semibold">{{ order._id }}</span>
-      <span class="border-l font-semibold">{{ order.date }}</span>
-      <span
-        (click)="filterUser.emit(order.user)"
-        class="border-l font-semibold"
-        >{{ order.user?.name }}</span
-      >
+      <span class="border-l font-semibold">{{
+        order.date | date: 'dd/MM/yyyy'
+      }}</span>
+      <span class="border-l font-semibold">{{ order.user?.name }}</span>
       <span class="border-l font-semibold">{{ order.totalPrice }} EUR</span>
     </div>
 
@@ -44,7 +41,7 @@ import { Order } from '../interface/order';
 
         <div>
           <p class="text-lg font-semibold">Fecha</p>
-          <span>{{ order.date }}</span>
+          <span>{{ order.date | date: 'dd/MM/yyyy hh:mm:ss' }}</span>
         </div>
 
         <div>
@@ -72,8 +69,6 @@ import { Order } from '../interface/order';
 })
 export class OrderCardComponent {
   @Input() order?: Order;
-  @Output() filterUser = new EventEmitter<User>();
-
   showContent: boolean = false;
 
   constructor() {}

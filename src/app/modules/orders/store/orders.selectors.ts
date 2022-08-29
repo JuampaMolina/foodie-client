@@ -21,7 +21,12 @@ export const selectOrdersError = createSelector(
 
 export const selectOrders = createSelector(
   _selectOrdersState,
-  (state: OrdersState) => state.orders
+  (state: OrdersState) => {
+    let sortedOrders = [...state.orders];
+    return sortedOrders.sort(
+      (a, b) => Number(new Date(b.date)) - Number(new Date(a.date))
+    );
+  }
 );
 
 export const selectCart = createSelector(
