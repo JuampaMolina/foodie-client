@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { RegisterUserCommand } from 'src/app/modules/users/interface/RegisterUserCommand';
-import { registerUser } from 'src/app/modules/users/store/users.actions';
 import { AppState } from 'src/app/store/app.reducers';
+import { RegisterUserCommand } from '../interface/RegisterUserCommand';
+import { registerUser } from '../store/users.actions';
 
 @Component({
   selector: 'app-register',

@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
-import { AppState } from 'src/app/store/app.reducers';
-import { logoutUser } from '../../../modules/users/store/users.actions';
+import { logoutUser } from 'src/app/modules/users/store/users.actions';
 import {
-  selectUser,
   selectIsAdmin,
-} from '../../../modules/users/store/users.selectors';
+  selectUser,
+} from 'src/app/modules/users/store/users.selectors';
+import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
   selector: 'app-navbar',

@@ -6,6 +6,7 @@ import { UserComponent } from './modules/users/components/user.component';
 import { NotAdminGuard } from './auth/guards/not-admin.guard';
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard';
 import { AdminGuard } from './auth/guards/admin.guard';
+import { UserGuard } from './auth/guards/user.guard';
 
 const routes: Routes = [
   {
@@ -16,12 +17,7 @@ const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
-    canActivate: [NotAdminGuard, AuthenticatedGuard],
-  },
-  {
-    path: 'user',
-    component: UserComponent,
-    canActivate: [NotAdminGuard, AuthenticatedGuard],
+    canActivate: [UserGuard],
   },
   {
     path: 'admin',

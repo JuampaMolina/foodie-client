@@ -29,6 +29,11 @@ export const selectIsAdmin = createSelector(
   (state: UsersState) => (state.user?.role === 'admin' ? true : false)
 );
 
+export const selectIsUser = createSelector(
+  _selectUsersState,
+  (state: UsersState) => (state.user?.role === 'user' ? true : false)
+);
+
 export const selectIsAuthenticated = createSelector(
   _selectUsersState,
   (state: UsersState) => (state.user !== undefined ? true : false)

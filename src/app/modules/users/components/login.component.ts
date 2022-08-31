@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { loginUser } from '../../modules/users/store/users.actions';
-import { LoginUserCommand } from '../../modules/users/interface/LoginUserCommand';
+import { LoginUserCommand } from '../interface/LoginUserCommand';
+import { loginUser } from '../store/users.actions';
 
 @Component({
   selector: 'app-login',
