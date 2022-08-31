@@ -8,7 +8,7 @@ import { registerUser } from '../store/users.actions';
 @Component({
   selector: 'app-register',
   template: `
-    <div class="mx-auto flex w-1/3 flex-col space-y-4 p-8">
+    <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">
       <h2 class="title-2 text-center">Crear Cuenta</h2>
 
       <form

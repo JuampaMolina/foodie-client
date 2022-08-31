@@ -12,7 +12,7 @@ import { AppState } from 'src/app/store/app.reducers';
   selector: 'app-navbar',
   template: `
     <nav
-      class="mb-8 flex items-baseline justify-between rounded bg-slate-800 p-4 text-slate-200">
+      class="mb-8 flex items-center justify-between rounded bg-slate-800 p-4 text-slate-200">
       <div class="flex gap-4">
         <h1 class="font-mukta text-4xl font-extrabold">
           {{ title }}
@@ -27,7 +27,7 @@ import { AppState } from 'src/app/store/app.reducers';
       <button (click)="logout()" *ngIf="isAdmin">
         <i class="fa-solid fa-right-from-bracket text-xl"></i>
       </button>
-      <div *ngIf="!isAdmin" class="mr-2 space-x-6 text-xl">
+      <div *ngIf="!isAdmin" class="mr-2 space-x-4 text-xl sm:space-x-6">
         <button routerLink="/">
           <i class="fa-solid fa-house"></i>
         </button>

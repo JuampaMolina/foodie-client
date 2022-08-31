@@ -6,24 +6,28 @@ import { Order } from '../interface/order';
   template: `
     <div
       *ngIf="order"
-      class="secondary-button grid grid-cols-5 divide-slate-800">
-      <span class="">Id</span>
-      <span class="border-l">Fecha</span>
-      <span class="border-l">Usuario</span>
-      <span class="border-l">Total</span>
+      (click)="showContent = true"
+      class="secondary-button grid grid-cols-3 sm:grid-cols-4">
+      <!-- <span class="border-l-2 border-l-slate-800">Id</span> -->
+      <span class="">Fecha</span>
+      <span class="border-l-2 border-l-slate-800">Usuario</span>
+      <span class="border-l-2 border-l-slate-800">Total</span>
 
       <span
-        (click)="showContent = true"
-        class="row-span-2 border-l font-semibold"
+        class="row-span-2 hidden h-12 items-center justify-center border-l-2 border-l-slate-800 font-semibold sm:flex"
         >Ver Detalles</span
       >
 
-      <span class="font-semibold">{{ order._id }}</span>
-      <span class="border-l font-semibold">{{
-        order.date | date: 'dd/MM/yyyy'
+      <!-- <span class="border-l-2 border-l-slate-800 font-semibold">{{
+        order._id
+      }}</span> -->
+      <span class="font-semibold">{{ order.date | date: 'dd/MM/yyyy' }}</span>
+      <span class="border-l-2 border-l-slate-800 font-semibold">{{
+        order.user?.name
       }}</span>
-      <span class="border-l font-semibold">{{ order.user?.name }}</span>
-      <span class="border-l font-semibold">{{ order.totalPrice }} EUR</span>
+      <span class="border-l-2 border-l-slate-800 font-semibold"
+        >{{ order.totalPrice }} EUR</span
+      >
     </div>
 
     <p-dialog
