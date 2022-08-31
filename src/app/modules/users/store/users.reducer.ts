@@ -25,6 +25,7 @@ export const usersReducer = createReducer(
     ...state,
     loading: true,
     loaded: false,
+    error: false,
   })),
 
   on(registerUserError, (state, { error }) => ({
@@ -38,12 +39,14 @@ export const usersReducer = createReducer(
     ...state,
     loading: false,
     loaded: true,
+    error: false,
   })),
 
   on(loginUser, (state, { user }) => ({
     ...state,
     loading: true,
     loaded: false,
+    error: false,
   })),
 
   on(loginUserError, (state, { error }) => ({
@@ -57,6 +60,7 @@ export const usersReducer = createReducer(
     ...state,
     loading: false,
     loaded: true,
+    error: false,
     user: userSession.user,
     token: userSession.token,
   })),

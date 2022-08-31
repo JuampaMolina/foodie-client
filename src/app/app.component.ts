@@ -14,6 +14,7 @@ import {
 } from './modules/orders/store/orders.selectors';
 import { selectItemsError } from './modules/items/store/items.selectors';
 import { selectCategoriesError } from './modules/categories/store/categories.selectors';
+import { selectUsersError } from './modules/users/store/users.selectors';
 
 @Component({
   selector: 'app-root',
@@ -72,9 +73,10 @@ export class AppComponent implements OnInit {
       this.router.navigateByUrl('/login');
       this.error = 'La sesión ha caducado, vuelve a iniciar sesión';
     }
+    this.error = e;
     setTimeout(() => {
       this.error = '';
-    }, 5000);
+    }, 4000);
   }
 
   handleMessage(m: string) {
@@ -83,7 +85,7 @@ export class AppComponent implements OnInit {
     this.message = m;
     setTimeout(() => {
       this.message = '';
-    }, 5000);
+    }, 4000);
   }
 
   ngOnInit(): void {
@@ -94,7 +96,8 @@ export class AppComponent implements OnInit {
     merge(
       this.store.select(selectItemsError),
       this.store.select(selectOrdersError),
-      this.store.select(selectCategoriesError)
+      this.store.select(selectCategoriesError),
+      this.store.select(selectUsersError)
     ).subscribe(error => this.handleErrors(error));
 
     merge(this.store.select(selectOrdersMessage)).subscribe(message =>
