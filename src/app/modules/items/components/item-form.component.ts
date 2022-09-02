@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from '../../categories/interface/category';
 import { Item } from '../interface/item';
+import { CreateItemCommand } from '../interface/createItemCommand';
+import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 @Component({
   selector: 'app-item-form',
@@ -100,9 +102,9 @@ export class ItemFormComponent {
   }
 
   @Input() categories: Category[] = [];
-  @Output() createEvent = new EventEmitter<any>();
-  @Output() updateEvent = new EventEmitter<any>();
-  @Output() deleteEvent = new EventEmitter<any>();
+  @Output() createEvent = new EventEmitter<CreateItemCommand>();
+  @Output() updateEvent = new EventEmitter<UpdateItemCommand>();
+  @Output() deleteEvent = new EventEmitter<string>();
   updating: boolean = false;
   itemId: string = '';
 
@@ -120,12 +122,26 @@ export class ItemFormComponent {
   }
 
   create() {
-    this.createEvent.emit(this.itemForm.value);
+    const { name, category, description, price } = this.itemForm.value;
+    const form: CreateItemCommand = {
+      name: name!,
+      category: category?._id!,
+      description: description!,
+      price: price!,
+    };
+    this.createEvent.emit(form);
     this.itemForm.reset();
   }
 
   update() {
-    this.updateEvent.emit({ itemId: this.itemId, item: this.itemForm.value });
+    const { name, category, description, price } = this.itemForm.value;
+    const form: CreateItemCommand = {
+      name: name!,
+      category: category?._id!,
+      description: description!,
+      price: price!,
+    };
+    this.updateEvent.emit({ itemId: this.itemId, item: form });
     this.itemForm.reset();
     this.updating = false;
     this.itemId = '';
