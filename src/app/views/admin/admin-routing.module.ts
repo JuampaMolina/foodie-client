@@ -15,9 +15,6 @@ const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
-    data: {
-      isAdmin: true,
-    },
     children: [
       {
         path: 'productos',

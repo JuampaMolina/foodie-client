@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CategoriesApiService } from '../services/categories-api.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Category } from '../interface/category';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
@@ -13,9 +12,12 @@ import {
   getItems,
   getItemsByCategoryId,
 } from '../../../modules/items/store/items.actions';
-import { ActivatedRoute } from '@angular/router';
 import { CreateCategoryCommand } from '../interface/createCategoryCommand';
 import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
+import { selectIsAdmin } from '../../users/store/users.selectors';
+import { selectCategories } from '../store/categories.selectors';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories',
@@ -57,21 +59,19 @@ import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
     </p-dialog>
   `,
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   create: boolean = false;
   reset: boolean = false;
   modify?: Category;
-
   selectedCategory: string = '';
   categories: Category[] = [];
 
-  error: any;
+  private onDestroy = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {}
 
   selectCategory = (category: Category) => {
-    // refactorizar
     if (this.isAdmin) {
       this.modify = category;
     } else {
@@ -111,20 +111,24 @@ export class CategoriesComponent implements OnInit {
     this.store.dispatch(getItemsByCategoryId({ categoryId }));
   }
 
-  checkAdmin() {
-    const isAdmin = this.route.parent?.snapshot.data;
-    if (isAdmin?.['isAdmin']) {
-      this.isAdmin = isAdmin?.['isAdmin'];
-    }
+  ngOnInit(): void {
+    this.store
+      .select(selectCategories)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(categories => (this.categories = categories));
+
+    this.store
+      .select(selectIsAdmin)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(isAdmin => {
+        this.isAdmin = isAdmin;
+      });
+
+    this.getCategories();
   }
 
-  // todo: crear selectores
-  ngOnInit(): void {
-    this.checkAdmin();
-    this.store.subscribe(({ categories }) => {
-      this.categories = categories.categories;
-      this.error = categories.error;
-    });
-    this.getCategories();
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.complete();
   }
 }

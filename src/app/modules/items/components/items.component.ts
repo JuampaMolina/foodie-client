@@ -11,7 +11,6 @@ import {
 
 import { getCategories } from '../../categories/store/categories.actions';
 import { CreateItemCommand } from '../interface/createItemCommand';
-import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../categories/interface/category';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 import {
@@ -21,6 +20,9 @@ import {
 import { selectCart } from '../../orders/store/orders.selectors';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { selectIsAdmin } from 'src/app/modules/users/store/users.selectors';
+import { selectCategories } from '../../categories/store/categories.selectors';
+import { selectItems } from '../store/items.selectors';
 
 @Component({
   selector: 'app-items',
@@ -75,21 +77,16 @@ export class ItemsComponent implements OnInit, OnDestroy {
   create: boolean = false;
   reset: boolean = false;
   modify?: Item;
-
   items: Item[] = [];
   cart: Item[] = [];
   categories: Category[] = [];
 
-  error: any;
-
   private onDestroy = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {}
 
   modifyItem(item: Item) {
-    if (this.isAdmin) {
-      this.modify = item;
-    }
+    this.modify = item;
   }
 
   addItem(item: Item) {
@@ -130,34 +127,30 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.store.dispatch(getCategories());
   }
 
-  checkAdmin() {
-    const isAdmin = this.route.parent?.snapshot.data;
-    if (isAdmin?.['isAdmin']) {
-      this.isAdmin = isAdmin?.['isAdmin'];
-    }
-  }
-
-  // todo: crear selectores
   ngOnInit(): void {
-    this.checkAdmin();
-    this.store.subscribe(({ items }) => {
-      this.items = items.items;
-      this.error = items.error;
-    });
+    this.store
+      .select(selectItems)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(items => (this.items = items));
 
-    this.store.subscribe(({ categories }) => {
-      this.categories = categories.categories;
-    });
+    this.store
+      .select(selectCategories)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(categories => (this.categories = categories));
 
     this.store
       .select(selectCart)
       .pipe(takeUntil(this.onDestroy))
       .subscribe(cart => (this.cart = cart));
 
+    this.store.select(selectIsAdmin).subscribe(isAdmin => {
+      this.isAdmin = isAdmin;
+      if (isAdmin) {
+        this.getCategories();
+      }
+    });
+
     this.getItems();
-    if (this.isAdmin) {
-      this.getCategories();
-    }
   }
   ngOnDestroy(): void {
     this.onDestroy.next();
