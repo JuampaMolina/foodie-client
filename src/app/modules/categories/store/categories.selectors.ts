@@ -20,6 +20,11 @@ export const selectCategoriesError = createSelector(
   (state: CategoriesState) => state.error
 );
 
+export const selectCategoriesLoading = createSelector(
+  _selectCategoriesState,
+  (state: CategoriesState) => state.loading
+);
+
 export const selectCategories = createSelector(
   _selectCategoriesState,
   (state: CategoriesState) => state.categories

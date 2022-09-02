@@ -19,6 +19,11 @@ export const selectItemsError = createSelector(
   (state: ItemsState) => state.error
 );
 
+export const selectItemsLoading = createSelector(
+  _selectItemsState,
+  (state: ItemsState) => state.loading
+);
+
 export const selectItems = createSelector(
   _selectItemsState,
   (state: ItemsState) => state.items

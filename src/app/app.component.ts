@@ -12,9 +12,19 @@ import {
   selectOrdersError,
   selectOrdersMessage,
 } from './modules/orders/store/orders.selectors';
-import { selectItemsError } from './modules/items/store/items.selectors';
-import { selectCategoriesError } from './modules/categories/store/categories.selectors';
-import { selectUsersError } from './modules/users/store/users.selectors';
+import {
+  selectItemsError,
+  selectItemsLoading,
+} from './modules/items/store/items.selectors';
+import {
+  selectCategoriesError,
+  selectCategoriesLoading,
+} from './modules/categories/store/categories.selectors';
+import {
+  selectUsersError,
+  selectUsersLoading,
+} from './modules/users/store/users.selectors';
+import { selectOrdersLoading } from './modules/orders/store/orders.selectors';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +33,8 @@ import { selectUsersError } from './modules/users/store/users.selectors';
 })
 export class AppComponent implements OnInit {
   title = "foodie's";
+  loading?: boolean;
+  counter?: boolean;
   message = '';
   error = '';
 
@@ -67,6 +79,15 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // setLoading(loading: boolean) {
+  //   if (loading) {
+  //     this.counter = true;
+  //     setTimeout(() => {
+  //       this.counter = false;
+  //     }, 500);
+  //   }
+  // }
+
   handleErrors(e: string) {
     clearTimeout();
     if (e === 'jwt expired') {
@@ -99,6 +120,13 @@ export class AppComponent implements OnInit {
       this.store.select(selectCategoriesError),
       this.store.select(selectUsersError)
     ).subscribe(error => this.handleErrors(error));
+
+    // merge(
+    //   this.store.select(selectItemsLoading),
+    //   this.store.select(selectOrdersLoading),
+    //   this.store.select(selectCategoriesLoading),
+    //   this.store.select(selectUsersLoading)
+    // ).subscribe(loading => this.setLoading(loading));
 
     merge(this.store.select(selectOrdersMessage)).subscribe(message =>
       this.handleMessage(message)
