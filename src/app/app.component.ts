@@ -5,7 +5,6 @@ import { loginUserSuccess } from './modules/users/store/users.actions';
 import { ofType } from '@ngrx/effects';
 import { UserSession } from './modules/users/interface/UserSession';
 import { User } from './modules/users/interface/User';
-import { logoutUser } from './modules/users/store/users.actions';
 import { Router } from '@angular/router';
 import { merge } from 'rxjs';
 import {
@@ -38,33 +37,7 @@ export class AppComponent implements OnInit {
   message = '';
   error = '';
 
-  constructor(
-    private store: Store<AppState>,
-    private actionListener: ActionsSubject,
-    private router: Router
-  ) {}
-
-  listenLogin() {
-    this.actionListener
-      .pipe(ofType(loginUserSuccess))
-      .subscribe(({ userSession }) => {
-        localStorage.clear();
-        localStorage.setItem('user', JSON.stringify(userSession.user));
-        localStorage.setItem('token', userSession.token);
-        if (userSession.user.role === 'admin') {
-          this.router.navigateByUrl('/admin');
-        } else {
-          this.router.navigateByUrl('/');
-        }
-      });
-  }
-
-  listenLogout() {
-    this.actionListener.pipe(ofType(logoutUser)).subscribe(() => {
-      this.router.navigateByUrl('/');
-      localStorage.clear();
-    });
-  }
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   getLocalUser() {
     let retrievedUser = localStorage.getItem('user');
@@ -78,15 +51,6 @@ export class AppComponent implements OnInit {
       this.store.dispatch(loginUserSuccess({ userSession }));
     }
   }
-
-  // setLoading(loading: boolean) {
-  //   if (loading) {
-  //     this.counter = true;
-  //     setTimeout(() => {
-  //       this.counter = false;
-  //     }, 500);
-  //   }
-  // }
 
   handleErrors(e: string) {
     clearTimeout();
@@ -109,9 +73,16 @@ export class AppComponent implements OnInit {
     }, 4000);
   }
 
+  // setLoading(loading: boolean) {
+  //   if (loading) {
+  //     this.counter = true;
+  //     setTimeout(() => {
+  //       this.counter = false;
+  //     }, 500);
+  //   }
+  // }
+
   ngOnInit(): void {
-    this.listenLogin();
-    this.listenLogout();
     this.getLocalUser();
 
     merge(

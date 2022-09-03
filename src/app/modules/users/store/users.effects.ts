@@ -13,13 +13,14 @@ import {
 } from './users.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UsersEffects {
   constructor(
     private usersApi: UsersApiService,
     private actions$: Actions,
-    private store: Store<AppState>
+    private router: Router
   ) {}
 
   registerUser$ = createEffect(() =>
@@ -44,5 +45,35 @@ export class UsersEffects {
         )
       )
     )
+  );
+
+  loginUserSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(loginUserSuccess),
+        tap(({ userSession }) => {
+          localStorage.clear();
+          localStorage.setItem('user', JSON.stringify(userSession.user));
+          localStorage.setItem('token', userSession.token);
+          userSession.user.role === 'admin'
+            ? this.router.navigateByUrl('/admin')
+            : this.router.navigateByUrl('/');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  logoutUser$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(logoutUser),
+        tap(() => {
+          this.router.navigateByUrl('/');
+          localStorage.clear();
+        })
+      );
+    },
+    { dispatch: false }
   );
 }
