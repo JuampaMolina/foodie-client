@@ -8,11 +8,12 @@ import {
   selectUser,
 } from 'src/app/modules/users/store/users.selectors';
 import { AppState } from 'src/app/store/app.reducers';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <nav
       class="mb-8 flex items-center justify-between rounded bg-slate-800 p-4 text-slate-200">

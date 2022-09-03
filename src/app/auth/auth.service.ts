@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducers';
+import { loginUserSuccess } from '../modules/users/store/users.actions';
 import { selectToken } from '../modules/users/store/users.selectors';
 
 @Injectable({
@@ -10,6 +11,18 @@ import { selectToken } from '../modules/users/store/users.selectors';
 })
 export class AuthService {
   constructor(private store: Store<AppState>) {}
+
+  public getLocalUser() {
+    let retrievedUser = localStorage.getItem('user');
+    let retrievedToken = localStorage.getItem('token');
+    if (retrievedUser !== null && retrievedToken !== null) {
+      let userSession = {
+        user: JSON.parse(retrievedUser),
+        token: retrievedToken,
+      };
+      this.store.dispatch(loginUserSuccess({ userSession }));
+    }
+  }
 
   public getToken() {
     let token: string = '';
