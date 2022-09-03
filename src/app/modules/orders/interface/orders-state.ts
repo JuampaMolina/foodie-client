@@ -1,5 +1,5 @@
-import { Order } from './order';
 import { Item } from '../../items/interface/item';
+import { Order } from './order';
 
 export interface OrdersState {
   orders: Order[];

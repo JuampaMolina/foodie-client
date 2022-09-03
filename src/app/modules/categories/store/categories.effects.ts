@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, map, mergeMap, of } from 'rxjs';
+import { AppState } from '../../../store/app.reducers';
 import { CategoriesApiService } from '../services/categories-api.service';
 import {
+  createCategory,
+  createCategoryError,
+  createCategorySuccess,
+  deleteCategory,
+  deleteCategoryError,
+  deleteCategorySuccess,
   getCategories,
   getCategoriesError,
   getCategoriesSuccess,
-  createCategory,
-  createCategorySuccess,
-  createCategoryError,
   updateCategory,
-  updateCategorySuccess,
   updateCategoryError,
-  deleteCategory,
-  deleteCategorySuccess,
-  deleteCategoryError,
+  updateCategorySuccess,
 } from './categories.actions';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../store/app.reducers';
 
 @Injectable()
 export class CategoriesEffects {

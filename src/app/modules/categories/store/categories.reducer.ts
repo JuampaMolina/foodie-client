@@ -1,19 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
+import { CategoriesState } from '../interface/categories-state';
 import {
-  getCategories,
-  getCategoriesError,
-  getCategoriesSuccess,
   createCategory,
   createCategoryError,
   createCategorySuccess,
-  updateCategory,
-  updateCategoryError,
-  updateCategorySuccess,
   deleteCategory,
   deleteCategoryError,
   deleteCategorySuccess,
+  getCategories,
+  getCategoriesError,
+  getCategoriesSuccess,
+  updateCategory,
+  updateCategoryError,
+  updateCategorySuccess,
 } from './categories.actions';
-import { CategoriesState } from '../interface/categories-state';
 
 export const categoriesInitalState: CategoriesState = {
   categories: [],

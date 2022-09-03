@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../../categories/interface/category';
-import { Item } from '../interface/item';
 import { CreateItemCommand } from '../interface/createItemCommand';
+import { Item } from '../interface/item';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 @Component({

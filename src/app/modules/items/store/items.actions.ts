@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Item } from '../interface/item';
 import { CreateItemCommand } from '../interface/createItemCommand';
+import { Item } from '../interface/item';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 export const getItems = createAction('[Items] getItems');

@@ -3,13 +3,15 @@ import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  template: `<div class="p-8">
+    <app-navbar [title]="title"></app-navbar>
+    <router-outlet></router-outlet>
+    <app-toast></app-toast>
+  </div> `,
+  styles: [],
 })
 export class AppComponent implements OnInit {
   title = "foodie's";
-  // loading?: boolean;
-  // counter?: boolean;
 
   constructor(private auth: AuthService) {}
 

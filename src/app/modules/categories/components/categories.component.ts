@@ -1,23 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Category } from '../interface/category';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducers';
-import {
-  getCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-} from '../store/categories.actions';
 import {
   getItems,
   getItemsByCategoryId,
 } from '../../../modules/items/store/items.actions';
+import { selectIsAdmin } from '../../users/store/users.selectors';
+import { Category } from '../interface/category';
 import { CreateCategoryCommand } from '../interface/createCategoryCommand';
 import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
-import { selectIsAdmin } from '../../users/store/users.selectors';
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from '../store/categories.actions';
 import { selectCategories } from '../store/categories.selectors';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories',

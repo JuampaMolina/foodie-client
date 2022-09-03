@@ -1,27 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Item } from '../interface/item';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
+import { Item } from '../interface/item';
 import {
-  getItems,
   createItem,
-  updateItem,
   deleteItem,
+  getItems,
+  updateItem,
 } from '../store/items.actions';
 
-import { getCategories } from '../../categories/store/categories.actions';
-import { CreateItemCommand } from '../interface/createItemCommand';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { selectIsAdmin } from 'src/app/modules/users/store/users.selectors';
 import { Category } from '../../categories/interface/category';
-import { UpdateItemCommand } from '../interface/updateItemCommand';
+import { getCategories } from '../../categories/store/categories.actions';
+import { selectCategories } from '../../categories/store/categories.selectors';
 import {
   addItemToCart,
   removeItemFromCart,
 } from '../../orders/store/orders.actions';
 import { selectCart } from '../../orders/store/orders.selectors';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { selectIsAdmin } from 'src/app/modules/users/store/users.selectors';
-import { selectCategories } from '../../categories/store/categories.selectors';
+import { CreateItemCommand } from '../interface/createItemCommand';
+import { UpdateItemCommand } from '../interface/updateItemCommand';
 import { selectItems } from '../store/items.selectors';
 
 @Component({

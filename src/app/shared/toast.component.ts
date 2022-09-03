@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppState } from 'src/app/store/app.reducers';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { merge } from 'rxjs';
+import { AppState } from 'src/app/store/app.reducers';
+import { selectCategoriesError } from '../modules/categories/store/categories.selectors';
 import { selectItemsError } from '../modules/items/store/items.selectors';
 import {
   selectOrdersError,
   selectOrdersMessage,
 } from '../modules/orders/store/orders.selectors';
-import { selectCategoriesError } from '../modules/categories/store/categories.selectors';
 import { selectUsersError } from '../modules/users/store/users.selectors';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-toast',

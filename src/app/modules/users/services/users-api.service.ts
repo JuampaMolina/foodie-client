@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { LoginUserCommand } from '../interface/LoginUserCommand';
+import { RegisterUserCommand } from '../interface/RegisterUserCommand';
 import { User } from '../interface/User';
 import { UserSession } from '../interface/UserSession';
-import { RegisterUserCommand } from '../interface/RegisterUserCommand';
-import { LoginUserCommand } from '../interface/LoginUserCommand';
 
 const usersApi = environment.apiBaseUri + '/users';
 

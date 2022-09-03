@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
 import { logoutUser } from 'src/app/modules/users/store/users.actions';
@@ -8,7 +9,6 @@ import {
   selectUser,
 } from 'src/app/modules/users/store/users.selectors';
 import { AppState } from 'src/app/store/app.reducers';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',

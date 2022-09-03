@@ -12,11 +12,9 @@ import {
 } from 'src/app/modules/orders/store/orders.actions';
 import { AppState } from 'src/app/store/app.reducers';
 import {
-  selectCartTotalPrice,
-  selectCartCount,
-} from '../modules/orders/store/orders.selectors';
-import {
   selectCart,
+  selectCartCount,
+  selectCartTotalPrice,
   selectCartUniqueItems,
 } from '../modules/orders/store/orders.selectors';
 

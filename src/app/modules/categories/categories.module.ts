@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 import { CategoriesComponent } from './components/categories.component';
 import { CategoryCardComponent } from './components/category-card.component';
 import { CategoryFormComponent } from './components/category-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [

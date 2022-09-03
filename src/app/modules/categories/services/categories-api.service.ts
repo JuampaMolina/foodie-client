@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { Category } from '../interface/category';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../auth/auth.service';
+import { Category } from '../interface/category';
 import { CreateCategoryCommand } from '../interface/createCategoryCommand';
 import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
-import { AuthService } from '../../../auth/auth.service';
 
 const categoriesApi = environment.apiBaseUri + '/categories';
 

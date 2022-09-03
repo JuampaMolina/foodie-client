@@ -1,22 +1,22 @@
 import { createReducer, on } from '@ngrx/store';
+import { ItemsState } from '../interface/items-state';
 import {
-  getItems,
-  getItemsError,
-  getItemsSuccess,
-  getItemsByCategoryId,
-  getItemsByCategoryIdError,
-  getItemsByCategoryIdSuccess,
   createItem,
   createItemError,
   createItemSuccess,
-  updateItem,
-  updateItemError,
-  updateItemSuccess,
   deleteItem,
   deleteItemError,
   deleteItemSuccess,
+  getItems,
+  getItemsByCategoryId,
+  getItemsByCategoryIdError,
+  getItemsByCategoryIdSuccess,
+  getItemsError,
+  getItemsSuccess,
+  updateItem,
+  updateItemError,
+  updateItemSuccess,
 } from './items.actions';
-import { ItemsState } from '../interface/items-state';
 
 export const itemsInitalState: ItemsState = {
   items: [],

@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { Order } from '../interface/order';
-import { CreateOrderCommand } from '../interface/createOrderCommand';
 import { Item } from '../../items/interface/item';
+import { CreateOrderCommand } from '../interface/createOrderCommand';
+import { Order } from '../interface/order';
 
 export const getOrders = createAction('[Orders] getOrders');
 export const getOrdersError = createAction(

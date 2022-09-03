@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminGuard } from './auth/guards/admin.guard';
+import { NotAdminGuard } from './auth/guards/not-admin.guard';
+import { UserGuard } from './auth/guards/user.guard';
 import { CartComponent } from './shared/cart.component';
 import { HomeComponent } from './shared/home.component';
-import { NotAdminGuard } from './auth/guards/not-admin.guard';
-import { AdminGuard } from './auth/guards/admin.guard';
-import { UserGuard } from './auth/guards/user.guard';
 
 const routes: Routes = [
   {

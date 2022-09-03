@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { Item } from '../interface/item';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateItemCommand } from '../interface/createItemCommand';
-import { UpdateItemCommand } from '../interface/updateItemCommand';
 import { AuthService } from 'src/app/auth/auth.service';
+import { environment } from '../../../../environments/environment';
+import { CreateItemCommand } from '../interface/createItemCommand';
+import { Item } from '../interface/item';
+import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 const itemsApi = environment.apiBaseUri + '/items';
 

@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
-import { OrdersState } from '../interface/orders-state';
 import { AppState } from '../../../store/app.reducers';
+import { OrdersState } from '../interface/orders-state';
 
 const _selectOrdersState = (state: AppState): OrdersState => state.orders;
 

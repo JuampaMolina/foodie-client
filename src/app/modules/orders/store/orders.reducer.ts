@@ -1,19 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
+import { OrdersState } from '../interface/orders-state';
 import {
-  getOrders,
-  getOrdersError,
-  getOrdersSuccess,
-  getOrdersByUserId,
-  getOrdersByUserIdError,
-  getOrdersByUserIdSuccess,
+  addItemToCart,
   createOrder,
   createOrderError,
   createOrderSuccess,
-  addItemToCart,
+  getOrders,
+  getOrdersByUserId,
+  getOrdersByUserIdError,
+  getOrdersByUserIdSuccess,
+  getOrdersError,
+  getOrdersSuccess,
   removeItemFromCart,
 } from './orders.actions';
-import { OrdersState } from '../interface/orders-state';
-import { Item } from '../../items/interface/item';
 
 export const ordersInitalState: OrdersState = {
   orders: [],

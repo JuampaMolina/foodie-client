@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, map, mergeMap, of } from 'rxjs';
+import { AppState } from '../../../store/app.reducers';
 import { ItemsApiService } from '../services/items-api.service';
 import {
-  getItems,
-  getItemsError,
-  getItemsSuccess,
-  getItemsByCategoryId,
-  getItemsByCategoryIdSuccess,
-  getItemsByCategoryIdError,
   createItem,
-  createItemSuccess,
   createItemError,
-  updateItem,
-  updateItemSuccess,
-  updateItemError,
+  createItemSuccess,
   deleteItem,
   deleteItemError,
   deleteItemSuccess,
+  getItems,
+  getItemsByCategoryId,
+  getItemsByCategoryIdError,
+  getItemsByCategoryIdSuccess,
+  getItemsError,
+  getItemsSuccess,
+  updateItem,
+  updateItemError,
+  updateItemSuccess,
 } from './items.actions';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../store/app.reducers';
 
 @Injectable()
 export class ItemsEffects {

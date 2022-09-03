@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { selectUser } from '../store/users.selectors';
 import { logoutUser } from '../store/users.actions';
+import { selectUser } from '../store/users.selectors';
 
 @Component({
   selector: 'app-user',
