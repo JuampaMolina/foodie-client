@@ -1,8 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Item } from 'src/app/modules/items/interface/item';
+import { ItemsModule } from 'src/app/modules/items/items.module';
 import {
   addItemToCart,
   createOrder,
@@ -12,14 +14,16 @@ import { AppState } from 'src/app/store/app.reducers';
 import {
   selectCartTotalPrice,
   selectCartCount,
-} from '../../modules/orders/store/orders.selectors';
+} from '../modules/orders/store/orders.selectors';
 import {
   selectCart,
   selectCartUniqueItems,
-} from '../../modules/orders/store/orders.selectors';
+} from '../modules/orders/store/orders.selectors';
 
 @Component({
   selector: 'app-cart',
+  standalone: true,
+  imports: [CommonModule, ItemsModule],
   template: `
     <div class="mb-4 flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>

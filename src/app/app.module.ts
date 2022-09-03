@@ -6,18 +6,18 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
+import { environment } from '../environments/environment.prod';
+import { appReducers } from './store/app.reducers';
+import { appEffects } from './store/app.effects';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ItemsModule } from './modules/items/items.module';
 import { CategoriesModule } from './modules/categories/categories.module';
-import { HomeModule } from './views/home/home.module';
-import { appReducers } from './store/app.reducers';
-import { appEffects } from './store/app.effects';
-import { environment } from '../environments/environment.prod';
 import { UsersModule } from './modules/users/users.module';
-import { CartModule } from './views/cart/cart.module';
-import { ToastComponent } from './shared/toast.component';
+import { HomeComponent } from './shared/home.component';
 import { NavbarComponent } from './shared/navbar.component';
+import { CartComponent } from './shared/cart.component';
+import { ToastComponent } from './shared/toast.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,8 +29,8 @@ import { NavbarComponent } from './shared/navbar.component';
     ItemsModule,
     CategoriesModule,
     UsersModule,
-    HomeModule,
-    CartModule,
+    HomeComponent,
+    CartComponent,
     NavbarComponent,
     ToastComponent,
     StoreModule.forRoot(appReducers),

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CartComponent } from './views/cart/cart.component';
-import { HomeComponent } from './views/home/home.component';
+import { CartComponent } from './shared/cart.component';
+import { HomeComponent } from './shared/home.component';
 import { NotAdminGuard } from './auth/guards/not-admin.guard';
 import { AdminGuard } from './auth/guards/admin.guard';
 import { UserGuard } from './auth/guards/user.guard';
@@ -20,8 +20,7 @@ const routes: Routes = [
   {
     path: 'admin',
     canActivate: [AdminGuard],
-    loadChildren: () =>
-      import('./views/admin/admin.module').then(m => m.AdminModule),
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
   },
 ];
 
