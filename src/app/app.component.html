@@ -1,13 +1,7 @@
 <div class="p-8">
   <app-navbar [title]="title"></app-navbar>
   <router-outlet></router-outlet>
-  <div *ngIf="error" class="toast-error animate">
-    {{ error }}
-  </div>
-
-  <div *ngIf="message" class="toast-message animate">
-    {{ message }}
-  </div>
+  <app-toast></app-toast>
 
   <!-- <div
     *ngIf="counter"

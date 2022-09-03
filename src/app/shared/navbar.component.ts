@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
@@ -10,6 +11,8 @@ import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
+  imports: [CommonModule],
   template: `
     <nav
       class="mb-8 flex items-center justify-between rounded bg-slate-800 p-4 text-slate-200">

@@ -16,7 +16,8 @@ import { appEffects } from './store/app.effects';
 import { environment } from '../environments/environment.prod';
 import { UsersModule } from './modules/users/users.module';
 import { CartModule } from './views/cart/cart.module';
-import { NavbarModule } from './shared/navbar/navbar.module';
+import { ToastComponent } from './shared/toast.component';
+import { NavbarComponent } from './shared/navbar.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,10 +28,11 @@ import { NavbarModule } from './shared/navbar/navbar.module';
     HttpClientModule,
     ItemsModule,
     CategoriesModule,
-    CartModule,
     UsersModule,
     HomeModule,
-    NavbarModule,
+    CartModule,
+    NavbarComponent,
+    ToastComponent,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(appEffects),
     StoreDevtoolsModule.instrument({
