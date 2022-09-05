@@ -31,15 +31,15 @@ export const selectToken = createSelector(
 
 export const selectIsAdmin = createSelector(
   _selectUsersState,
-  (state: UsersState) => (state.user?.role === 'admin' ? true : false)
+  (state: UsersState) => state.user?.role === 'admin'
 );
 
 export const selectIsUser = createSelector(
   _selectUsersState,
-  (state: UsersState) => (state.user?.role === 'user' ? true : false)
+  (state: UsersState) => state.user?.role === 'user'
 );
 
 export const selectIsAuthenticated = createSelector(
   _selectUsersState,
-  (state: UsersState) => (state.user !== undefined ? true : false)
+  (state: UsersState) => state.user !== undefined
 );
