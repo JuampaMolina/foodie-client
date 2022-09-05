@@ -6,11 +6,18 @@ import { AppState } from 'src/app/store/app.reducers';
 import { Order } from '../interface/order';
 import { getOrders, getOrdersByUserId } from '../store/orders.actions';
 import { selectOrders } from '../store/orders.selectors';
+import { selectIsAdmin } from '../../users/store/users.selectors';
 
 @Component({
   selector: 'app-orders',
   template: `
-    <h2 *ngIf="orders.length > 0" class="title-2 mb-4">Mis Pedidos</h2>
+    <div *ngIf="orders.length > 0">
+      <h2 *ngIf="!isAdmin" class="title-2 mb-4">Mis Pedidos</h2>
+      <h2 *ngIf="isAdmin" class="title-2 mb-4">Pedidos</h2>
+    </div>
+    <h2 *ngIf="orders.length < 1" class="title-2 mb-4">
+      No has realizado ningún pedido aún
+    </h2>
     <div class="flex flex-col gap-4">
       <app-order-card *ngFor="let order of orders" [order]="order">
       </app-order-card>
@@ -20,6 +27,7 @@ import { selectOrders } from '../store/orders.selectors';
 })
 export class OrdersComponent implements OnInit, OnDestroy {
   @Input() userId: string = '';
+  isAdmin: boolean = false;
   orders: Order[] = [];
 
   private onDestroy = new Subject<void>();
@@ -39,6 +47,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
       .select(selectOrders)
       .pipe(takeUntil(this.onDestroy))
       .subscribe(orders => (this.orders = orders));
+
+    this.store
+      .select(selectIsAdmin)
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(isAdmin => (this.isAdmin = isAdmin));
     this.getOrders();
   }
 
