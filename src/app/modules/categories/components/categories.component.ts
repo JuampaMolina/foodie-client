@@ -20,6 +20,7 @@ import {
 import { selectCategories } from '../store/categories.selectors';
 
 @Component({
+  standalone: false,
   selector: 'app-categories',
   template: `
     <div class="grid-responsive-container-md">

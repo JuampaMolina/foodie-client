@@ -25,6 +25,7 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
 import { selectItems } from '../store/items.selectors';
 
 @Component({
+  standalone: false,
   selector: 'app-items',
   template: `
     <div class="grid-responsive-container-xl">

@@ -6,6 +6,7 @@ import { RegisterUserCommand } from '../interface/RegisterUserCommand';
 import { registerUser } from '../store/users.actions';
 
 @Component({
+  standalone: false,
   selector: 'app-register',
   template: `
     <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">

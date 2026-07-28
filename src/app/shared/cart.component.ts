@@ -20,7 +20,6 @@ import {
 
 @Component({
   selector: 'app-cart',
-  standalone: true,
   imports: [CommonModule, ItemsModule],
   template: `
     <div class="mb-4 flex items-center gap-2">

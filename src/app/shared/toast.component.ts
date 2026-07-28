@@ -14,7 +14,6 @@ import { selectUsersError } from '../modules/users/store/users.selectors';
 
 @Component({
   selector: 'app-toast',
-  standalone: true,
   imports: [CommonModule],
   template: `
     <div *ngIf="error" class="toast-error animate">

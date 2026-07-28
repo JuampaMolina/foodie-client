@@ -12,7 +12,6 @@ import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
     <nav

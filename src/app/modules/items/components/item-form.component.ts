@@ -6,6 +6,7 @@ import { Item } from '../interface/item';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 @Component({
+  standalone: false,
   selector: 'app-item-form',
   template: `
     <form class="grid grid-cols-3 gap-4" [formGroup]="itemForm">

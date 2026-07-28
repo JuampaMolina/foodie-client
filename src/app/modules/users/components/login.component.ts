@@ -6,6 +6,7 @@ import { LoginUserCommand } from '../interface/LoginUserCommand';
 import { loginUser } from '../store/users.actions';
 
 @Component({
+  standalone: false,
   selector: 'app-login',
   template: `
     <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Order } from '../interface/order';
 
 @Component({
+  standalone: false,
   selector: 'app-order-card',
   template: `
     <div

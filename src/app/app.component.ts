@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   template: `<div class="p-8">
     <app-navbar [title]="title"></app-navbar>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-admin',
   template: `
     <div class="flex flex-col space-y-4 xl:flex-row xl:space-x-4 xl:space-y-0">

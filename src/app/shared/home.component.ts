@@ -8,7 +8,6 @@ import { AppState } from '../store/app.reducers';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   imports: [CommonModule, CategoriesModule, ItemsModule],
   template: `
     <div class="flex flex-col space-y-8">

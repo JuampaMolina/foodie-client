@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from '../interface/category';
 
 @Component({
+  standalone: false,
   selector: 'app-category-form',
   template: `
     <form

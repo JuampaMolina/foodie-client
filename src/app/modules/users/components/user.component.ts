@@ -5,6 +5,7 @@ import { logoutUser } from '../store/users.actions';
 import { selectUser } from '../store/users.selectors';
 
 @Component({
+  standalone: false,
   selector: 'app-user',
   template: `
     <button (click)="logout()" class="primary-button float-right">
