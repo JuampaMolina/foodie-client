@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -20,40 +19,39 @@ import {
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, ItemsModule],
+  imports: [ItemsModule],
   template: `
     <div class="mb-4 flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>
-      <span
-        *ngIf="cartCount > 0"
-        class="rounded bg-slate-300 px-2 py-1 text-xl font-bold"
-        >{{ cartCount }}</span
-      >
+      @if (cartCount > 0) {
+      <span class="rounded bg-slate-300 px-2 py-1 text-xl font-bold">{{
+        cartCount
+      }}</span>
+      }
     </div>
-    <span *ngIf="cartCount < 1" class="text-xl font-semibold"
-      >El carrito está vacío</span
-    >
+    @if (cartCount < 1) {
+    <span class="text-xl font-semibold">El carrito está vacío</span>
+    }
     <div class="flex flex-col gap-4">
+      @for (item of uniqueItems; track item) {
       <app-item-card
-        *ngFor="let item of uniqueItems"
         (addItemEvent)="addItem($event)"
         (removeItemEvent)="removeItem($event)"
         [item]="item"
         [quantity]="getQuantity(item._id)"
         [modifyQuantity]="true">
       </app-item-card>
+      }
     </div>
-    <span
-      class="my-2 flex justify-end text-2xl font-semibold text-slate-800"
-      *ngIf="cart.length > 0"
+    @if (cart.length > 0) {
+    <span class="my-2 flex justify-end text-2xl font-semibold text-slate-800"
       >Total: {{ totalPrice }} EUR
     </span>
-    <button
-      (click)="createOrder()"
-      *ngIf="cartCount > 0"
-      class="primary-button">
+    } @if (cartCount > 0) {
+    <button (click)="createOrder()" class="primary-button">
       Realizar pedido
     </button>
+    }
   `,
   styles: [],
 })

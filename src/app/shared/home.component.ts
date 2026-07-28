@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CategoriesModule } from 'src/app/modules/categories/categories.module';
@@ -8,10 +7,12 @@ import { AppState } from '../store/app.reducers';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CategoriesModule, ItemsModule],
+  imports: [CategoriesModule, ItemsModule],
   template: `
     <div class="flex flex-col space-y-8">
-      <h2 *ngIf="userName" class="title-2 text-right">Hola {{ userName }}!</h2>
+      @if (userName) {
+      <h2 class="title-2 text-right">Hola {{ userName }}!</h2>
+      }
       <app-categories></app-categories>
       <app-items></app-items>
     </div>

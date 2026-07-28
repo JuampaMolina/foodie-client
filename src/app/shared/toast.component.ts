@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,15 +13,17 @@ import { selectUsersError } from '../modules/users/store/users.selectors';
 
 @Component({
   selector: 'app-toast',
-  imports: [CommonModule],
+  imports: [],
   template: `
-    <div *ngIf="error" class="toast-error animate">
+    @if (error) {
+    <div class="toast-error animate">
       {{ error }}
     </div>
-
-    <div *ngIf="message" class="toast-message animate">
+    } @if (message) {
+    <div class="toast-message animate">
       {{ message }}
     </div>
+    }
   `,
   styles: [
     '@keyframes fade-in-out {0%, 100% {opacity: 0}; 50% {opacity: 1}}; .animate { animation: fade-in-out 4s ease };',

@@ -17,15 +17,16 @@ import { Category } from '../interface/category';
         placeholder="Nombre de la categoría"
         formControlName="name" />
 
+      @if (!updating) {
       <button
-        *ngIf="!updating"
         (click)="create()"
         class="primary-button col-start-2"
         type="button"
         [disabled]="!categoryForm.valid">
         Enviar
       </button>
-      <div *ngIf="updating" class="col-span-3 mx-auto flex space-x-4">
+      } @if (updating) {
+      <div class="col-span-3 mx-auto flex space-x-4">
         <button
           (click)="delete()"
           class="secondary-button"
@@ -41,6 +42,7 @@ import { Category } from '../interface/category';
           Modificar
         </button>
       </div>
+      }
     </form>
   `,
   styles: [],

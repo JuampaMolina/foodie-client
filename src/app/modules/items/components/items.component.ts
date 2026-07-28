@@ -29,11 +29,12 @@ import { selectItems } from '../store/items.selectors';
   selector: 'app-items',
   template: `
     <div class="grid-responsive-container-xl">
-      <div *ngIf="isAdmin" (click)="create = true" class="primary-button h-32">
+      @if (isAdmin) {
+      <div (click)="create = true" class="primary-button h-32">
         <i class="fa-solid fa-circle-plus text-3xl"></i>
       </div>
+      } @for (item of items; track item) {
       <app-item-card
-        *ngFor="let item of items"
         (modifyItemEvent)="modifyItem($event)"
         (addItemEvent)="addItem($event)"
         (removeItemEvent)="removeItem($event)"
@@ -41,6 +42,7 @@ import { selectItems } from '../store/items.selectors';
         [item]="item"
         [quantity]="getQuantity(item._id)">
       </app-item-card>
+      }
     </div>
     <p-dialog
       header="Añadir nuevo producto"

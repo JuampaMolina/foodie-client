@@ -38,9 +38,11 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
           id="category"
           [compareWith]="compareFn"
           formControlName="category">
-          <option *ngFor="let category of categories" [ngValue]="category">
+          @for (category of categories; track category) {
+          <option [ngValue]="category">
             {{ category.name }}
           </option>
+          }
         </select>
       </div>
 
@@ -54,15 +56,16 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
           formControlName="description"></textarea>
       </div>
 
+      @if (!updating) {
       <button
-        *ngIf="!updating"
         (click)="create()"
         class="primary-button col-start-2"
         type="button"
         [disabled]="!itemForm.valid">
         Enviar
       </button>
-      <div *ngIf="updating" class="col-span-3 mx-auto flex space-x-4">
+      } @if (updating) {
+      <div class="col-span-3 mx-auto flex space-x-4">
         <button
           (click)="delete()"
           class="secondary-button"
@@ -78,6 +81,7 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
           Modificar
         </button>
       </div>
+      }
     </form>
   `,
   styles: [],

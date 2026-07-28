@@ -24,15 +24,17 @@ import { selectCategories } from '../store/categories.selectors';
   selector: 'app-categories',
   template: `
     <div class="grid-responsive-container-md">
-      <div *ngIf="isAdmin" (click)="create = true" class="primary-button">
+      @if (isAdmin) {
+      <div (click)="create = true" class="primary-button">
         <i class="fa-solid fa-circle-plus text-xl"></i>
       </div>
+      } @for (category of categories; track category) {
       <app-category-card
-        *ngFor="let category of categories"
         [category]="category"
         [selectedCategory]="selectedCategory"
         (categorySelected)="selectCategory($event)">
       </app-category-card>
+      }
     </div>
     <p-dialog
       header="Añadir nueva categoría"

@@ -42,12 +42,30 @@ describe('CategoriesComponent', () => {
     expect(fixture.nativeElement.querySelector('.primary-button')).toBeNull();
   });
 
-  it('should show the "add category" button for admins', () => {
-    store.overrideSelector(selectIsAdmin, true);
-    store.refreshState();
-    fixture.detectChanges();
+  it('should show the "add category" button for admins', async () => {
+    // A fresh fixture with isAdmin already true from the start, rather than
+    // overriding the selector on an already-rendered fixture: overriding +
+    // refreshState() mid-test re-emits into the ngOnInit subscription
+    // synchronously, which trips NG0100 on the @if block's internal state.
+    await TestBed.resetTestingModule()
+      .configureTestingModule({
+        imports: [CategoriesModule],
+        providers: [
+          provideMockStore({
+            selectors: [
+              { selector: selectCategories, value: categories },
+              { selector: selectIsAdmin, value: true },
+            ],
+          }),
+        ],
+      })
+      .compileComponents();
+
+    const adminFixture = TestBed.createComponent(CategoriesComponent);
+    adminFixture.detectChanges();
+
     expect(
-      fixture.nativeElement.querySelector('.primary-button')
+      adminFixture.nativeElement.querySelector('.primary-button')
     ).not.toBeNull();
   });
 });

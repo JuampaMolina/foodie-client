@@ -12,16 +12,21 @@ import { selectIsAdmin } from '../../users/store/users.selectors';
   standalone: false,
   selector: 'app-orders',
   template: `
-    <div *ngIf="orders.length > 0">
-      <h2 *ngIf="!isAdmin" class="title-2 mb-4">Mis Pedidos</h2>
-      <h2 *ngIf="isAdmin" class="title-2 mb-4">Pedidos</h2>
+    @if (orders.length > 0) {
+    <div>
+      @if (!isAdmin) {
+      <h2 class="title-2 mb-4">Mis Pedidos</h2>
+      } @if (isAdmin) {
+      <h2 class="title-2 mb-4">Pedidos</h2>
+      }
     </div>
-    <h2 *ngIf="orders.length < 1" class="title-2 mb-4">
-      No has realizado ningún pedido aún
-    </h2>
+    } @if (orders.length < 1) {
+    <h2 class="title-2 mb-4">No has realizado ningún pedido aún</h2>
+    }
     <div class="flex flex-col gap-4">
-      <app-order-card *ngFor="let order of orders" [order]="order">
-      </app-order-card>
+      @for (order of orders; track order) {
+      <app-order-card [order]="order"> </app-order-card>
+      }
     </div>
   `,
   styles: [],
