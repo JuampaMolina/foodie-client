@@ -1,12 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Category } from '../../categories/interface/category';
 import { CreateItemCommand } from '../interface/createItemCommand';
 import { Item } from '../interface/item';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 
 @Component({
-  standalone: false,
   selector: 'app-item-form',
   template: `
     <form class="grid grid-cols-3 gap-4" [formGroup]="itemForm">
@@ -85,6 +90,7 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
     </form>
   `,
   styles: [],
+  imports: [FormsModule, ReactiveFormsModule],
 })
 export class ItemFormComponent {
   @Input() set modify(item: Item | undefined) {

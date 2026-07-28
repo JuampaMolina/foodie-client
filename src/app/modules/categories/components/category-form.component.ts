@@ -1,9 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Category } from '../interface/category';
 
 @Component({
-  standalone: false,
   selector: 'app-category-form',
   template: `
     <form
@@ -46,6 +51,7 @@ import { Category } from '../interface/category';
     </form>
   `,
   styles: [],
+  imports: [FormsModule, ReactiveFormsModule],
 })
 export class CategoryFormComponent {
   @Input() set modify(category: Category | undefined) {

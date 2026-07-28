@@ -23,9 +23,12 @@ import { selectCart } from '../../orders/store/orders.selectors';
 import { CreateItemCommand } from '../interface/createItemCommand';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 import { selectItems } from '../store/items.selectors';
+import { ItemCardComponent } from './item-card.component';
+import { Bind } from 'primeng/bind';
+import { Dialog } from 'primeng/dialog';
+import { ItemFormComponent } from './item-form.component';
 
 @Component({
-  standalone: false,
   selector: 'app-items',
   template: `
     <div class="grid-responsive-container-xl">
@@ -75,6 +78,7 @@ import { selectItems } from '../store/items.selectors';
     </p-dialog>
   `,
   styles: [],
+  imports: [ItemCardComponent, Bind, Dialog, ItemFormComponent],
 })
 export class ItemsComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;

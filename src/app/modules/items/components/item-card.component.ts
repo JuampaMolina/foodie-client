@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Item } from '../interface/item';
 
 @Component({
-  standalone: false,
   selector: 'app-item-card',
   template: `
     @if (item) {

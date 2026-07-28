@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { LoginUserCommand } from '../interface/LoginUserCommand';
 import { loginUser } from '../store/users.actions';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  standalone: false,
   selector: 'app-login',
   template: `
     <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">
@@ -47,6 +53,7 @@ import { loginUser } from '../store/users.actions';
     </div>
   `,
   styles: [],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
 })
 export class LoginComponent {
   loginForm = new FormGroup({

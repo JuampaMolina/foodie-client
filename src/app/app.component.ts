@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/auth.service';
+import { NavbarComponent } from './shared/navbar.component';
+import { ToastComponent } from './shared/toast.component';
 
 @Component({
-  standalone: false,
   selector: 'app-root',
+  imports: [NavbarComponent, RouterOutlet, ToastComponent],
   template: `<div class="p-8">
     <app-navbar [title]="title"></app-navbar>
     <router-outlet></router-outlet>

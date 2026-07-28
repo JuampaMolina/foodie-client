@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Category } from '../interface/category';
 
 @Component({
-  standalone: false,
   selector: 'app-category-card',
   template: `
     @if (category) {

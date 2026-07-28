@@ -18,9 +18,12 @@ import {
   updateCategory,
 } from '../store/categories.actions';
 import { selectCategories } from '../store/categories.selectors';
+import { CategoryCardComponent } from './category-card.component';
+import { Bind } from 'primeng/bind';
+import { Dialog } from 'primeng/dialog';
+import { CategoryFormComponent } from './category-form.component';
 
 @Component({
-  standalone: false,
   selector: 'app-categories',
   template: `
     <div class="grid-responsive-container-md">
@@ -62,6 +65,7 @@ import { selectCategories } from '../store/categories.selectors';
       </app-category-form>
     </p-dialog>
   `,
+  imports: [CategoryCardComponent, Bind, Dialog, CategoryFormComponent],
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;

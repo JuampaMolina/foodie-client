@@ -7,9 +7,9 @@ import { Order } from '../interface/order';
 import { getOrders, getOrdersByUserId } from '../store/orders.actions';
 import { selectOrders } from '../store/orders.selectors';
 import { selectIsAdmin } from '../../users/store/users.selectors';
+import { OrderCardComponent } from './order-card.component';
 
 @Component({
-  standalone: false,
   selector: 'app-orders',
   template: `
     @if (orders.length > 0) {
@@ -30,6 +30,7 @@ import { selectIsAdmin } from '../../users/store/users.selectors';
     </div>
   `,
   styles: [],
+  imports: [OrderCardComponent],
 })
 export class OrdersComponent implements OnInit, OnDestroy {
   @Input() userId: string = '';

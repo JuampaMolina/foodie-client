@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Item } from 'src/app/modules/items/interface/item';
-import { ItemsModule } from 'src/app/modules/items/items.module';
+
 import {
   addItemToCart,
   createOrder,
@@ -16,10 +16,11 @@ import {
   selectCartTotalPrice,
   selectCartUniqueItems,
 } from '../modules/orders/store/orders.selectors';
+import { ItemCardComponent } from '../modules/items/components/item-card.component';
 
 @Component({
   selector: 'app-cart',
-  imports: [ItemsModule],
+  imports: [ItemCardComponent],
   template: `
     <div class="mb-4 flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>

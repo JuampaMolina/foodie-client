@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { RegisterUserCommand } from '../interface/RegisterUserCommand';
 import { registerUser } from '../store/users.actions';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  standalone: false,
   selector: 'app-register',
   template: `
     <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">
@@ -74,6 +80,7 @@ import { registerUser } from '../store/users.actions';
     </div>
   `,
   styles: [],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
 })
 export class RegisterComponent {
   registerForm = new FormGroup({

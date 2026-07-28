@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { SidebarComponent } from './sidebar.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-  standalone: false,
   selector: 'app-admin',
   template: `
     <div class="flex flex-col space-y-4 xl:flex-row xl:space-x-4 xl:space-y-0">
@@ -13,6 +14,7 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
+  imports: [SidebarComponent, RouterOutlet],
 })
 export class AdminComponent {
   constructor() {}

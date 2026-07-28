@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { Order } from '../interface/order';
+import { Bind } from 'primeng/bind';
+import { Dialog } from 'primeng/dialog';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  standalone: false,
   selector: 'app-order-card',
   template: `
     @if (order) {
@@ -71,6 +73,7 @@ import { Order } from '../interface/order';
     </p-dialog>
   `,
   styles: [],
+  imports: [Bind, Dialog, DatePipe],
 })
 export class OrderCardComponent {
   @Input() order?: Order;

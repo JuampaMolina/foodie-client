@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectIsAdmin } from '../../users/store/users.selectors';
-import { CategoriesModule } from '../categories.module';
 import { Category } from '../interface/category';
 import { selectCategories } from '../store/categories.selectors';
 import { CategoriesComponent } from './categories.component';
@@ -17,7 +16,7 @@ describe('CategoriesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CategoriesModule],
+      imports: [CategoriesComponent],
       providers: [
         provideMockStore({
           selectors: [
@@ -49,7 +48,7 @@ describe('CategoriesComponent', () => {
     // synchronously, which trips NG0100 on the @if block's internal state.
     await TestBed.resetTestingModule()
       .configureTestingModule({
-        imports: [CategoriesModule],
+        imports: [CategoriesComponent],
         providers: [
           provideMockStore({
             selectors: [

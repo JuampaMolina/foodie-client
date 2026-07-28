@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { logoutUser } from '../store/users.actions';
 import { selectUser } from '../store/users.selectors';
+import { OrdersComponent } from '../../orders/components/orders.component';
 
 @Component({
-  standalone: false,
   selector: 'app-user',
   template: `
     <button (click)="logout()" class="primary-button float-right">
@@ -14,6 +14,7 @@ import { selectUser } from '../store/users.selectors';
     <app-orders [userId]="userId"></app-orders>
   `,
   styles: [],
+  imports: [OrdersComponent],
 })
 export class UserComponent implements OnInit {
   userName: string = '';

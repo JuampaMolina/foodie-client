@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CategoriesComponent } from 'src/app/modules/categories/components/categories.component';
-import { ItemsComponent } from 'src/app/modules/items/components/items.component';
+import { Routes } from '@angular/router';
+import { CategoriesComponent } from '../modules/categories/components/categories.component';
+import { ItemsComponent } from '../modules/items/components/items.component';
 import { OrdersComponent } from '../modules/orders/components/orders.component';
 import { AdminComponent } from './admin.component';
 
-const routes: Routes = [
+export const adminRoutes: Routes = [
   {
     path: '',
     redirectTo: 'productos',
@@ -30,9 +29,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class AdminRoutingModule {}
