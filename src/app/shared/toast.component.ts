@@ -33,25 +33,28 @@ export class ToastComponent implements OnInit {
   message = '';
   error = '';
 
+  private errorTimeout?: ReturnType<typeof setTimeout>;
+  private messageTimeout?: ReturnType<typeof setTimeout>;
+
   constructor(private store: Store<AppState>, private router: Router) {}
 
   handleErrors(e: string) {
-    clearTimeout();
+    clearTimeout(this.errorTimeout);
     if (e === 'jwt expired') {
       this.router.navigateByUrl('/login');
       this.error = 'La sesión ha caducado, vuelve a iniciar sesión';
     }
     this.error = e;
-    setTimeout(() => {
+    this.errorTimeout = setTimeout(() => {
       this.error = '';
     }, 4000);
   }
 
   handleMessage(m: string) {
-    clearTimeout();
+    clearTimeout(this.messageTimeout);
     this.router.navigateByUrl('/');
     this.message = m;
-    setTimeout(() => {
+    this.messageTimeout = setTimeout(() => {
       this.message = '';
     }, 4000);
   }
