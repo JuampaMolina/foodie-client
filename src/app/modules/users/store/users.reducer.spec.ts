@@ -7,13 +7,7 @@ import {
   registerUser,
   registerUserSuccess,
 } from './users.actions';
-// NOTE: `ordersInitalState` is a pre-existing copy-paste typo in users.reducer.ts
-// (should be `usersInitialState`) — it's fixed in a later commit, at which point
-// this import (and only this import) needs updating to match.
-import {
-  ordersInitalState as usersInitalState,
-  usersReducer,
-} from './users.reducer';
+import { usersInitialState, usersReducer } from './users.reducer';
 
 describe('usersReducer', () => {
   const user: User = {
@@ -25,12 +19,12 @@ describe('usersReducer', () => {
 
   it('should return the initial state for an unknown action', () => {
     const state = usersReducer(undefined, { type: 'noop' } as any);
-    expect(state).toEqual(usersInitalState);
+    expect(state).toEqual(usersInitialState);
   });
 
   it('should set loading on loginUser', () => {
     const state = usersReducer(
-      usersInitalState,
+      usersInitialState,
       loginUser({ user: { email: 'ana@test.com', password: 'secret' } })
     );
     expect(state.loading).toBeTrue();
@@ -38,7 +32,7 @@ describe('usersReducer', () => {
 
   it('should set the error message on loginUserError', () => {
     const state = usersReducer(
-      usersInitalState,
+      usersInitialState,
       loginUserError({ error: { message: 'boom' } })
     );
     expect(state.error).toBe('boom');
@@ -46,7 +40,7 @@ describe('usersReducer', () => {
 
   it('should store the user and token on loginUserSuccess', () => {
     const state = usersReducer(
-      usersInitalState,
+      usersInitialState,
       loginUserSuccess({ userSession: { user, token: 'tok' } })
     );
     expect(state.user).toEqual(user);
@@ -56,7 +50,7 @@ describe('usersReducer', () => {
 
   it('should set loading on registerUser', () => {
     const state = usersReducer(
-      usersInitalState,
+      usersInitialState,
       registerUser({
         user: { name: 'Ana', email: 'ana@test.com', password: 'secret' },
       })
@@ -65,13 +59,16 @@ describe('usersReducer', () => {
   });
 
   it('should mark loaded on registerUserSuccess', () => {
-    const state = usersReducer(usersInitalState, registerUserSuccess({ user }));
+    const state = usersReducer(
+      usersInitialState,
+      registerUserSuccess({ user })
+    );
     expect(state.loaded).toBeTrue();
   });
 
   it('should clear the user and token on logoutUser', () => {
     const state = usersReducer(
-      { ...usersInitalState, user, token: 'tok' },
+      { ...usersInitialState, user, token: 'tok' },
       logoutUser()
     );
     expect(state.user).toBeUndefined();

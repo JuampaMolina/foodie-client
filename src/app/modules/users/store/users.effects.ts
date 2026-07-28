@@ -29,7 +29,7 @@ export class UsersEffects {
       mergeMap(action =>
         this.usersApi.registerUser(action.user).pipe(
           map(user => registerUserSuccess({ user })),
-          catchError(error => of(registerUserError(error)))
+          catchError(error => of(registerUserError({ error })))
         )
       )
     )
@@ -41,7 +41,7 @@ export class UsersEffects {
       mergeMap(action =>
         this.usersApi.loginUser(action.user).pipe(
           map(userSession => loginUserSuccess({ userSession })),
-          catchError(error => of(loginUserError(error)))
+          catchError(error => of(loginUserError({ error })))
         )
       )
     )

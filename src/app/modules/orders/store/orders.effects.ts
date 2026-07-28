@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import { AppState } from '../../../store/app.reducers';
 import { OrdersApiService } from '../services/orders-api.service';
 import {
   createOrder,
@@ -18,11 +16,7 @@ import {
 
 @Injectable()
 export class OrdersEffects {
-  constructor(
-    private ordersApi: OrdersApiService,
-    private actions$: Actions,
-    private store: Store<AppState>
-  ) {}
+  constructor(private ordersApi: OrdersApiService, private actions$: Actions) {}
 
   getOrders$ = createEffect(() =>
     this.actions$.pipe(
@@ -30,7 +24,7 @@ export class OrdersEffects {
       mergeMap(() =>
         this.ordersApi.getOrders().pipe(
           map(orders => getOrdersSuccess({ orders })),
-          catchError(error => of(getOrdersError(error)))
+          catchError(error => of(getOrdersError({ error })))
         )
       )
     )
@@ -42,7 +36,7 @@ export class OrdersEffects {
       mergeMap(action =>
         this.ordersApi.getOrdersByUserId(action.userId).pipe(
           map(orders => getOrdersByUserIdSuccess({ orders })),
-          catchError(error => of(getOrdersByUserIdError(error)))
+          catchError(error => of(getOrdersByUserIdError({ error })))
         )
       )
     )
@@ -54,7 +48,7 @@ export class OrdersEffects {
       mergeMap(action =>
         this.ordersApi.createOrder(action.order).pipe(
           map(order => createOrderSuccess({ order })),
-          catchError(error => of(createOrderError(error)))
+          catchError(error => of(createOrderError({ error })))
         )
       )
     )

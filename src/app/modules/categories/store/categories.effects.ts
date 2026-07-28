@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import { AppState } from '../../../store/app.reducers';
 import { CategoriesApiService } from '../services/categories-api.service';
 import {
   createCategory,
@@ -23,17 +21,16 @@ import {
 export class CategoriesEffects {
   constructor(
     private categoriesApi: CategoriesApiService,
-    private actions$: Actions,
-    private store: Store<AppState>
+    private actions$: Actions
   ) {}
 
   getCategories$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getCategories, createCategorySuccess),
+      ofType(getCategories),
       mergeMap(() =>
         this.categoriesApi.getCategories().pipe(
           map(categories => getCategoriesSuccess({ categories })),
-          catchError(error => of(getCategoriesError(error)))
+          catchError(error => of(getCategoriesError({ error })))
         )
       )
     )
@@ -45,7 +42,7 @@ export class CategoriesEffects {
       mergeMap(action =>
         this.categoriesApi.createCategory(action.category).pipe(
           map(category => createCategorySuccess({ category })),
-          catchError(error => of(createCategoryError(error)))
+          catchError(error => of(createCategoryError({ error })))
         )
       )
     )
@@ -57,7 +54,7 @@ export class CategoriesEffects {
       mergeMap(action =>
         this.categoriesApi.updateCategory(action.categoryUpdate).pipe(
           map(category => updateCategorySuccess({ category })),
-          catchError(error => of(updateCategoryError(error)))
+          catchError(error => of(updateCategoryError({ error })))
         )
       )
     )
@@ -69,7 +66,7 @@ export class CategoriesEffects {
       mergeMap(action =>
         this.categoriesApi.deleteCategory(action.categoryId).pipe(
           map(category => deleteCategorySuccess({ category })),
-          catchError(error => of(deleteCategoryError(error)))
+          catchError(error => of(deleteCategoryError({ error })))
         )
       )
     )
