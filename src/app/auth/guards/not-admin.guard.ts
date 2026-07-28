@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { selectIsAdmin } from 'src/app/modules/users/store/users.selectors';
@@ -8,7 +8,7 @@ import { AppState } from 'src/app/store/app.reducers';
 @Injectable({
   providedIn: 'root',
 })
-export class NotAdminGuard implements CanActivate {
+export class NotAdminGuard {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   canActivate():
