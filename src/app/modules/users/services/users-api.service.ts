@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { LoginUserCommand } from '../interface/LoginUserCommand';
 import { RegisterUserCommand } from '../interface/RegisterUserCommand';
-import { User } from '../interface/User';
+import { User } from '../interface/user';
 import { UserSession } from '../interface/UserSession';
 
 const usersApi = environment.apiBaseUri + '/users';
