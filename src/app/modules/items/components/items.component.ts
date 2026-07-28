@@ -60,7 +60,8 @@ import { selectItems } from '../store/items.selectors';
     </p-dialog>
     <p-dialog
       header="Modificar producto"
-      [(visible)]="modify"
+      [visible]="!!modify"
+      (visibleChange)="onModifyVisibleChange($event)"
       [modal]="true"
       [style]="{ width: '50vw' }"
       [draggable]="false"
@@ -120,6 +121,12 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.store.dispatch(deleteItem({ itemId }));
     console.log('delete: ', itemId);
     this.modify = undefined;
+  }
+
+  onModifyVisibleChange(visible: boolean) {
+    if (!visible) {
+      this.modify = undefined;
+    }
   }
 
   getItems() {

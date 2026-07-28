@@ -49,7 +49,8 @@ import { selectCategories } from '../store/categories.selectors';
     </p-dialog>
     <p-dialog
       header="Modificar categoría"
-      [(visible)]="modify"
+      [visible]="!!modify"
+      (visibleChange)="onModifyVisibleChange($event)"
       [modal]="true"
       [style]="{ width: '50vw' }"
       [draggable]="false"
@@ -104,6 +105,12 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.store.dispatch(deleteCategory({ categoryId }));
     console.log('delete: ', categoryId);
     this.modify = undefined;
+  }
+
+  onModifyVisibleChange(visible: boolean) {
+    if (!visible) {
+      this.modify = undefined;
+    }
   }
 
   getCategories() {
