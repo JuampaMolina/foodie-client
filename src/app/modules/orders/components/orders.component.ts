@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -33,13 +33,13 @@ import { OrderCardComponent } from './order-card.component';
   imports: [OrderCardComponent],
 })
 export class OrdersComponent implements OnInit, OnDestroy {
+  private store = inject<Store<AppState>>(Store);
+
   @Input() userId: string = '';
   isAdmin: boolean = false;
   orders: Order[] = [];
 
   private onDestroy = new Subject<void>();
-
-  constructor(private store: Store<AppState>) {}
 
   getOrders() {
     if (!this.userId) {

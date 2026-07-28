@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { NavbarComponent } from './shared/navbar.component';
@@ -15,9 +15,9 @@ import { ToastComponent } from './shared/toast.component';
   styles: [],
 })
 export class AppComponent implements OnInit {
-  title = "foodie's";
+  private auth = inject(AuthService);
 
-  constructor(private auth: AuthService) {}
+  title = "foodie's";
 
   ngOnInit(): void {
     this.auth.getLocalUser();

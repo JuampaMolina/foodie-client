@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
@@ -9,7 +9,8 @@ import { selectIsUser } from '../../modules/users/store/users.selectors';
   providedIn: 'root',
 })
 export class UserGuard {
-  constructor(private store: Store<AppState>, private router: Router) {}
+  private store = inject<Store<AppState>>(Store);
+  private router = inject(Router);
 
   canActivate():
     | Observable<boolean | UrlTree>

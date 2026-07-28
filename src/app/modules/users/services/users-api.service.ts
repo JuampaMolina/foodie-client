@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { LoginUserCommand } from '../interface/LoginUserCommand';
@@ -13,7 +13,7 @@ const usersApi = environment.apiBaseUri + '/users';
   providedIn: 'root',
 })
 export class UsersApiService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   registerUser(user: RegisterUserCommand): Observable<User> {
     return this.http.post<User>(usersApi + '/register', user);

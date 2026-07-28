@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { Item } from '../interface/item';
@@ -81,6 +81,8 @@ import { ItemFormComponent } from './item-form.component';
   imports: [ItemCardComponent, Bind, Dialog, ItemFormComponent],
 })
 export class ItemsComponent implements OnInit, OnDestroy {
+  private store = inject<Store<AppState>>(Store);
+
   isAdmin: boolean = false;
   create: boolean = false;
   reset: boolean = false;
@@ -90,8 +92,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
 
   private onDestroy = new Subject<void>();
-
-  constructor(private store: Store<AppState>) {}
 
   modifyItem(item: Item) {
     this.modify = item;

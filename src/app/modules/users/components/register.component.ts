@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -83,6 +83,8 @@ import { RouterLink } from '@angular/router';
   imports: [FormsModule, ReactiveFormsModule, RouterLink],
 })
 export class RegisterComponent {
+  private store = inject<Store<AppState>>(Store);
+
   registerForm = new FormGroup({
     name: new FormControl(null, Validators.required),
     email: new FormControl(null, [Validators.required, Validators.email]),
@@ -93,8 +95,6 @@ export class RegisterComponent {
   });
 
   showErrors: boolean = false;
-
-  constructor(private store: Store<AppState>) {}
 
   onSubmit() {
     if (this.registerForm.invalid) {

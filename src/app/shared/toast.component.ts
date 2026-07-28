@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { merge } from 'rxjs';
@@ -30,13 +30,14 @@ import { selectUsersError } from '../modules/users/store/users.selectors';
   ],
 })
 export class ToastComponent implements OnInit {
+  private store = inject<Store<AppState>>(Store);
+  private router = inject(Router);
+
   message = '';
   error = '';
 
   private errorTimeout?: ReturnType<typeof setTimeout>;
   private messageTimeout?: ReturnType<typeof setTimeout>;
-
-  constructor(private store: Store<AppState>, private router: Router) {}
 
   handleErrors(e: string) {
     clearTimeout(this.errorTimeout);

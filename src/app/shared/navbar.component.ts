@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
@@ -55,12 +55,12 @@ import { AppState } from 'src/app/store/app.reducers';
   styles: [],
 })
 export class NavbarComponent implements OnInit {
+  private store = inject<Store<AppState>>(Store);
+
   @Input() title: string = '';
   userName: string = '';
   isAdmin: boolean = false;
   cartCount: number = 0;
-
-  constructor(private store: Store<AppState>) {}
 
   logout() {
     this.store.dispatch(logoutUser());

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -57,14 +57,14 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
   styles: [],
 })
 export class CartComponent implements OnInit, OnDestroy {
+  private store = inject<Store<AppState>>(Store);
+
   cart: Item[] = [];
   uniqueItems: Item[] = [];
   cartCount: number = 0;
   totalPrice: number = 0;
 
   private onDestroy = new Subject<void>();
-
-  constructor(private store: Store<AppState>) {}
 
   toUnique(items: Item[]): Item[] {
     return items.filter((x, i, a) => a.indexOf(x) == i);

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducers';
@@ -10,7 +10,7 @@ import { selectToken } from '../modules/users/store/users.selectors';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private store: Store<AppState>) {}
+  private store = inject<Store<AppState>>(Store);
 
   public getLocalUser() {
     let retrievedUser = localStorage.getItem('user');

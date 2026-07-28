@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { UsersApiService } from '../services/users-api.service';
@@ -17,11 +17,9 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class UsersEffects {
-  constructor(
-    private usersApi: UsersApiService,
-    private actions$: Actions,
-    private router: Router
-  ) {}
+  private usersApi = inject(UsersApiService);
+  private actions$ = inject(Actions);
+  private router = inject(Router);
 
   registerUser$ = createEffect(() =>
     this.actions$.pipe(

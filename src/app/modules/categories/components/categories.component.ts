@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -68,6 +68,8 @@ import { CategoryFormComponent } from './category-form.component';
   imports: [CategoryCardComponent, Bind, Dialog, CategoryFormComponent],
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
+  private store = inject<Store<AppState>>(Store);
+
   isAdmin: boolean = false;
   create: boolean = false;
   reset: boolean = false;
@@ -76,8 +78,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
 
   private onDestroy = new Subject<void>();
-
-  constructor(private store: Store<AppState>) {}
 
   selectCategory = (category: Category) => {
     if (this.isAdmin) {

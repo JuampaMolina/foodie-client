@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -56,11 +56,12 @@ import { RouterLink } from '@angular/router';
   imports: [FormsModule, ReactiveFormsModule, RouterLink],
 })
 export class LoginComponent {
+  private store = inject<Store<AppState>>(Store);
+
   loginForm = new FormGroup({
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
-  constructor(private store: Store<AppState>) {}
 
   onSubmit() {
     let user: LoginUserCommand = {

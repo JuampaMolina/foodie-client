@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { ItemsApiService } from '../services/items-api.service';
@@ -22,7 +22,8 @@ import {
 
 @Injectable()
 export class ItemsEffects {
-  constructor(private itemsApi: ItemsApiService, private actions$: Actions) {}
+  private itemsApi = inject(ItemsApiService);
+  private actions$ = inject(Actions);
 
   getItems$ = createEffect(() =>
     this.actions$.pipe(

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { selectUser } from 'src/app/modules/users/store/users.selectors';
@@ -21,9 +21,9 @@ import { ItemsComponent } from '../modules/items/components/items.component';
   styles: [],
 })
 export class HomeComponent implements OnInit {
-  userName: string = '';
+  private store = inject<Store<AppState>>(Store);
 
-  constructor(private store: Store<AppState>) {}
+  userName: string = '';
 
   ngOnInit() {
     this.store
