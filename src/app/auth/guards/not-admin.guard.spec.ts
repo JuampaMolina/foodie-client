@@ -2,10 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectIsAdmin } from '../../modules/users/store/users.selectors';
-import { NotAdminGuard } from './not-admin.guard';
+import { notAdminGuard } from './not-admin.guard';
 
-describe('NotAdminGuard', () => {
-  let guard: NotAdminGuard;
+describe('notAdminGuard', () => {
   let store: MockStore;
   let router: jasmine.SpyObj<Router>;
 
@@ -15,7 +14,6 @@ describe('NotAdminGuard', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        NotAdminGuard,
         provideMockStore({
           selectors: [{ selector: selectIsAdmin, value: false }],
         }),
@@ -23,13 +21,15 @@ describe('NotAdminGuard', () => {
       ],
     });
 
-    guard = TestBed.inject(NotAdminGuard);
     store = TestBed.inject(MockStore);
   });
 
   it('should allow access for non-admins', done => {
     store.overrideSelector(selectIsAdmin, false);
-    (guard.canActivate() as any).subscribe((result: boolean | UrlTree) => {
+    const result$ = TestBed.runInInjectionContext(() =>
+      notAdminGuard({} as any, {} as any)
+    ) as any;
+    result$.subscribe((result: boolean | UrlTree) => {
       expect(result).toBeTrue();
       done();
     });
@@ -37,7 +37,10 @@ describe('NotAdminGuard', () => {
 
   it('should redirect admins to /admin', done => {
     store.overrideSelector(selectIsAdmin, true);
-    (guard.canActivate() as any).subscribe((result: boolean | UrlTree) => {
+    const result$ = TestBed.runInInjectionContext(() =>
+      notAdminGuard({} as any, {} as any)
+    ) as any;
+    result$.subscribe((result: boolean | UrlTree) => {
       expect(router.createUrlTree).toHaveBeenCalledWith(['/admin']);
       expect(result).not.toBeTrue();
       done();

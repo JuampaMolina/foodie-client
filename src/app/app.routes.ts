@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { AdminGuard } from './auth/guards/admin.guard';
-import { NotAdminGuard } from './auth/guards/not-admin.guard';
-import { UserGuard } from './auth/guards/user.guard';
+import { adminGuard } from './auth/guards/admin.guard';
+import { notAdminGuard } from './auth/guards/not-admin.guard';
+import { userGuard } from './auth/guards/user.guard';
 import { LoginComponent } from './modules/users/components/login.component';
 import { RegisterComponent } from './modules/users/components/register.component';
 import { UserComponent } from './modules/users/components/user.component';
@@ -12,31 +12,31 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [NotAdminGuard],
+    canActivate: [notAdminGuard],
   },
   {
     path: 'cart',
     component: CartComponent,
-    canActivate: [UserGuard],
+    canActivate: [userGuard],
   },
   {
     path: 'user',
     component: UserComponent,
-    canActivate: [UserGuard],
+    canActivate: [userGuard],
   },
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [NotAdminGuard],
+    canActivate: [notAdminGuard],
   },
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [NotAdminGuard],
+    canActivate: [notAdminGuard],
   },
   {
     path: 'admin',
-    canActivate: [AdminGuard],
+    canActivate: [adminGuard],
     loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes),
   },
 ];

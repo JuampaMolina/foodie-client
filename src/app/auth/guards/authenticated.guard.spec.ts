@@ -2,10 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectIsAuthenticated } from '../../modules/users/store/users.selectors';
-import { AuthenticatedGuard } from './authenticated.guard';
+import { authenticatedGuard } from './authenticated.guard';
 
-describe('AuthenticatedGuard', () => {
-  let guard: AuthenticatedGuard;
+describe('authenticatedGuard', () => {
   let store: MockStore;
   let router: jasmine.SpyObj<Router>;
 
@@ -15,7 +14,6 @@ describe('AuthenticatedGuard', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        AuthenticatedGuard,
         provideMockStore({
           selectors: [{ selector: selectIsAuthenticated, value: false }],
         }),
@@ -23,13 +21,15 @@ describe('AuthenticatedGuard', () => {
       ],
     });
 
-    guard = TestBed.inject(AuthenticatedGuard);
     store = TestBed.inject(MockStore);
   });
 
   it('should allow access when authenticated', done => {
     store.overrideSelector(selectIsAuthenticated, true);
-    (guard.canActivate() as any).subscribe((result: boolean | UrlTree) => {
+    const result$ = TestBed.runInInjectionContext(() =>
+      authenticatedGuard({} as any, {} as any)
+    ) as any;
+    result$.subscribe((result: boolean | UrlTree) => {
       expect(result).toBeTrue();
       done();
     });
@@ -37,7 +37,10 @@ describe('AuthenticatedGuard', () => {
 
   it('should redirect to /login when not authenticated', done => {
     store.overrideSelector(selectIsAuthenticated, false);
-    (guard.canActivate() as any).subscribe((result: boolean | UrlTree) => {
+    const result$ = TestBed.runInInjectionContext(() =>
+      authenticatedGuard({} as any, {} as any)
+    ) as any;
+    result$.subscribe((result: boolean | UrlTree) => {
       expect(router.createUrlTree).toHaveBeenCalledWith(['/login']);
       expect(result).not.toBeTrue();
       done();
