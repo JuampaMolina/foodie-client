@@ -49,6 +49,7 @@
           "error"
         ],
         "@angular-eslint/prefer-standalone": "off",
+        "@angular-eslint/prefer-inject": "off",
         "@typescript-eslint/member-ordering": 0,
         "@typescript-eslint/naming-convention": 0
       }
