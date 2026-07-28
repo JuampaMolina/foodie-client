@@ -3,7 +3,6 @@ import {
   FormControl,
   FormGroup,
   Validators,
-  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Category } from '../../categories/interface/category';
@@ -90,7 +89,7 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
     </form>
   `,
   styles: [],
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
 })
 export class ItemFormComponent {
   @Input() set modify(item: Item | undefined) {

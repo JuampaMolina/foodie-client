@@ -3,7 +3,6 @@ import {
   FormControl,
   FormGroup,
   Validators,
-  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -80,7 +79,7 @@ import { RouterLink } from '@angular/router';
     </div>
   `,
   styles: [],
-  imports: [FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
 })
 export class RegisterComponent {
   private store = inject<Store<AppState>>(Store);

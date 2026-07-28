@@ -3,7 +3,6 @@ import {
   FormControl,
   FormGroup,
   Validators,
-  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Category } from '../interface/category';
@@ -51,7 +50,7 @@ import { Category } from '../interface/category';
     </form>
   `,
   styles: [],
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
 })
 export class CategoryFormComponent {
   @Input() set modify(category: Category | undefined) {
