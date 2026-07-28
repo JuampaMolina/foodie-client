@@ -73,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "foodie-client:build:production"
+              "buildTarget": "foodie-client:build:production"
             },
             "development": {
-              "browserTarget": "foodie-client:build:development"
+              "buildTarget": "foodie-client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "foodie-client:build"
+            "buildTarget": "foodie-client:build"
           }
         },
         "test": {

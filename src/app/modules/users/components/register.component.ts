@@ -53,7 +53,7 @@ import { registerUser } from '../store/users.actions';
               this.registerForm.get('email')?.hasError('email') &&
               showErrors
             ">
-            El email debe tener el siguiente formato: example@example.com
+            El email debe tener el siguiente formato: example&#64;example.com
           </small>
         </div>
         <div>

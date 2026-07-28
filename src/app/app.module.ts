@@ -38,6 +38,7 @@ import { appReducers } from './store/app.reducers';
       maxAge: 25,
       logOnly: environment.production,
       autoPause: true,
+      connectInZone: true,
     }),
   ],
   providers: [],
