@@ -70,7 +70,7 @@ import { selectItems } from '../store/items.selectors';
       </app-item-form>
     </p-dialog>
   `,
-  styles: [''],
+  styles: [],
 })
 export class ItemsComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
