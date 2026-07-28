@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -28,5 +29,6 @@ import { Component } from '@angular/core';
   styles: [
     'button { @apply p-2 hover:bg-slate-800 hover:text-slate-200 font-medium transition duration-150 cursor-pointer xl:p-4 }; .active-link { @apply bg-slate-800 text-slate-200} ',
   ],
+  imports: [RouterLink, RouterLinkActive],
 })
 export class SidebarComponent {}

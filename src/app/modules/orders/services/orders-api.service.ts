@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { environment } from '../../../../environments/environment';
@@ -12,7 +12,8 @@ const ordersApi = environment.apiBaseUri + '/orders';
   providedIn: 'root',
 })
 export class OrdersApiService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  private http = inject(HttpClient);
+  private auth = inject(AuthService);
 
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(ordersApi);

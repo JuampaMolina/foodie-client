@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
@@ -12,8 +11,7 @@ import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   template: `
     <nav
       class="mb-8 flex items-center justify-between rounded bg-slate-800 p-4 text-slate-200">
@@ -21,17 +19,20 @@ import { AppState } from 'src/app/store/app.reducers';
         <h1 class="font-mukta text-4xl font-extrabold">
           {{ title }}
         </h1>
+        @if (isAdmin) {
         <button
-          *ngIf="isAdmin"
           class="rounded bg-slate-600 p-2 font-semibold"
           routerLink="/admin">
           Admin
         </button>
+        }
       </div>
-      <button (click)="logout()" *ngIf="isAdmin">
+      @if (isAdmin) {
+      <button (click)="logout()">
         <i class="fa-solid fa-right-from-bracket text-xl"></i>
       </button>
-      <div *ngIf="!isAdmin" class="mr-2 space-x-4 text-xl sm:space-x-6">
+      } @if (!isAdmin) {
+      <div class="mr-2 space-x-4 text-xl sm:space-x-6">
         <button routerLink="/">
           <i class="fa-solid fa-house"></i>
         </button>
@@ -40,24 +41,26 @@ import { AppState } from 'src/app/store/app.reducers';
         </button>
         <button class="relative" routerLink="/cart">
           <i class="fa-solid fa-cart-shopping"></i>
+          @if (cartCount > 0) {
           <span
-            *ngIf="cartCount > 0"
             class="absolute -top-3 -right-3 rounded-full bg-slate-200 px-1 text-sm font-semibold text-slate-800"
             >{{ cartCount }}</span
           >
+          }
         </button>
       </div>
+      }
     </nav>
   `,
   styles: [],
 })
 export class NavbarComponent implements OnInit {
+  private store = inject<Store<AppState>>(Store);
+
   @Input() title: string = '';
   userName: string = '';
   isAdmin: boolean = false;
   cartCount: number = 0;
-
-  constructor(private store: Store<AppState>) {}
 
   logout() {
     this.store.dispatch(logoutUser());

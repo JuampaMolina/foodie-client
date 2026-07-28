@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { Item } from '../interface/item';
@@ -23,16 +23,21 @@ import { selectCart } from '../../orders/store/orders.selectors';
 import { CreateItemCommand } from '../interface/createItemCommand';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 import { selectItems } from '../store/items.selectors';
+import { ItemCardComponent } from './item-card.component';
+import { Bind } from 'primeng/bind';
+import { Dialog } from 'primeng/dialog';
+import { ItemFormComponent } from './item-form.component';
 
 @Component({
   selector: 'app-items',
   template: `
     <div class="grid-responsive-container-xl">
-      <div *ngIf="isAdmin" (click)="create = true" class="primary-button h-32">
+      @if (isAdmin) {
+      <div (click)="create = true" class="primary-button h-32">
         <i class="fa-solid fa-circle-plus text-3xl"></i>
       </div>
+      } @for (item of items; track item) {
       <app-item-card
-        *ngFor="let item of items"
         (modifyItemEvent)="modifyItem($event)"
         (addItemEvent)="addItem($event)"
         (removeItemEvent)="removeItem($event)"
@@ -40,6 +45,7 @@ import { selectItems } from '../store/items.selectors';
         [item]="item"
         [quantity]="getQuantity(item._id)">
       </app-item-card>
+      }
     </div>
     <p-dialog
       header="Añadir nuevo producto"
@@ -57,7 +63,8 @@ import { selectItems } from '../store/items.selectors';
     </p-dialog>
     <p-dialog
       header="Modificar producto"
-      [(visible)]="modify"
+      [visible]="!!modify"
+      (visibleChange)="onModifyVisibleChange($event)"
       [modal]="true"
       [style]="{ width: '50vw' }"
       [draggable]="false"
@@ -70,9 +77,12 @@ import { selectItems } from '../store/items.selectors';
       </app-item-form>
     </p-dialog>
   `,
-  styles: [''],
+  styles: [],
+  imports: [ItemCardComponent, Bind, Dialog, ItemFormComponent],
 })
 export class ItemsComponent implements OnInit, OnDestroy {
+  private store = inject<Store<AppState>>(Store);
+
   isAdmin: boolean = false;
   create: boolean = false;
   reset: boolean = false;
@@ -82,8 +92,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
 
   private onDestroy = new Subject<void>();
-
-  constructor(private store: Store<AppState>) {}
 
   modifyItem(item: Item) {
     this.modify = item;
@@ -117,6 +125,12 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.store.dispatch(deleteItem({ itemId }));
     console.log('delete: ', itemId);
     this.modify = undefined;
+  }
+
+  onModifyVisibleChange(visible: boolean) {
+    if (!visible) {
+      this.modify = undefined;
+    }
   }
 
   getItems() {

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../auth/auth.service';
@@ -13,7 +13,8 @@ const categoriesApi = environment.apiBaseUri + '/categories';
   providedIn: 'root',
 })
 export class CategoriesApiService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  private http = inject(HttpClient);
+  private auth = inject(AuthService);
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(categoriesApi);

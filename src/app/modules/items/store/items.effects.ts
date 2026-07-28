@@ -1,8 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import { AppState } from '../../../store/app.reducers';
 import { ItemsApiService } from '../services/items-api.service';
 import {
   createItem,
@@ -24,11 +22,8 @@ import {
 
 @Injectable()
 export class ItemsEffects {
-  constructor(
-    private itemsApi: ItemsApiService,
-    private actions$: Actions,
-    private store: Store<AppState>
-  ) {}
+  private itemsApi = inject(ItemsApiService);
+  private actions$ = inject(Actions);
 
   getItems$ = createEffect(() =>
     this.actions$.pipe(
@@ -36,7 +31,7 @@ export class ItemsEffects {
       mergeMap(() =>
         this.itemsApi.getItems().pipe(
           map(items => getItemsSuccess({ items })),
-          catchError(error => of(getItemsError(error)))
+          catchError(error => of(getItemsError({ error })))
         )
       )
     )
@@ -48,7 +43,7 @@ export class ItemsEffects {
       mergeMap(action =>
         this.itemsApi.getItemsByCategoryId(action.categoryId).pipe(
           map(items => getItemsByCategoryIdSuccess({ items })),
-          catchError(error => of(getItemsByCategoryIdError(error)))
+          catchError(error => of(getItemsByCategoryIdError({ error })))
         )
       )
     )
@@ -60,7 +55,7 @@ export class ItemsEffects {
       mergeMap(action =>
         this.itemsApi.createItem(action.item).pipe(
           map(item => createItemSuccess({ item })),
-          catchError(error => of(createItemError(error)))
+          catchError(error => of(createItemError({ error })))
         )
       )
     )
@@ -72,7 +67,7 @@ export class ItemsEffects {
       mergeMap(action =>
         this.itemsApi.updateItem(action.itemUpdate).pipe(
           map(item => updateItemSuccess({ item })),
-          catchError(error => of(updateItemError(error)))
+          catchError(error => of(updateItemError({ error })))
         )
       )
     )
@@ -84,7 +79,7 @@ export class ItemsEffects {
       mergeMap(action =>
         this.itemsApi.deleteItem(action.itemId).pipe(
           map(item => deleteItemSuccess({ item })),
-          catchError(error => of(deleteItemError(error)))
+          catchError(error => of(deleteItemError({ error })))
         )
       )
     )

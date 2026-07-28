@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { SidebarComponent } from './sidebar.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -12,6 +14,7 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
+  imports: [SidebarComponent, RouterOutlet],
 })
 export class AdminComponent {
   constructor() {}

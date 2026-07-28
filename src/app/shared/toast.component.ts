@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { merge } from 'rxjs';
@@ -14,44 +13,49 @@ import { selectUsersError } from '../modules/users/store/users.selectors';
 
 @Component({
   selector: 'app-toast',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
-    <div *ngIf="error" class="toast-error animate">
+    @if (error) {
+    <div class="toast-error animate">
       {{ error }}
     </div>
-
-    <div *ngIf="message" class="toast-message animate">
+    } @if (message) {
+    <div class="toast-message animate">
       {{ message }}
     </div>
+    }
   `,
   styles: [
     '@keyframes fade-in-out {0%, 100% {opacity: 0}; 50% {opacity: 1}}; .animate { animation: fade-in-out 4s ease };',
   ],
 })
 export class ToastComponent implements OnInit {
+  private store = inject<Store<AppState>>(Store);
+  private router = inject(Router);
+
   message = '';
   error = '';
 
-  constructor(private store: Store<AppState>, private router: Router) {}
+  private errorTimeout?: ReturnType<typeof setTimeout>;
+  private messageTimeout?: ReturnType<typeof setTimeout>;
 
   handleErrors(e: string) {
-    clearTimeout();
+    clearTimeout(this.errorTimeout);
     if (e === 'jwt expired') {
       this.router.navigateByUrl('/login');
       this.error = 'La sesión ha caducado, vuelve a iniciar sesión';
     }
     this.error = e;
-    setTimeout(() => {
+    this.errorTimeout = setTimeout(() => {
       this.error = '';
     }, 4000);
   }
 
   handleMessage(m: string) {
-    clearTimeout();
+    clearTimeout(this.messageTimeout);
     this.router.navigateByUrl('/');
     this.message = m;
-    setTimeout(() => {
+    this.messageTimeout = setTimeout(() => {
       this.message = '';
     }, 4000);
   }

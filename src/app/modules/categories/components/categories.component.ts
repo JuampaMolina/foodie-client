@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,20 +18,26 @@ import {
   updateCategory,
 } from '../store/categories.actions';
 import { selectCategories } from '../store/categories.selectors';
+import { CategoryCardComponent } from './category-card.component';
+import { Bind } from 'primeng/bind';
+import { Dialog } from 'primeng/dialog';
+import { CategoryFormComponent } from './category-form.component';
 
 @Component({
   selector: 'app-categories',
   template: `
     <div class="grid-responsive-container-md">
-      <div *ngIf="isAdmin" (click)="create = true" class="primary-button">
+      @if (isAdmin) {
+      <div (click)="create = true" class="primary-button">
         <i class="fa-solid fa-circle-plus text-xl"></i>
       </div>
+      } @for (category of categories; track category) {
       <app-category-card
-        *ngFor="let category of categories"
         [category]="category"
         [selectedCategory]="selectedCategory"
         (categorySelected)="selectCategory($event)">
       </app-category-card>
+      }
     </div>
     <p-dialog
       header="Añadir nueva categoría"
@@ -46,7 +52,8 @@ import { selectCategories } from '../store/categories.selectors';
     </p-dialog>
     <p-dialog
       header="Modificar categoría"
-      [(visible)]="modify"
+      [visible]="!!modify"
+      (visibleChange)="onModifyVisibleChange($event)"
       [modal]="true"
       [style]="{ width: '50vw' }"
       [draggable]="false"
@@ -58,8 +65,11 @@ import { selectCategories } from '../store/categories.selectors';
       </app-category-form>
     </p-dialog>
   `,
+  imports: [CategoryCardComponent, Bind, Dialog, CategoryFormComponent],
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
+  private store = inject<Store<AppState>>(Store);
+
   isAdmin: boolean = false;
   create: boolean = false;
   reset: boolean = false;
@@ -68,8 +78,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
 
   private onDestroy = new Subject<void>();
-
-  constructor(private store: Store<AppState>) {}
 
   selectCategory = (category: Category) => {
     if (this.isAdmin) {
@@ -101,6 +109,12 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.store.dispatch(deleteCategory({ categoryId }));
     console.log('delete: ', categoryId);
     this.modify = undefined;
+  }
+
+  onModifyVisibleChange(visible: boolean) {
+    if (!visible) {
+      this.modify = undefined;
+    }
   }
 
   getCategories() {

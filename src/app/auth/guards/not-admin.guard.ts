@@ -1,28 +1,20 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map } from 'rxjs';
 import { selectIsAdmin } from 'src/app/modules/users/store/users.selectors';
 import { AppState } from 'src/app/store/app.reducers';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class NotAdminGuard implements CanActivate {
-  constructor(private store: Store<AppState>, private router: Router) {}
+export const notAdminGuard: CanActivateFn = () => {
+  const store = inject<Store<AppState>>(Store);
+  const router = inject(Router);
 
-  canActivate():
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    return this.store.select(selectIsAdmin).pipe(
-      map(isAdmin => {
-        if (isAdmin) {
-          return this.router.createUrlTree(['/admin']);
-        }
-        return true;
-      })
-    );
-  }
-}
+  return store.select(selectIsAdmin).pipe(
+    map(isAdmin => {
+      if (isAdmin) {
+        return router.createUrlTree(['/admin']);
+      }
+      return true;
+    })
+  );
+};

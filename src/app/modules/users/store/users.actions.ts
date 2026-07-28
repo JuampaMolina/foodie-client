@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '../interface/User';
+import { User } from '../interface/user';
 import { UserSession } from '../interface/UserSession';
 import { RegisterUserCommand } from '../interface/RegisterUserCommand';
 import { LoginUserCommand } from '../interface/LoginUserCommand';

@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { RegisterUserCommand } from '../interface/RegisterUserCommand';
 import { registerUser } from '../store/users.actions';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -23,13 +29,10 @@ import { registerUser } from '../store/users.actions';
             type="name"
             placeholder="Nombre"
             formControlName="name" />
-          <small
-            class="text-red-400"
-            *ngIf="
-              this.registerForm.get('name')?.hasError('required') && showErrors
-            ">
-            El nombre es requerido
-          </small>
+          @if ( this.registerForm.get('name')?.hasError('required') &&
+          showErrors ) {
+          <small class="text-red-400"> El nombre es requerido </small>
+          }
         </div>
         <div>
           <label class="form-label" for="name">Email </label>
@@ -39,22 +42,15 @@ import { registerUser } from '../store/users.actions';
             type="email"
             placeholder="Email"
             formControlName="email" />
-          <small
-            class="text-red-400"
-            *ngIf="
-              this.registerForm.get('email')?.hasError('required') && showErrors
-            ">
-            El email es requerido
+          @if ( this.registerForm.get('email')?.hasError('required') &&
+          showErrors ) {
+          <small class="text-red-400"> El email es requerido </small>
+          } @if ( !this.registerForm.get('email')?.hasError('required') &&
+          this.registerForm.get('email')?.hasError('email') && showErrors ) {
+          <small class="text-red-400">
+            El email debe tener el siguiente formato: example&#64;example.com
           </small>
-          <small
-            class="text-red-400"
-            *ngIf="
-              !this.registerForm.get('email')?.hasError('required') &&
-              this.registerForm.get('email')?.hasError('email') &&
-              showErrors
-            ">
-            El email debe tener el siguiente formato: example@example.com
-          </small>
+          }
         </div>
         <div>
           <label class="form-label" for="name">Contraseña </label>
@@ -64,23 +60,16 @@ import { registerUser } from '../store/users.actions';
             type="password"
             placeholder="Contraseña"
             formControlName="password" />
-          <small
-            class="text-red-400"
-            *ngIf="
-              this.registerForm.get('password')?.hasError('required') &&
-              showErrors
-            ">
-            La contraseña es requerida
-          </small>
-          <small
-            class="text-red-400"
-            *ngIf="
-              !this.registerForm.get('password')?.hasError('required') &&
-              this.registerForm.get('password')?.hasError('minlength') &&
-              showErrors
-            ">
+          @if ( this.registerForm.get('password')?.hasError('required') &&
+          showErrors ) {
+          <small class="text-red-400"> La contraseña es requerida </small>
+          } @if ( !this.registerForm.get('password')?.hasError('required') &&
+          this.registerForm.get('password')?.hasError('minlength') && showErrors
+          ) {
+          <small class="text-red-400">
             La contraseña debe tener al menos 4 carácteres
           </small>
+          }
         </div>
         <button class="primary-button col-start-2" type="submit">Enviar</button>
       </form>
@@ -90,8 +79,11 @@ import { registerUser } from '../store/users.actions';
     </div>
   `,
   styles: [],
+  imports: [ReactiveFormsModule, RouterLink],
 })
 export class RegisterComponent {
+  private store = inject<Store<AppState>>(Store);
+
   registerForm = new FormGroup({
     name: new FormControl(null, Validators.required),
     email: new FormControl(null, [Validators.required, Validators.email]),
@@ -102,8 +94,6 @@ export class RegisterComponent {
   });
 
   showErrors: boolean = false;
-
-  constructor(private store: Store<AppState>) {}
 
   onSubmit() {
     if (this.registerForm.invalid) {

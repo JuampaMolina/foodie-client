@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { LoginUserCommand } from '../interface/LoginUserCommand';
 import { loginUser } from '../store/users.actions';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -46,13 +52,15 @@ import { loginUser } from '../store/users.actions';
     </div>
   `,
   styles: [],
+  imports: [ReactiveFormsModule, RouterLink],
 })
 export class LoginComponent {
+  private store = inject<Store<AppState>>(Store);
+
   loginForm = new FormGroup({
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
-  constructor(private store: Store<AppState>) {}
 
   onSubmit() {
     let user: LoginUserCommand = {

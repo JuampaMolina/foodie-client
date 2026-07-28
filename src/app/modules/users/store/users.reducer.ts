@@ -10,7 +10,7 @@ import {
 } from './users.actions';
 import { UsersState } from '../interface/UsersState';
 
-export const ordersInitalState: UsersState = {
+export const usersInitialState: UsersState = {
   user: undefined,
   token: undefined,
   loading: false,
@@ -19,7 +19,7 @@ export const ordersInitalState: UsersState = {
 };
 
 export const usersReducer = createReducer(
-  ordersInitalState,
+  usersInitialState,
 
   on(registerUser, (state, { user }) => ({
     ...state,
