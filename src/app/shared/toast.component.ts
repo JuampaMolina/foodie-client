@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { merge } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducers';
 import { selectCategoriesError } from '../modules/categories/store/categories.selectors';
 import { selectItemsError } from '../modules/items/store/items.selectors';
@@ -15,13 +15,13 @@ import { selectUsersError } from '../modules/users/store/users.selectors';
   selector: 'app-toast',
   imports: [],
   template: `
-    @if (error) {
+    @if (error()) {
     <div class="toast-error animate">
-      {{ error }}
+      {{ error() }}
     </div>
-    } @if (message) {
+    } @if (message()) {
     <div class="toast-message animate">
-      {{ message }}
+      {{ message() }}
     </div>
     }
   `,
@@ -29,47 +29,48 @@ import { selectUsersError } from '../modules/users/store/users.selectors';
     '@keyframes fade-in-out {0%, 100% {opacity: 0}; 50% {opacity: 1}}; .animate { animation: fade-in-out 4s ease };',
   ],
 })
-export class ToastComponent implements OnInit {
+export class ToastComponent {
   private store = inject<Store<AppState>>(Store);
   private router = inject(Router);
 
-  message = '';
-  error = '';
+  private itemsError = toSignal(this.store.select(selectItemsError));
+  private ordersError = toSignal(this.store.select(selectOrdersError));
+  private categoriesError = toSignal(this.store.select(selectCategoriesError));
+  private usersError = toSignal(this.store.select(selectUsersError));
+  private ordersMessage = toSignal(this.store.select(selectOrdersMessage));
+
+  message = signal('');
+  error = signal('');
 
   private errorTimeout?: ReturnType<typeof setTimeout>;
   private messageTimeout?: ReturnType<typeof setTimeout>;
+
+  constructor() {
+    effect(() => this.handleErrors(this.itemsError() ?? ''));
+    effect(() => this.handleErrors(this.ordersError() ?? ''));
+    effect(() => this.handleErrors(this.categoriesError() ?? ''));
+    effect(() => this.handleErrors(this.usersError() ?? ''));
+    effect(() => this.handleMessage(this.ordersMessage() ?? ''));
+  }
 
   handleErrors(e: string) {
     clearTimeout(this.errorTimeout);
     if (e === 'jwt expired') {
       this.router.navigateByUrl('/login');
-      this.error = 'La sesión ha caducado, vuelve a iniciar sesión';
+      this.error.set('La sesión ha caducado, vuelve a iniciar sesión');
     }
-    this.error = e;
+    this.error.set(e);
     this.errorTimeout = setTimeout(() => {
-      this.error = '';
+      this.error.set('');
     }, 4000);
   }
 
   handleMessage(m: string) {
     clearTimeout(this.messageTimeout);
     this.router.navigateByUrl('/');
-    this.message = m;
+    this.message.set(m);
     this.messageTimeout = setTimeout(() => {
-      this.message = '';
+      this.message.set('');
     }, 4000);
-  }
-
-  ngOnInit(): void {
-    merge(
-      this.store.select(selectItemsError),
-      this.store.select(selectOrdersError),
-      this.store.select(selectCategoriesError),
-      this.store.select(selectUsersError)
-    ).subscribe(error => this.handleErrors(error));
-
-    merge(this.store.select(selectOrdersMessage)).subscribe(message =>
-      this.handleMessage(message)
-    );
   }
 }
