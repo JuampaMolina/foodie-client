@@ -1,4 +1,6 @@
+import { createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { Item } from '../interface/item';
 import { ItemsState } from '../interface/items-state';
 import {
   createItem,
@@ -18,13 +20,16 @@ import {
   updateItemSuccess,
 } from './items.actions';
 
-export const itemsInitalState: ItemsState = {
-  items: [],
+export const itemsAdapter = createEntityAdapter<Item>({
+  selectId: item => item._id,
+});
+
+export const itemsInitalState: ItemsState = itemsAdapter.getInitialState({
   loading: false,
   loaded: false,
   error: '',
   message: '',
-};
+});
 
 export const itemsReducer = createReducer(
   itemsInitalState,
@@ -42,12 +47,13 @@ export const itemsReducer = createReducer(
     error: error.message,
   })),
 
-  on(getItemsSuccess, (state, { items }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    items: items,
-  })),
+  on(getItemsSuccess, (state, { items }) =>
+    itemsAdapter.setAll(items, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(getItemsByCategoryId, state => ({
     ...state,
@@ -62,12 +68,13 @@ export const itemsReducer = createReducer(
     error: error.message,
   })),
 
-  on(getItemsByCategoryIdSuccess, (state, { items }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    items: items,
-  })),
+  on(getItemsByCategoryIdSuccess, (state, { items }) =>
+    itemsAdapter.setAll(items, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(createItem, state => ({
     ...state,
@@ -82,12 +89,13 @@ export const itemsReducer = createReducer(
     error: error.message,
   })),
 
-  on(createItemSuccess, (state, { item }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    items: [...state.items, item],
-  })),
+  on(createItemSuccess, (state, { item }) =>
+    itemsAdapter.addOne(item, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(updateItem, state => ({
     ...state,
@@ -102,12 +110,13 @@ export const itemsReducer = createReducer(
     error: error.message,
   })),
 
-  on(updateItemSuccess, (state, { item }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    items: state.items.map(i => (i._id === item._id ? item : i)),
-  })),
+  on(updateItemSuccess, (state, { item }) =>
+    itemsAdapter.upsertOne(item, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(deleteItem, state => ({
     ...state,
@@ -122,10 +131,11 @@ export const itemsReducer = createReducer(
     error: error.message,
   })),
 
-  on(deleteItemSuccess, (state, { item }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    items: state.items.filter(i => i._id !== item._id),
-  }))
+  on(deleteItemSuccess, (state, { item }) =>
+    itemsAdapter.removeOne(item._id, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  )
 );

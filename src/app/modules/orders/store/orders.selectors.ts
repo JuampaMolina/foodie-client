@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 import { OrdersState } from '../interface/orders-state';
+import { ordersAdapter } from './orders.reducer';
 
 const _selectOrdersState = (state: AppState): OrdersState => state.orders;
 
@@ -24,15 +25,10 @@ export const selectOrdersLoading = createSelector(
   (state: OrdersState) => state.loading
 );
 
-export const selectOrders = createSelector(
-  _selectOrdersState,
-  (state: OrdersState) => {
-    let sortedOrders = [...state.orders];
-    return sortedOrders.sort(
-      (a, b) => Number(new Date(b.date)) - Number(new Date(a.date))
-    );
-  }
-);
+const { selectAll } = ordersAdapter.getSelectors();
+
+// The adapter's sortComparer already keeps orders sorted by date descending.
+export const selectOrders = createSelector(_selectOrdersState, selectAll);
 
 export const selectCart = createSelector(
   _selectOrdersState,

@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 import { ItemsState } from '../interface/items-state';
+import { itemsAdapter } from './items.reducer';
 
 const _selectItemsState = (state: AppState): ItemsState => state.items;
 
@@ -24,7 +25,6 @@ export const selectItemsLoading = createSelector(
   (state: ItemsState) => state.loading
 );
 
-export const selectItems = createSelector(
-  _selectItemsState,
-  (state: ItemsState) => state.items
-);
+const { selectAll } = itemsAdapter.getSelectors();
+
+export const selectItems = createSelector(_selectItemsState, selectAll);

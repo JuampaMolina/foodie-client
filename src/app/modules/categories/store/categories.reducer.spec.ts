@@ -7,7 +7,13 @@ import {
   getCategoriesSuccess,
   updateCategorySuccess,
 } from './categories.actions';
-import { categoriesInitalState, categoriesReducer } from './categories.reducer';
+import {
+  categoriesAdapter,
+  categoriesInitalState,
+  categoriesReducer,
+} from './categories.reducer';
+
+const { selectAll } = categoriesAdapter.getSelectors();
 
 describe('categoriesReducer', () => {
   const category: Category = { _id: '1', name: 'Bebidas' };
@@ -37,33 +43,36 @@ describe('categoriesReducer', () => {
       categoriesInitalState,
       getCategoriesSuccess({ categories: [category] })
     );
-    expect(state.categories).toEqual([category]);
+    expect(selectAll(state)).toEqual([category]);
     expect(state.loaded).toBeTrue();
   });
 
   it('should append the category on createCategorySuccess', () => {
     const newCategory: Category = { _id: '2', name: 'Postres' };
+    const seeded = categoriesAdapter.setAll([category], categoriesInitalState);
     const state = categoriesReducer(
-      { ...categoriesInitalState, categories: [category] },
+      seeded,
       createCategorySuccess({ category: newCategory })
     );
-    expect(state.categories).toEqual([category, newCategory]);
+    expect(selectAll(state)).toEqual([category, newCategory]);
   });
 
   it('should replace the matching category on updateCategorySuccess', () => {
     const updated: Category = { _id: '1', name: 'Bebidas frías' };
+    const seeded = categoriesAdapter.setAll([category], categoriesInitalState);
     const state = categoriesReducer(
-      { ...categoriesInitalState, categories: [category] },
+      seeded,
       updateCategorySuccess({ category: updated })
     );
-    expect(state.categories).toEqual([updated]);
+    expect(selectAll(state)).toEqual([updated]);
   });
 
   it('should remove the matching category on deleteCategorySuccess', () => {
+    const seeded = categoriesAdapter.setAll([category], categoriesInitalState);
     const state = categoriesReducer(
-      { ...categoriesInitalState, categories: [category] },
+      seeded,
       deleteCategorySuccess({ category })
     );
-    expect(state.categories).toEqual([]);
+    expect(selectAll(state)).toEqual([]);
   });
 });
