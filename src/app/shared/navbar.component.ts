@@ -1,12 +1,10 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCartCount } from 'src/app/modules/orders/store/orders.selectors';
 import { logoutUser } from 'src/app/modules/users/store/users.actions';
-import {
-  selectIsAdmin,
-  selectUser,
-} from 'src/app/modules/users/store/users.selectors';
+import { selectIsAdmin } from 'src/app/modules/users/store/users.selectors';
 import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
@@ -19,7 +17,7 @@ import { AppState } from 'src/app/store/app.reducers';
         <h1 class="font-mukta text-4xl font-extrabold">
           {{ title }}
         </h1>
-        @if (isAdmin) {
+        @if (isAdmin()) {
         <button
           class="rounded bg-slate-600 p-2 font-semibold"
           routerLink="/admin">
@@ -27,11 +25,11 @@ import { AppState } from 'src/app/store/app.reducers';
         </button>
         }
       </div>
-      @if (isAdmin) {
+      @if (isAdmin()) {
       <button (click)="logout()">
         <i class="fa-solid fa-right-from-bracket text-xl"></i>
       </button>
-      } @if (!isAdmin) {
+      } @if (!isAdmin()) {
       <div class="mr-2 space-x-4 text-xl sm:space-x-6">
         <button routerLink="/">
           <i class="fa-solid fa-house"></i>
@@ -41,10 +39,10 @@ import { AppState } from 'src/app/store/app.reducers';
         </button>
         <button class="relative" routerLink="/cart">
           <i class="fa-solid fa-cart-shopping"></i>
-          @if (cartCount > 0) {
+          @if (cartCount() > 0) {
           <span
             class="absolute -top-3 -right-3 rounded-full bg-slate-200 px-1 text-sm font-semibold text-slate-800"
-            >{{ cartCount }}</span
+            >{{ cartCount() }}</span
           >
           }
         </button>
@@ -54,29 +52,15 @@ import { AppState } from 'src/app/store/app.reducers';
   `,
   styles: [],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   private store = inject<Store<AppState>>(Store);
 
   @Input() title: string = '';
-  userName: string = '';
-  isAdmin: boolean = false;
-  cartCount: number = 0;
+
+  cartCount = toSignal(this.store.select(selectCartCount), { initialValue: 0 });
+  isAdmin = toSignal(this.store.select(selectIsAdmin), { initialValue: false });
 
   logout() {
     this.store.dispatch(logoutUser());
-  }
-
-  ngOnInit() {
-    this.store
-      .select(selectCartCount)
-      .subscribe(cartCount => (this.cartCount = cartCount));
-
-    this.store
-      .select(selectUser)
-      .subscribe(user => (this.userName = user?.name ?? ''));
-
-    this.store
-      .select(selectIsAdmin)
-      .subscribe(isAdmin => (this.isAdmin = isAdmin));
   }
 }

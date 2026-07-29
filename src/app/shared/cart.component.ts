@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { Item } from 'src/app/modules/items/interface/item';
 
 import {
@@ -24,17 +23,17 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
   template: `
     <div class="mb-4 flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>
-      @if (cartCount > 0) {
+      @if (cartCount() > 0) {
       <span class="rounded bg-slate-300 px-2 py-1 text-xl font-bold">{{
-        cartCount
+        cartCount()
       }}</span>
       }
     </div>
-    @if (cartCount < 1) {
+    @if (cartCount() < 1) {
     <span class="text-xl font-semibold">El carrito está vacío</span>
     }
     <div class="flex flex-col gap-4">
-      @for (item of uniqueItems; track item) {
+      @for (item of uniqueItems(); track item) {
       <app-item-card
         (addItemEvent)="addItem($event)"
         (removeItemEvent)="removeItem($event)"
@@ -44,11 +43,11 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
       </app-item-card>
       }
     </div>
-    @if (cart.length > 0) {
+    @if (cart().length > 0) {
     <span class="my-2 flex justify-end text-2xl font-semibold text-slate-800"
-      >Total: {{ totalPrice }} EUR
+      >Total: {{ totalPrice() }} EUR
     </span>
-    } @if (cartCount > 0) {
+    } @if (cartCount() > 0) {
     <button (click)="createOrder()" class="primary-button">
       Realizar pedido
     </button>
@@ -56,24 +55,22 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
   `,
   styles: [],
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class CartComponent {
   private store = inject<Store<AppState>>(Store);
 
-  cart: Item[] = [];
-  uniqueItems: Item[] = [];
-  cartCount: number = 0;
-  totalPrice: number = 0;
-
-  private onDestroy = new Subject<void>();
-
-  toUnique(items: Item[]): Item[] {
-    return items.filter((x, i, a) => a.indexOf(x) == i);
-  }
+  cart = toSignal(this.store.select(selectCart), { initialValue: [] });
+  uniqueItems = toSignal(this.store.select(selectCartUniqueItems), {
+    initialValue: [],
+  });
+  totalPrice = toSignal(this.store.select(selectCartTotalPrice), {
+    initialValue: 0,
+  });
+  cartCount = toSignal(this.store.select(selectCartCount), { initialValue: 0 });
 
   createOrder() {
     let order = {
-      items: this.cart.map(item => item._id),
-      totalPrice: this.totalPrice,
+      items: this.cart().map(item => item._id),
+      totalPrice: this.totalPrice(),
       date: new Date(),
     };
     this.store.dispatch(createOrder({ order }));
@@ -88,35 +85,6 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   getQuantity(itemId: string) {
-    return this.cart.filter(item => item._id === itemId).length;
-  }
-
-  clearCart() {
-    this.cart = [];
-    this.uniqueItems = [];
-  }
-
-  ngOnInit() {
-    this.store
-      .select(selectCart)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(cart => (this.cart = cart));
-    this.store
-      .select(selectCartUniqueItems)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(cart => (this.uniqueItems = cart));
-    this.store
-      .select(selectCartTotalPrice)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(totalPrice => (this.totalPrice = totalPrice));
-    this.store
-      .select(selectCartCount)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(cartCount => (this.cartCount = cartCount));
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.complete();
+    return this.cart().filter(item => item._id === itemId).length;
   }
 }

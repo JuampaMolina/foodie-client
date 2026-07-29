@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { Item } from '../interface/item';
@@ -9,10 +10,7 @@ import {
   updateItem,
 } from '../store/items.actions';
 
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { selectIsAdmin } from 'src/app/modules/users/store/users.selectors';
-import { Category } from '../../categories/interface/category';
 import { getCategories } from '../../categories/store/categories.actions';
 import { selectCategories } from '../../categories/store/categories.selectors';
 import {
@@ -32,16 +30,16 @@ import { ItemFormComponent } from './item-form.component';
   selector: 'app-items',
   template: `
     <div class="grid-responsive-container-xl">
-      @if (isAdmin) {
+      @if (isAdmin()) {
       <div (click)="create = true" class="primary-button h-32">
         <i class="fa-solid fa-circle-plus text-3xl"></i>
       </div>
-      } @for (item of items; track item) {
+      } @for (item of items(); track item) {
       <app-item-card
         (modifyItemEvent)="modifyItem($event)"
         (addItemEvent)="addItem($event)"
         (removeItemEvent)="removeItem($event)"
-        [isAdmin]="isAdmin"
+        [isAdmin]="isAdmin()"
         [item]="item"
         [quantity]="getQuantity(item._id)">
       </app-item-card>
@@ -56,7 +54,7 @@ import { ItemFormComponent } from './item-form.component';
       [resizable]="false"
       (onHide)="reset = true">
       <app-item-form
-        [categories]="categories"
+        [categories]="categories()"
         [reset]="reset"
         (createEvent)="createItem($event)">
       </app-item-form>
@@ -71,7 +69,7 @@ import { ItemFormComponent } from './item-form.component';
       [resizable]="false">
       <app-item-form
         [modify]="modify"
-        [categories]="categories"
+        [categories]="categories()"
         (updateEvent)="updateItem($event)"
         (deleteEvent)="deleteItem($event)">
       </app-item-form>
@@ -80,18 +78,27 @@ import { ItemFormComponent } from './item-form.component';
   styles: [],
   imports: [ItemCardComponent, Bind, Dialog, ItemFormComponent],
 })
-export class ItemsComponent implements OnInit, OnDestroy {
+export class ItemsComponent implements OnInit {
   private store = inject<Store<AppState>>(Store);
 
-  isAdmin: boolean = false;
+  items = toSignal(this.store.select(selectItems), { initialValue: [] });
+  categories = toSignal(this.store.select(selectCategories), {
+    initialValue: [],
+  });
+  cart = toSignal(this.store.select(selectCart), { initialValue: [] });
+  isAdmin = toSignal(this.store.select(selectIsAdmin), { initialValue: false });
+
   create: boolean = false;
   reset: boolean = false;
   modify?: Item;
-  items: Item[] = [];
-  cart: Item[] = [];
-  categories: Category[] = [];
 
-  private onDestroy = new Subject<void>();
+  constructor() {
+    effect(() => {
+      if (this.isAdmin()) {
+        this.getCategories();
+      }
+    });
+  }
 
   modifyItem(item: Item) {
     this.modify = item;
@@ -106,7 +113,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
   }
 
   getQuantity(itemId: string) {
-    return this.cart.filter(item => item._id === itemId).length;
+    return this.cart().filter(item => item._id === itemId).length;
   }
 
   createItem(item: CreateItemCommand) {
@@ -142,32 +149,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store
-      .select(selectItems)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(items => (this.items = items));
-
-    this.store
-      .select(selectCategories)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(categories => (this.categories = categories));
-
-    this.store
-      .select(selectCart)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(cart => (this.cart = cart));
-
-    this.store.select(selectIsAdmin).subscribe(isAdmin => {
-      this.isAdmin = isAdmin;
-      if (isAdmin) {
-        this.getCategories();
-      }
-    });
-
     this.getItems();
-  }
-  ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.complete();
   }
 }
