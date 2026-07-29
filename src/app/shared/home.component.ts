@@ -13,9 +13,15 @@ import { ItemsComponent } from '../modules/items/components/items.component';
     <div class="flex flex-col space-y-8">
       @if (userName) {
       <h2 class="title-2 text-right">Hola {{ userName }}!</h2>
-      }
+      } @defer (on idle) {
       <app-categories></app-categories>
+      } @loading {
+      <p class="text-center">Cargando categorías...</p>
+      } @defer (on idle) {
       <app-items></app-items>
+      } @loading {
+      <p class="text-center">Cargando productos...</p>
+      }
     </div>
   `,
   styles: [],
