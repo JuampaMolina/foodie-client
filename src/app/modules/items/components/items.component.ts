@@ -1,4 +1,11 @@
-import { Component, OnInit, effect, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
@@ -26,15 +33,48 @@ import { Bind } from 'primeng/bind';
 import { Dialog } from 'primeng/dialog';
 import { ItemFormComponent } from './item-form.component';
 
+const normalize = (value: string): string =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
 @Component({
   selector: 'app-items',
   template: `
+    <div class="mb-4 flex flex-wrap gap-4">
+      <input
+        [value]="search()"
+        (input)="onSearchChange($event)"
+        placeholder="Buscar por nombre..."
+        class="form-input grow"
+        type="text" />
+      <input
+        [value]="minPrice() ?? ''"
+        (input)="onMinPriceChange($event)"
+        placeholder="Precio mín."
+        class="form-input w-32"
+        type="number"
+        min="0" />
+      <input
+        [value]="maxPrice() ?? ''"
+        (input)="onMaxPriceChange($event)"
+        placeholder="Precio máx."
+        class="form-input w-32"
+        type="number"
+        min="0" />
+    </div>
+    @if (items().length > 0 && filteredItems().length === 0) {
+    <span class="text-xl font-semibold"
+      >No hay productos que coincidan con la búsqueda</span
+    >
+    }
     <div class="grid-responsive-container-xl">
       @if (isAdmin()) {
       <div (click)="create = true" class="primary-button h-32">
         <i class="fa-solid fa-circle-plus text-3xl"></i>
       </div>
-      } @for (item of items(); track item) {
+      } @for (item of filteredItems(); track item) {
       <app-item-card
         (modifyItemEvent)="modifyItem($event)"
         (addItemEvent)="addItem($event)"
@@ -92,12 +132,43 @@ export class ItemsComponent implements OnInit {
   reset: boolean = false;
   modify?: Item;
 
+  search = signal('');
+  minPrice = signal<number | null>(null);
+  maxPrice = signal<number | null>(null);
+
+  filteredItems = computed(() => {
+    const search = normalize(this.search().trim());
+    const min = this.minPrice();
+    const max = this.maxPrice();
+
+    return this.items().filter(item => {
+      const matchesSearch = !search || normalize(item.name).includes(search);
+      const matchesMin = min == null || item.price >= min;
+      const matchesMax = max == null || item.price <= max;
+      return matchesSearch && matchesMin && matchesMax;
+    });
+  });
+
   constructor() {
     effect(() => {
       if (this.isAdmin()) {
         this.getCategories();
       }
     });
+  }
+
+  onSearchChange(event: Event) {
+    this.search.set((event.target as HTMLInputElement).value);
+  }
+
+  onMinPriceChange(event: Event) {
+    const value = (event.target as HTMLInputElement).valueAsNumber;
+    this.minPrice.set(Number.isNaN(value) ? null : value);
+  }
+
+  onMaxPriceChange(event: Event) {
+    const value = (event.target as HTMLInputElement).valueAsNumber;
+    this.maxPrice.set(Number.isNaN(value) ? null : value);
   }
 
   modifyItem(item: Item) {
