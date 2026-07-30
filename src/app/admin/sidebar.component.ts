@@ -5,7 +5,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   selector: 'app-sidebar',
   template: `
     <nav
-      class="flex justify-center rounded border-2 border-slate-800 bg-slate-100 xl:flex-col">
+      class="flex justify-center rounded border-2 border-slate-800 bg-slate-100 dark:border-slate-100 dark:bg-slate-800 xl:flex-col">
       <button
         class="flex-grow"
         routerLink="productos"
@@ -27,7 +27,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     </nav>
   `,
   styles: [
-    'button { @apply p-2 hover:bg-slate-800 hover:text-slate-200 font-medium transition duration-150 cursor-pointer xl:p-4 }; .active-link { @apply bg-slate-800 text-slate-200} ',
+    'button { @apply p-2 hover:bg-slate-800 hover:text-slate-200 dark:hover:bg-slate-600 font-medium transition duration-150 cursor-pointer xl:p-4 }; .active-link { @apply bg-slate-800 text-slate-200 dark:bg-slate-600 } ',
   ],
   imports: [RouterLink, RouterLinkActive],
 })

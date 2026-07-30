@@ -8,7 +8,11 @@ import { Category } from '../interface/category';
     <div
       (click)="selectCategory()"
       class="secondary-button h-14"
-      [class]="selectedCategory === this.category._id ? 'bg-slate-300' : ''">
+      [class]="
+        selectedCategory === this.category._id
+          ? 'bg-slate-300 dark:bg-slate-600'
+          : ''
+      ">
       <span class="font-semibold">{{ category.name }}</span>
     </div>
     }

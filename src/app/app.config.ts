@@ -30,6 +30,8 @@ export const appConfig: ApplicationConfig = {
       autoPause: true,
       connectInZone: true,
     }),
-    providePrimeNG({ theme: { preset: Aura } }),
+    providePrimeNG({
+      theme: { preset: Aura, options: { darkModeSelector: '.dark' } },
+    }),
   ],
 };

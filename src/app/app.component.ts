@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { NavbarComponent } from './shared/navbar.component';
+import { ThemeService } from './shared/theme.service';
 import { ToastComponent } from './shared/toast.component';
 
 @Component({
@@ -16,6 +17,7 @@ import { ToastComponent } from './shared/toast.component';
 })
 export class AppComponent implements OnInit {
   private auth = inject(AuthService);
+  private theme = inject(ThemeService);
 
   title = "foodie's";
 
