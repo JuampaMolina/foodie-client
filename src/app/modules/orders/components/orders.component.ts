@@ -2,7 +2,12 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { getOrders, getOrdersByUserId } from '../store/orders.actions';
+import { OrderStatus } from '../interface/order';
+import {
+  getOrders,
+  getOrdersByUserId,
+  updateOrderStatus,
+} from '../store/orders.actions';
 import { selectOrders } from '../store/orders.selectors';
 import { selectIsAdmin } from '../../users/store/users.selectors';
 import { OrderCardComponent } from './order-card.component';
@@ -23,7 +28,11 @@ import { OrderCardComponent } from './order-card.component';
     }
     <div class="flex flex-col gap-4">
       @for (order of orders(); track order) {
-      <app-order-card [order]="order"> </app-order-card>
+      <app-order-card
+        [order]="order"
+        [isAdmin]="isAdmin()"
+        (statusChangeEvent)="onStatusChange($event)">
+      </app-order-card>
       }
     </div>
   `,
@@ -44,6 +53,14 @@ export class OrdersComponent implements OnInit {
     } else {
       this.store.dispatch(getOrdersByUserId({ userId: this.userId }));
     }
+  }
+
+  onStatusChange(event: { orderId: string; status: OrderStatus }) {
+    this.store.dispatch(
+      updateOrderStatus({
+        statusUpdate: { orderId: event.orderId, status: event.status },
+      })
+    );
   }
 
   ngOnInit() {

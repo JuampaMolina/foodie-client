@@ -65,4 +65,18 @@ describe('OrdersApiService', () => {
     expect(req.request.body).toEqual(newOrder);
     req.flush(order);
   });
+
+  it('should PUT the new status of an order', () => {
+    const updated: Order = { ...order, status: 'preparing' };
+    service
+      .updateOrderStatus({ orderId: '1', status: 'preparing' })
+      .subscribe(result => {
+        expect(result).toEqual(updated);
+      });
+
+    const req = httpMock.expectOne(ordersApi + '/1/status');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ status: 'preparing' });
+    req.flush(updated);
+  });
 });

@@ -7,6 +7,7 @@ import {
   getOrdersError,
   getOrdersSuccess,
   removeItemFromCart,
+  updateOrderStatusSuccess,
 } from './orders.actions';
 import {
   ordersAdapter,
@@ -81,5 +82,15 @@ describe('ordersReducer', () => {
       removeItemFromCart({ itemId: 'a' })
     );
     expect(state.cart).toEqual([burger]);
+  });
+
+  it('should update the matching order on updateOrderStatusSuccess', () => {
+    const updated: Order = { ...order, status: 'preparing' };
+    const seeded = ordersAdapter.setAll([order], ordersInitalState);
+    const state = ordersReducer(
+      seeded,
+      updateOrderStatusSuccess({ order: updated })
+    );
+    expect(selectAll(state)).toEqual([updated]);
   });
 });

@@ -14,6 +14,9 @@ import {
   getOrdersError,
   getOrdersSuccess,
   removeItemFromCart,
+  updateOrderStatus,
+  updateOrderStatusError,
+  updateOrderStatusSuccess,
 } from './orders.actions';
 
 export const ordersAdapter = createEntityAdapter<Order>({
@@ -96,6 +99,27 @@ export const ordersReducer = createReducer(
       loaded: true,
       message: 'El pedido se ha realizado correctamente',
       cart: [],
+    })
+  ),
+
+  on(updateOrderStatus, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+  })),
+
+  on(updateOrderStatusError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message,
+  })),
+
+  on(updateOrderStatusSuccess, (state, { order }) =>
+    ordersAdapter.upsertOne(order, {
+      ...state,
+      loading: false,
+      loaded: true,
     })
   ),
 

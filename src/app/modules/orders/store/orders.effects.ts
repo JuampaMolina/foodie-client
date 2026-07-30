@@ -12,6 +12,9 @@ import {
   getOrdersByUserIdSuccess,
   getOrdersError,
   getOrdersSuccess,
+  updateOrderStatus,
+  updateOrderStatusError,
+  updateOrderStatusSuccess,
 } from './orders.actions';
 
 @Injectable()
@@ -50,6 +53,18 @@ export class OrdersEffects {
         this.ordersApi.createOrder(action.order).pipe(
           map(order => createOrderSuccess({ order })),
           catchError(error => of(createOrderError({ error })))
+        )
+      )
+    )
+  );
+
+  updateOrderStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateOrderStatus),
+      mergeMap(action =>
+        this.ordersApi.updateOrderStatus(action.statusUpdate).pipe(
+          map(order => updateOrderStatusSuccess({ order })),
+          catchError(error => of(updateOrderStatusError({ error })))
         )
       )
     )

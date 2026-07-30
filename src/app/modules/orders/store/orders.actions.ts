@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Item } from '../../items/interface/item';
 import { CreateOrderCommand } from '../interface/createOrderCommand';
 import { Order } from '../interface/order';
+import { UpdateOrderStatusCommand } from '../interface/updateOrderStatusCommand';
 
 export const getOrders = createAction('[Orders] getOrders');
 export const getOrdersError = createAction(
@@ -36,6 +37,19 @@ export const createOrderError = createAction(
 );
 export const createOrderSuccess = createAction(
   '[Orders] createOrderSuccess',
+  props<{ order: Order }>()
+);
+
+export const updateOrderStatus = createAction(
+  '[Orders] updateOrderStatus',
+  props<{ statusUpdate: UpdateOrderStatusCommand }>()
+);
+export const updateOrderStatusError = createAction(
+  '[Orders] updateOrderStatusError',
+  props<{ error: any }>()
+);
+export const updateOrderStatusSuccess = createAction(
+  '[Orders] updateOrderStatusSuccess',
   props<{ order: Order }>()
 );
 
