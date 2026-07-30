@@ -16,10 +16,7 @@ const STATUS_CLASSES: Record<OrderStatus, string> = {
   delivered: 'bg-emerald-300 text-emerald-900',
 };
 
-const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
-  pending: 'preparing',
-  preparing: 'delivered',
-};
+const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
 
 @Component({
   selector: 'app-order-card',
@@ -97,10 +94,20 @@ const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
             >Total {{ order.totalPrice }} EUR</span
           >
         </div>
-        @if (isAdmin && nextStatus) {
-        <button (click)="advanceStatus()" class="primary-button w-full">
-          Marcar como {{ nextStatusLabel }}
-        </button>
+        @if (isAdmin) {
+        <div>
+          <label class="form-label mb-1" for="status">Cambiar estado</label>
+          <select
+            id="status"
+            class="select-background form-input w-full cursor-pointer"
+            (change)="onStatusChange($event)">
+            @for (option of statusOptions; track option) {
+            <option [value]="option" [selected]="option === status">
+              {{ statusLabels[option] }}
+            </option>
+            }
+          </select>
+        </div>
         }
       </div>
       }
@@ -121,6 +128,9 @@ export class OrderCardComponent {
 
   constructor() {}
 
+  readonly statusLabels = STATUS_LABELS;
+  readonly statusOptions = STATUS_OPTIONS;
+
   get status(): OrderStatus {
     return this.order?.status ?? 'pending';
   }
@@ -133,22 +143,14 @@ export class OrderCardComponent {
     return STATUS_CLASSES[this.status];
   }
 
-  get nextStatus(): OrderStatus | undefined {
-    return NEXT_STATUS[this.status];
-  }
-
-  get nextStatusLabel(): string {
-    return this.nextStatus ? STATUS_LABELS[this.nextStatus] : '';
-  }
-
   getQuantity(itemId: string): number {
     return this.order?.items!.filter(item => item._id === itemId).length!;
   }
 
-  advanceStatus() {
-    const next = this.nextStatus;
-    if (next && this.order) {
-      this.statusChangeEvent.emit({ orderId: this.order._id, status: next });
+  onStatusChange(event: Event) {
+    const status = (event.target as HTMLSelectElement).value as OrderStatus;
+    if (this.order && status !== this.status) {
+      this.statusChangeEvent.emit({ orderId: this.order._id, status });
     }
   }
 }
