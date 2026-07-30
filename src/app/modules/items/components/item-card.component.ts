@@ -7,7 +7,7 @@ const DEFAULT_ITEM_IMAGE = 'assets/items/placeholder.svg';
   selector: 'app-item-card',
   template: `
     @if (item) {
-    <div class="flex h-32 gap-3 rounded bg-slate-200 p-3 text-slate-800">
+    <div class="flex min-h-32 gap-3 rounded bg-slate-200 p-3 text-slate-800">
       <img
         [src]="item.image || defaultImage"
         [alt]="item.name"
