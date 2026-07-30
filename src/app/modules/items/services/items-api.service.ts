@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
 import { environment } from '../../../../environments/environment';
 import { CreateItemCommand } from '../interface/createItemCommand';
 import { Item } from '../interface/item';
@@ -14,7 +13,6 @@ const itemsApi = environment.apiBaseUri + '/items';
 })
 export class ItemsApiService {
   private http = inject(HttpClient);
-  private auth = inject(AuthService);
 
   getItems(): Observable<Item[]> {
     return this.http.get<Item[]>(itemsApi);
@@ -26,22 +24,18 @@ export class ItemsApiService {
   }
 
   createItem(item: CreateItemCommand): Observable<Item> {
-    return this.http.post<Item>(itemsApi, item, this.auth.getHeaders());
+    return this.http.post<Item>(itemsApi, item);
   }
 
   updateItem(itemUpdate: UpdateItemCommand): Observable<Item> {
     const { itemId, item } = itemUpdate;
     const url = itemsApi + '/' + itemId;
 
-    return this.http.put<Item>(url, item, this.auth.getHeaders());
+    return this.http.put<Item>(url, item);
   }
 
   deleteItem(itemId: string): Observable<Item> {
     const url = itemsApi + '/' + itemId;
-    return this.http.delete<Item>(url, this.auth.getHeaders());
+    return this.http.delete<Item>(url);
   }
-
-  // addCategoryToItem(categoryId: string, itemId: string) {
-  //   return this.http.put(itemsApi + '/category', { categoryId, itemId });
-  // }
 }

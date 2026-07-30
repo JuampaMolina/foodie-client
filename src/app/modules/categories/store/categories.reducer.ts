@@ -1,4 +1,6 @@
+import { createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { Category } from '../interface/category';
 import { CategoriesState } from '../interface/categories-state';
 import {
   createCategory,
@@ -15,13 +17,17 @@ import {
   updateCategorySuccess,
 } from './categories.actions';
 
-export const categoriesInitalState: CategoriesState = {
-  categories: [],
-  loading: false,
-  loaded: false,
-  error: '',
-  message: '',
-};
+export const categoriesAdapter = createEntityAdapter<Category>({
+  selectId: category => category._id,
+});
+
+export const categoriesInitalState: CategoriesState =
+  categoriesAdapter.getInitialState({
+    loading: false,
+    loaded: false,
+    error: '',
+    message: '',
+  });
 
 export const categoriesReducer = createReducer(
   categoriesInitalState,
@@ -39,12 +45,13 @@ export const categoriesReducer = createReducer(
     error: error.message,
   })),
 
-  on(getCategoriesSuccess, (state, { categories }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    categories: categories,
-  })),
+  on(getCategoriesSuccess, (state, { categories }) =>
+    categoriesAdapter.setAll(categories, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(createCategory, state => ({
     ...state,
@@ -59,12 +66,13 @@ export const categoriesReducer = createReducer(
     error: error.message,
   })),
 
-  on(createCategorySuccess, (state, { category }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    categories: [...state.categories, category],
-  })),
+  on(createCategorySuccess, (state, { category }) =>
+    categoriesAdapter.addOne(category, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(updateCategory, state => ({
     ...state,
@@ -79,14 +87,13 @@ export const categoriesReducer = createReducer(
     error: error.message,
   })),
 
-  on(updateCategorySuccess, (state, { category }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    categories: state.categories.map(i =>
-      i._id === category._id ? category : i
-    ),
-  })),
+  on(updateCategorySuccess, (state, { category }) =>
+    categoriesAdapter.upsertOne(category, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(deleteCategory, state => ({
     ...state,
@@ -101,10 +108,11 @@ export const categoriesReducer = createReducer(
     error: error.message,
   })),
 
-  on(deleteCategorySuccess, (state, { category }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    categories: state.categories.filter(i => i._id !== category._id),
-  }))
+  on(deleteCategorySuccess, (state, { category }) =>
+    categoriesAdapter.removeOne(category._id, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  )
 );

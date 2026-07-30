@@ -7,8 +7,15 @@ import {
   getOrdersError,
   getOrdersSuccess,
   removeItemFromCart,
+  updateOrderStatusSuccess,
 } from './orders.actions';
-import { ordersInitalState, ordersReducer } from './orders.reducer';
+import {
+  ordersAdapter,
+  ordersInitalState,
+  ordersReducer,
+} from './orders.reducer';
+
+const { selectAll } = ordersAdapter.getSelectors();
 
 describe('ordersReducer', () => {
   const order: Order = {
@@ -47,7 +54,7 @@ describe('ordersReducer', () => {
       ordersInitalState,
       getOrdersSuccess({ orders: [order] })
     );
-    expect(state.orders).toEqual([order]);
+    expect(selectAll(state)).toEqual([order]);
   });
 
   it('should append the order and empty the cart on createOrderSuccess', () => {
@@ -55,7 +62,7 @@ describe('ordersReducer', () => {
       { ...ordersInitalState, cart: [burger] },
       createOrderSuccess({ order })
     );
-    expect(state.orders).toEqual([order]);
+    expect(selectAll(state)).toEqual([order]);
     expect(state.cart).toEqual([]);
     expect(state.message).toBe('El pedido se ha realizado correctamente');
   });
@@ -75,5 +82,15 @@ describe('ordersReducer', () => {
       removeItemFromCart({ itemId: 'a' })
     );
     expect(state.cart).toEqual([burger]);
+  });
+
+  it('should update the matching order on updateOrderStatusSuccess', () => {
+    const updated: Order = { ...order, status: 'preparing' };
+    const seeded = ordersAdapter.setAll([order], ordersInitalState);
+    const state = ordersReducer(
+      seeded,
+      updateOrderStatusSuccess({ order: updated })
+    );
+    expect(selectAll(state)).toEqual([updated]);
   });
 });

@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 import { CategoriesState } from '../interface/categories-state';
+import { categoriesAdapter } from './categories.reducer';
 
 const _selectCategoriesState = (state: AppState): CategoriesState =>
   state.categories;
@@ -25,7 +26,9 @@ export const selectCategoriesLoading = createSelector(
   (state: CategoriesState) => state.loading
 );
 
+const { selectAll } = categoriesAdapter.getSelectors();
+
 export const selectCategories = createSelector(
   _selectCategoriesState,
-  (state: CategoriesState) => state.categories
+  selectAll
 );

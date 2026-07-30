@@ -1,4 +1,6 @@
+import { createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { Order } from '../interface/order';
 import { OrdersState } from '../interface/orders-state';
 import {
   addItemToCart,
@@ -12,16 +14,23 @@ import {
   getOrdersError,
   getOrdersSuccess,
   removeItemFromCart,
+  updateOrderStatus,
+  updateOrderStatusError,
+  updateOrderStatusSuccess,
 } from './orders.actions';
 
-export const ordersInitalState: OrdersState = {
-  orders: [],
+export const ordersAdapter = createEntityAdapter<Order>({
+  selectId: order => order._id,
+  sortComparer: (a, b) => Number(new Date(b.date)) - Number(new Date(a.date)),
+});
+
+export const ordersInitalState: OrdersState = ordersAdapter.getInitialState({
   cart: [],
   loading: false,
   loaded: false,
   error: '',
   message: '',
-};
+});
 
 export const ordersReducer = createReducer(
   ordersInitalState,
@@ -39,12 +48,13 @@ export const ordersReducer = createReducer(
     error: error.message,
   })),
 
-  on(getOrdersSuccess, (state, { orders }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    orders: orders,
-  })),
+  on(getOrdersSuccess, (state, { orders }) =>
+    ordersAdapter.setAll(orders, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(getOrdersByUserId, state => ({
     ...state,
@@ -59,12 +69,13 @@ export const ordersReducer = createReducer(
     error: error.message,
   })),
 
-  on(getOrdersByUserIdSuccess, (state, { orders }) => ({
-    ...state,
-    loading: false,
-    loaded: true,
-    orders: orders,
-  })),
+  on(getOrdersByUserIdSuccess, (state, { orders }) =>
+    ordersAdapter.setAll(orders, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(createOrder, state => ({
     ...state,
@@ -81,14 +92,36 @@ export const ordersReducer = createReducer(
     error: error.message,
   })),
 
-  on(createOrderSuccess, (state, { order }) => ({
+  on(createOrderSuccess, (state, { order }) =>
+    ordersAdapter.addOne(order, {
+      ...state,
+      loading: false,
+      loaded: true,
+      message: 'El pedido se ha realizado correctamente',
+      cart: [],
+    })
+  ),
+
+  on(updateOrderStatus, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+  })),
+
+  on(updateOrderStatusError, (state, { error }) => ({
     ...state,
     loading: false,
-    loaded: true,
-    orders: [...state.orders, order],
-    message: 'El pedido se ha realizado correctamente',
-    cart: [],
+    loaded: false,
+    error: error.message,
   })),
+
+  on(updateOrderStatusSuccess, (state, { order }) =>
+    ordersAdapter.upsertOne(order, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
 
   on(addItemToCart, (state, { item }) => ({
     ...state,

@@ -1,10 +1,13 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducers';
-import { Order } from '../interface/order';
-import { getOrders, getOrdersByUserId } from '../store/orders.actions';
+import { OrderStatus } from '../interface/order';
+import {
+  getOrders,
+  getOrdersByUserId,
+  updateOrderStatus,
+} from '../store/orders.actions';
 import { selectOrders } from '../store/orders.selectors';
 import { selectIsAdmin } from '../../users/store/users.selectors';
 import { OrderCardComponent } from './order-card.component';
@@ -12,34 +15,37 @@ import { OrderCardComponent } from './order-card.component';
 @Component({
   selector: 'app-orders',
   template: `
-    @if (orders.length > 0) {
+    @if (orders().length > 0) {
     <div>
-      @if (!isAdmin) {
+      @if (!isAdmin()) {
       <h2 class="title-2 mb-4">Mis Pedidos</h2>
-      } @if (isAdmin) {
+      } @if (isAdmin()) {
       <h2 class="title-2 mb-4">Pedidos</h2>
       }
     </div>
-    } @if (orders.length < 1) {
+    } @if (orders().length < 1) {
     <h2 class="title-2 mb-4">No has realizado ningún pedido aún</h2>
     }
     <div class="flex flex-col gap-4">
-      @for (order of orders; track order) {
-      <app-order-card [order]="order"> </app-order-card>
+      @for (order of orders(); track order) {
+      <app-order-card
+        [order]="order"
+        [isAdmin]="isAdmin()"
+        (statusChangeEvent)="onStatusChange($event)">
+      </app-order-card>
       }
     </div>
   `,
   styles: [],
   imports: [OrderCardComponent],
 })
-export class OrdersComponent implements OnInit, OnDestroy {
+export class OrdersComponent implements OnInit {
   private store = inject<Store<AppState>>(Store);
 
   @Input() userId: string = '';
-  isAdmin: boolean = false;
-  orders: Order[] = [];
 
-  private onDestroy = new Subject<void>();
+  orders = toSignal(this.store.select(selectOrders), { initialValue: [] });
+  isAdmin = toSignal(this.store.select(selectIsAdmin), { initialValue: false });
 
   getOrders() {
     if (!this.userId) {
@@ -49,21 +55,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
-    this.store
-      .select(selectOrders)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(orders => (this.orders = orders));
-
-    this.store
-      .select(selectIsAdmin)
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(isAdmin => (this.isAdmin = isAdmin));
-    this.getOrders();
+  onStatusChange(event: { orderId: string; status: OrderStatus }) {
+    this.store.dispatch(
+      updateOrderStatus({
+        statusUpdate: { orderId: event.orderId, status: event.status },
+      })
+    );
   }
 
-  ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.complete();
+  ngOnInit() {
+    this.getOrders();
   }
 }

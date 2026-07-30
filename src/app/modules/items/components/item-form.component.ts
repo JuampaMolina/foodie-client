@@ -10,6 +10,22 @@ import { CreateItemCommand } from '../interface/createItemCommand';
 import { Item } from '../interface/item';
 import { UpdateItemCommand } from '../interface/updateItemCommand';
 
+interface StockImage {
+  name: string;
+  path: string;
+}
+
+const STOCK_IMAGES: StockImage[] = [
+  { name: 'Pizza', path: 'assets/items/pizza.svg' },
+  { name: 'Hamburguesa', path: 'assets/items/burger.svg' },
+  { name: 'Patatas fritas', path: 'assets/items/fries.svg' },
+  { name: 'Bebida', path: 'assets/items/drink.svg' },
+  { name: 'Postre', path: 'assets/items/dessert.svg' },
+  { name: 'Ensalada', path: 'assets/items/salad.svg' },
+  { name: 'Pasta', path: 'assets/items/pasta.svg' },
+  { name: 'Sushi', path: 'assets/items/sushi.svg' },
+];
+
 @Component({
   selector: 'app-item-form',
   template: `
@@ -60,6 +76,24 @@ import { UpdateItemCommand } from '../interface/updateItemCommand';
           formControlName="description"></textarea>
       </div>
 
+      <div class="col-span-3">
+        <label class="form-label mb-1">Imagen</label>
+        <div class="flex flex-wrap gap-2">
+          @for (stockImage of stockImages; track stockImage.path) {
+          <img
+            [src]="stockImage.path"
+            [alt]="stockImage.name"
+            [title]="stockImage.name"
+            (click)="selectImage(stockImage.path)"
+            class="h-14 w-14 cursor-pointer rounded border-2 object-cover"
+            [class.border-slate-800]="itemForm.value.image === stockImage.path"
+            [class.border-transparent]="
+              itemForm.value.image !== stockImage.path
+            " />
+          }
+        </div>
+      </div>
+
       @if (!updating) {
       <button
         (click)="create()"
@@ -99,6 +133,7 @@ export class ItemFormComponent {
         description: item.description,
         price: item.price,
         category: item.category,
+        image: item.image ?? '',
       });
       this.updating = true;
       this.itemId = item._id;
@@ -118,11 +153,14 @@ export class ItemFormComponent {
   updating: boolean = false;
   itemId: string = '';
 
+  readonly stockImages = STOCK_IMAGES;
+
   itemForm = new FormGroup({
     name: new FormControl('', Validators.required),
     category: new FormControl(this.categories[0], Validators.required),
     description: new FormControl('', Validators.required),
     price: new FormControl(NaN, Validators.required),
+    image: new FormControl(''),
   });
 
   constructor() {}
@@ -131,25 +169,32 @@ export class ItemFormComponent {
     return c1 && c2 ? c1._id === c2._id : c1 === c2;
   }
 
+  selectImage(path: string) {
+    const current = this.itemForm.value.image;
+    this.itemForm.patchValue({ image: current === path ? '' : path });
+  }
+
   create() {
-    const { name, category, description, price } = this.itemForm.value;
+    const { name, category, description, price, image } = this.itemForm.value;
     const form: CreateItemCommand = {
       name: name!,
       category: category?._id!,
       description: description!,
       price: price!,
+      image: image || undefined,
     };
     this.createEvent.emit(form);
     this.itemForm.reset();
   }
 
   update() {
-    const { name, category, description, price } = this.itemForm.value;
+    const { name, category, description, price, image } = this.itemForm.value;
     const form: CreateItemCommand = {
       name: name!,
       category: category?._id!,
       description: description!,
       price: price!,
+      image: image || undefined,
     };
     this.updateEvent.emit({ itemId: this.itemId, item: form });
     this.itemForm.reset();
