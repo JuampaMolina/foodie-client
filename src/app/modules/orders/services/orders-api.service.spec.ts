@@ -64,6 +64,7 @@ describe('OrdersApiService', () => {
       totalPrice: 20,
       date: new Date('2026-01-01'),
       items: ['item-1'],
+      address: 'Calle Falsa 123',
     };
     service.createOrder(newOrder).subscribe(result => {
       expect(result).toEqual(order);

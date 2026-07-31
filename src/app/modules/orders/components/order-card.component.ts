@@ -82,6 +82,12 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
           <p class="text-lg font-semibold">Usuario</p>
           <span>{{ order.user?.name }}</span>
         </div>
+        @if (order.address) {
+        <div>
+          <p class="text-lg font-semibold">Dirección de entrega</p>
+          <span>{{ order.address }}</span>
+        </div>
+        }
         <div>
           <p class="text-lg font-semibold">Estado</p>
           <span
