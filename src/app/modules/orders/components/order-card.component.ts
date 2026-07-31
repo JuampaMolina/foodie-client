@@ -98,12 +98,12 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
         </div>
         <div>
           <p class="text-lg font-semibold">Contenido</p>
-          @for (item of order.items; track item) {
+          @for (orderItem of order.items; track orderItem.item._id) {
           <div class="space-x-2">
-            <span>{{ item.name }}</span>
-            <span>x {{ getQuantity(item._id) }}</span>
+            <span>{{ orderItem.item.name }}</span>
+            <span>x {{ orderItem.quantity }}</span>
             <span class="float-right"
-              >{{ item.price * getQuantity(item._id) }} EUR</span
+              >{{ orderItem.item.price * orderItem.quantity }} EUR</span
             >
           </div>
           }
@@ -163,10 +163,6 @@ export class OrderCardComponent {
 
   get statusClass(): string {
     return STATUS_CLASSES[this.status];
-  }
-
-  getQuantity(itemId: string): number {
-    return this.order?.items!.filter(item => item._id === itemId).length!;
   }
 
   onStatusChange(event: Event) {

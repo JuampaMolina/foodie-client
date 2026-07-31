@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Item } from '../../items/interface/item';
 import { Order } from '../interface/order';
 import { OrderCardComponent } from './order-card.component';
 
@@ -118,5 +119,24 @@ describe('OrderCardComponent', () => {
     getCancelButton(fixture)!.click();
 
     expect(emitted).toEqual(['1']);
+  });
+
+  it('should render each item with its quantity and subtotal', async () => {
+    const burger: Item = {
+      _id: 'b',
+      name: 'Burger',
+      description: '',
+      price: 10,
+    };
+    const orderWithItems: Order = {
+      ...order,
+      items: [{ item: burger, quantity: 3 }],
+    };
+    const fixture = await createFixture(false, orderWithItems);
+
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('Burger');
+    expect(text).toContain('x 3');
+    expect(text).toContain('30 EUR');
   });
 });

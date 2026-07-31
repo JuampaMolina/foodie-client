@@ -89,8 +89,15 @@ export class CartComponent {
     if (this.addressControl.invalid) {
       return;
     }
+    const quantities = new Map<string, number>();
+    for (const item of this.cart()) {
+      quantities.set(item._id, (quantities.get(item._id) ?? 0) + 1);
+    }
     let order: CreateOrderCommand = {
-      items: this.cart().map(item => item._id),
+      items: Array.from(quantities, ([item, quantity]) => ({
+        item,
+        quantity,
+      })),
       totalPrice: this.totalPrice(),
       date: new Date(),
       address: this.addressControl.value!,
