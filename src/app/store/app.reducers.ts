@@ -3,6 +3,8 @@ import { CategoriesState } from '../modules/categories/interface/categories-stat
 import { categoriesReducer } from '../modules/categories/store/categories.reducer';
 import { ItemsState } from '../modules/items/interface/items-state';
 import { itemsReducer } from '../modules/items/store/items.reducer';
+import { MetricsState } from '../modules/metrics/interface/metrics-state';
+import { metricsReducer } from '../modules/metrics/store/metrics.reducer';
 import { OrdersState } from '../modules/orders/interface/orders-state';
 import { ordersReducer } from '../modules/orders/store/orders.reducer';
 import { UsersState } from '../modules/users/interface/UsersState';
@@ -13,6 +15,7 @@ export interface AppState {
   categories: CategoriesState;
   orders: OrdersState;
   users: UsersState;
+  metrics: MetricsState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
@@ -20,4 +23,5 @@ export const appReducers: ActionReducerMap<AppState> = {
   categories: categoriesReducer,
   orders: ordersReducer,
   users: usersReducer,
+  metrics: metricsReducer,
 };

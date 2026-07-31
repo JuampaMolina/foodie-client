@@ -30,6 +30,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         routerLinkActive="active-link">
         Usuarios
       </button>
+      <button
+        class="flex-grow"
+        routerLink="metricas"
+        routerLinkActive="active-link">
+        Métricas
+      </button>
     </nav>
   `,
   styles: [
