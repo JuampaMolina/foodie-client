@@ -24,6 +24,14 @@ interface ChartPoint {
   data: SalesByDayPoint;
 }
 
+type TextAnchor = 'start' | 'middle' | 'end';
+
+/** '2026-07-30' -> '30/07'. Se parte la cadena para no depender de la zona horaria. */
+function formatDayLabel(day: string): string {
+  const [, month, date] = day.split('-');
+  return month && date ? `${date}/${month}` : day;
+}
+
 @Component({
   selector: 'app-metrics-dashboard',
   template: `
@@ -32,10 +40,18 @@ interface ChartPoint {
     <div class="mb-4 flex items-center gap-2">
       <span class="form-label mb-0">Periodo</span>
       @for (range of dayRanges; track range) {
+      <!--
+        Con darkMode: 'class', la variante oscura de .secondary-button compila a
+        ".dark .secondary-button" (dos clases), que gana por especificidad a un
+        "bg-brand-600" suelto (una clase) aunque las utilidades vayan después.
+        Por eso el estado activo necesita también sus variantes dark:.
+      -->
       <button
         class="secondary-button px-3 py-1"
         [class]="
-          days() === range ? 'bg-brand-600 text-white hover:bg-brand-600' : ''
+          days() === range
+            ? 'bg-brand-600 text-white hover:bg-brand-600 dark:bg-brand-600 dark:text-white dark:hover:bg-brand-600'
+            : ''
         "
         (click)="onDaysChange(range)">
         {{ range }} días
@@ -125,6 +141,14 @@ interface ChartPoint {
             dominant-baseline="middle"
             style="fill: var(--text-muted); font-size: 10px">
             {{ tick.value }}
+          </text>
+          } @for (label of xAxisLabels(); track label.x) {
+          <text
+            [attr.x]="label.x"
+            [attr.y]="chartHeight - padding.bottom + 16"
+            [attr.text-anchor]="label.anchor"
+            style="fill: var(--text-muted); font-size: 10px">
+            {{ label.text }}
           </text>
           }
 
@@ -338,6 +362,25 @@ export class MetricsDashboardComponent implements OnInit {
         (point.revenue / maxRevenue) * this.innerHeight,
       data: point,
     }));
+  });
+
+  // Sólo el primer y el último día: basta para situar el periodo y no hay
+  // riesgo de que las etiquetas se solapen sea cual sea el rango elegido.
+  xAxisLabels = computed(() => {
+    const points = this.chartPoints();
+    if (points.length === 0) {
+      return [];
+    }
+    const first = points[0];
+    const last = points[points.length - 1];
+    const label = (point: ChartPoint, anchor: TextAnchor) => ({
+      x: point.x,
+      text: formatDayLabel(point.data.day),
+      anchor,
+    });
+    return first === last
+      ? [label(first, 'middle')]
+      : [label(first, 'start'), label(last, 'end')];
   });
 
   linePoints = computed(() =>
