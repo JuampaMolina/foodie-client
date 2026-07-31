@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { OrderStatus } from '../interface/order';
 import {
+  cancelOrder,
   getOrders,
   getOrdersByUserId,
   updateOrderStatus,
@@ -35,7 +36,8 @@ import { OrderCardComponent } from './order-card.component';
       <app-order-card
         [order]="order"
         [isAdmin]="isAdmin()"
-        (statusChangeEvent)="onStatusChange($event)">
+        (statusChangeEvent)="onStatusChange($event)"
+        (cancelEvent)="onCancel($event)">
       </app-order-card>
       }
     </div>
@@ -90,6 +92,10 @@ export class OrdersComponent implements OnInit {
         statusUpdate: { orderId: event.orderId, status: event.status },
       })
     );
+  }
+
+  onCancel(orderId: string) {
+    this.store.dispatch(cancelOrder({ orderId }));
   }
 
   ngOnInit() {

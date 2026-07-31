@@ -1,7 +1,7 @@
 import { Item } from '../../items/interface/item';
 import { User } from '../../users/interface/user';
 
-export type OrderStatus = 'pending' | 'preparing' | 'delivered';
+export type OrderStatus = 'pending' | 'preparing' | 'delivered' | 'cancelled';
 
 export interface Order {
   _id: string;

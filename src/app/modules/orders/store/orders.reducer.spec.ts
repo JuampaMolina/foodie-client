@@ -2,6 +2,8 @@ import { Item } from '../../items/interface/item';
 import { Order } from '../interface/order';
 import {
   addItemToCart,
+  cancelOrderError,
+  cancelOrderSuccess,
   createOrderSuccess,
   getOrders,
   getOrdersError,
@@ -95,5 +97,23 @@ describe('ordersReducer', () => {
       updateOrderStatusSuccess({ order: updated })
     );
     expect(selectAll(state)).toEqual([updated]);
+  });
+
+  it('should update the matching order on cancelOrderSuccess', () => {
+    const cancelled: Order = { ...order, status: 'cancelled' };
+    const seeded = ordersAdapter.setAll([order], ordersInitalState);
+    const state = ordersReducer(
+      seeded,
+      cancelOrderSuccess({ order: cancelled })
+    );
+    expect(selectAll(state)).toEqual([cancelled]);
+  });
+
+  it('should set the error message on cancelOrderError', () => {
+    const state = ordersReducer(
+      ordersInitalState,
+      cancelOrderError({ error: { message: 'boom' } })
+    );
+    expect(state.error).toBe('boom');
   });
 });

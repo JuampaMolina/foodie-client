@@ -33,4 +33,8 @@ export class OrdersApiService {
     const { orderId, status } = statusUpdate;
     return this.http.put<Order>(ordersApi + `/${orderId}/status`, { status });
   }
+
+  cancelOrder(orderId: string): Observable<Order> {
+    return this.http.put<Order>(ordersApi + `/${orderId}/cancel`, {});
+  }
 }

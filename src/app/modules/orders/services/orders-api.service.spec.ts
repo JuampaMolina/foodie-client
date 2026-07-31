@@ -88,4 +88,15 @@ describe('OrdersApiService', () => {
     expect(req.request.body).toEqual({ status: 'preparing' });
     req.flush(updated);
   });
+
+  it('should PUT to cancel an order', () => {
+    const cancelled: Order = { ...order, status: 'cancelled' };
+    service.cancelOrder('1').subscribe(result => {
+      expect(result).toEqual(cancelled);
+    });
+
+    const req = httpMock.expectOne(ordersApi + '/1/cancel');
+    expect(req.request.method).toBe('PUT');
+    req.flush(cancelled);
+  });
 });

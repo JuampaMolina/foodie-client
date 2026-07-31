@@ -3,6 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { OrdersApiService } from '../services/orders-api.service';
 import {
+  cancelOrder,
+  cancelOrderError,
+  cancelOrderSuccess,
   createOrder,
   createOrderError,
   createOrderSuccess,
@@ -69,6 +72,18 @@ export class OrdersEffects {
         this.ordersApi.updateOrderStatus(action.statusUpdate).pipe(
           map(order => updateOrderStatusSuccess({ order })),
           catchError(error => of(updateOrderStatusError({ error })))
+        )
+      )
+    )
+  );
+
+  cancelOrder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(cancelOrder),
+      mergeMap(action =>
+        this.ordersApi.cancelOrder(action.orderId).pipe(
+          map(order => cancelOrderSuccess({ order })),
+          catchError(error => of(cancelOrderError({ error })))
         )
       )
     )

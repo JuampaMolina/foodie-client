@@ -56,6 +56,19 @@ export const updateOrderStatusSuccess = createAction(
   props<{ order: Order }>()
 );
 
+export const cancelOrder = createAction(
+  '[Orders] cancelOrder',
+  props<{ orderId: string }>()
+);
+export const cancelOrderError = createAction(
+  '[Orders] cancelOrderError',
+  props<{ error: any }>()
+);
+export const cancelOrderSuccess = createAction(
+  '[Orders] cancelOrderSuccess',
+  props<{ order: Order }>()
+);
+
 export const addItemToCart = createAction(
   '[Orders] addItemToOrder',
   props<{ item: Item }>()

@@ -8,12 +8,14 @@ const STATUS_LABELS: Record<OrderStatus, string> = {
   pending: 'Pendiente',
   preparing: 'Preparando',
   delivered: 'Entregado',
+  cancelled: 'Cancelado',
 };
 
 const STATUS_CLASSES: Record<OrderStatus, string> = {
   pending: 'bg-slate-300 text-slate-800',
   preparing: 'bg-amber-300 text-amber-900',
   delivered: 'bg-emerald-300 text-emerald-900',
+  cancelled: 'bg-red-300 text-red-900',
 };
 
 const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
@@ -117,6 +119,10 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
             }
           </select>
         </div>
+        } @if (!isAdmin && status === 'pending') {
+        <button (click)="onCancel()" class="secondary-button w-full">
+          Cancelar pedido
+        </button>
         }
       </div>
       }
@@ -132,6 +138,7 @@ export class OrderCardComponent {
     orderId: string;
     status: OrderStatus;
   }>();
+  @Output() cancelEvent = new EventEmitter<string>();
 
   showContent: boolean = false;
 
@@ -160,6 +167,12 @@ export class OrderCardComponent {
     const status = (event.target as HTMLSelectElement).value as OrderStatus;
     if (this.order && status !== this.status) {
       this.statusChangeEvent.emit({ orderId: this.order._id, status });
+    }
+  }
+
+  onCancel() {
+    if (this.order) {
+      this.cancelEvent.emit(this.order._id);
     }
   }
 }
