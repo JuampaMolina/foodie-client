@@ -24,6 +24,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         routerLinkActive="active-link">
         Pedidos
       </button>
+      <button
+        class="flex-grow"
+        routerLink="usuarios"
+        routerLinkActive="active-link">
+        Usuarios
+      </button>
     </nav>
   `,
   styles: [

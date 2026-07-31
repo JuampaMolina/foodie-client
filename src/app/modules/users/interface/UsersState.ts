@@ -8,4 +8,10 @@ export interface UsersState {
   error: any;
   resetToken?: string;
   resetPasswordDone: boolean;
+  adminUsers: User[];
+  adminUsersLoading: boolean;
+  adminUsersError: any;
+  adminUsersPage: number;
+  adminUsersTotal: number;
+  adminUsersTotalPages: number;
 }

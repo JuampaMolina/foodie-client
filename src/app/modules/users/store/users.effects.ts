@@ -16,10 +16,18 @@ import {
   resetPassword,
   resetPasswordError,
   resetPasswordSuccess,
+  getUsers,
+  getUsersError,
+  getUsersSuccess,
+  updateUserRole,
+  updateUserRoleError,
+  updateUserRoleSuccess,
 } from './users.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 import { Router } from '@angular/router';
+
+const DEFAULT_PAGE_SIZE = 10;
 
 @Injectable()
 export class UsersEffects {
@@ -100,6 +108,32 @@ export class UsersEffects {
         this.usersApi.resetPassword(action.token, action.password).pipe(
           map(() => resetPasswordSuccess()),
           catchError(error => of(resetPasswordError({ error })))
+        )
+      )
+    )
+  );
+
+  getUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getUsers),
+      mergeMap(({ page = 1, limit = DEFAULT_PAGE_SIZE }) =>
+        this.usersApi.getUsers(page, limit).pipe(
+          map(({ items, page, total, totalPages }) =>
+            getUsersSuccess({ users: items, page, total, totalPages })
+          ),
+          catchError(error => of(getUsersError({ error })))
+        )
+      )
+    )
+  );
+
+  updateUserRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserRole),
+      mergeMap(action =>
+        this.usersApi.updateUserRole(action.roleUpdate).pipe(
+          map(user => updateUserRoleSuccess({ user })),
+          catchError(error => of(updateUserRoleError({ error })))
         )
       )
     )
