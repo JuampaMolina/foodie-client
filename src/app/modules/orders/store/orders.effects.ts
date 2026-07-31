@@ -3,6 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { OrdersApiService } from '../services/orders-api.service';
 import {
+  cancelOrder,
+  cancelOrderError,
+  cancelOrderSuccess,
   createOrder,
   createOrderError,
   createOrderSuccess,
@@ -17,6 +20,8 @@ import {
   updateOrderStatusSuccess,
 } from './orders.actions';
 
+const DEFAULT_PAGE_SIZE = 10;
+
 @Injectable()
 export class OrdersEffects {
   private ordersApi = inject(OrdersApiService);
@@ -25,9 +30,11 @@ export class OrdersEffects {
   getOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getOrders),
-      mergeMap(() =>
-        this.ordersApi.getOrders().pipe(
-          map(orders => getOrdersSuccess({ orders })),
+      mergeMap(({ page = 1, limit = DEFAULT_PAGE_SIZE }) =>
+        this.ordersApi.getOrders(page, limit).pipe(
+          map(({ items, page, total, totalPages }) =>
+            getOrdersSuccess({ orders: items, page, total, totalPages })
+          ),
           catchError(error => of(getOrdersError({ error })))
         )
       )
@@ -65,6 +72,18 @@ export class OrdersEffects {
         this.ordersApi.updateOrderStatus(action.statusUpdate).pipe(
           map(order => updateOrderStatusSuccess({ order })),
           catchError(error => of(updateOrderStatusError({ error })))
+        )
+      )
+    )
+  );
+
+  cancelOrder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(cancelOrder),
+      mergeMap(action =>
+        this.ordersApi.cancelOrder(action.orderId).pipe(
+          map(order => cancelOrderSuccess({ order })),
+          catchError(error => of(cancelOrderError({ error })))
         )
       )
     )

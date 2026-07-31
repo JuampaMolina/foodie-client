@@ -7,6 +7,12 @@ import {
   loginUserError,
   loginUserSuccess,
   logoutUser,
+  forgotPassword,
+  forgotPasswordError,
+  forgotPasswordSuccess,
+  resetPassword,
+  resetPasswordError,
+  resetPasswordSuccess,
 } from './users.actions';
 import { UsersState } from '../interface/UsersState';
 
@@ -16,6 +22,8 @@ export const usersInitialState: UsersState = {
   loading: false,
   loaded: false,
   error: undefined,
+  resetToken: undefined,
+  resetPasswordDone: false,
 };
 
 export const usersReducer = createReducer(
@@ -71,5 +79,51 @@ export const usersReducer = createReducer(
     loaded: true,
     user: undefined,
     token: undefined,
+  })),
+
+  on(forgotPassword, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: false,
+    resetToken: undefined,
+  })),
+
+  on(forgotPasswordError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message,
+  })),
+
+  on(forgotPasswordSuccess, (state, { token }) => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: false,
+    resetToken: token,
+  })),
+
+  on(resetPassword, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    error: false,
+    resetPasswordDone: false,
+  })),
+
+  on(resetPasswordError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message,
+  })),
+
+  on(resetPasswordSuccess, state => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: false,
+    resetPasswordDone: true,
   }))
 );

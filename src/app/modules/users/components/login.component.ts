@@ -49,6 +49,9 @@ import { RouterLink } from '@angular/router';
       <a class="text-center hover:underline" routerLink="/register"
         >Crea una cuenta</a
       >
+      <a class="text-center hover:underline" routerLink="/forgot-password"
+        >¿Olvidaste tu contraseña?</a
+      >
     </div>
   `,
   styles: [],

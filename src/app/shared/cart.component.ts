@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Item } from 'src/app/modules/items/interface/item';
 
@@ -8,6 +9,7 @@ import {
   createOrder,
   removeItemFromCart,
 } from 'src/app/modules/orders/store/orders.actions';
+import { CreateOrderCommand } from 'src/app/modules/orders/interface/createOrderCommand';
 import { AppState } from 'src/app/store/app.reducers';
 import {
   selectCart,
@@ -19,7 +21,7 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
 
 @Component({
   selector: 'app-cart',
-  imports: [ItemCardComponent],
+  imports: [ItemCardComponent, ReactiveFormsModule],
   template: `
     <div class="mb-4 flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>
@@ -50,7 +52,19 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
       >Total: {{ totalPrice() }} EUR
     </span>
     } @if (cartCount() > 0) {
-    <button (click)="createOrder()" class="primary-button">
+    <div>
+      <label class="form-label" for="address">Dirección de entrega </label>
+      <input
+        class="form-input"
+        id="address"
+        type="text"
+        placeholder="Dirección de entrega"
+        [formControl]="addressControl" />
+    </div>
+    <button
+      (click)="createOrder()"
+      class="primary-button"
+      [disabled]="addressControl.invalid">
       Realizar pedido
     </button>
     }
@@ -69,13 +83,27 @@ export class CartComponent {
   });
   cartCount = toSignal(this.store.select(selectCartCount), { initialValue: 0 });
 
+  addressControl = new FormControl('', Validators.required);
+
   createOrder() {
-    let order = {
-      items: this.cart().map(item => item._id),
+    if (this.addressControl.invalid) {
+      return;
+    }
+    const quantities = new Map<string, number>();
+    for (const item of this.cart()) {
+      quantities.set(item._id, (quantities.get(item._id) ?? 0) + 1);
+    }
+    let order: CreateOrderCommand = {
+      items: Array.from(quantities, ([item, quantity]) => ({
+        item,
+        quantity,
+      })),
       totalPrice: this.totalPrice(),
       date: new Date(),
+      address: this.addressControl.value!,
     };
     this.store.dispatch(createOrder({ order }));
+    this.addressControl.reset('');
   }
 
   addItem(item: Item) {

@@ -1,13 +1,19 @@
 import { Item } from '../../items/interface/item';
 import { User } from '../../users/interface/user';
 
-export type OrderStatus = 'pending' | 'preparing' | 'delivered';
+export type OrderStatus = 'pending' | 'preparing' | 'delivered' | 'cancelled';
+
+export interface OrderItem {
+  item: Item;
+  quantity: number;
+}
 
 export interface Order {
   _id: string;
   totalPrice: number;
   date: Date;
+  address?: string;
   status?: OrderStatus;
   user?: User;
-  items?: Item[];
+  items?: OrderItem[];
 }

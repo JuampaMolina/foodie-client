@@ -4,6 +4,9 @@ import { Order } from '../interface/order';
 import { OrdersState } from '../interface/orders-state';
 import {
   addItemToCart,
+  cancelOrder,
+  cancelOrderError,
+  cancelOrderSuccess,
   createOrder,
   createOrderError,
   createOrderSuccess,
@@ -30,6 +33,9 @@ export const ordersInitalState: OrdersState = ordersAdapter.getInitialState({
   loaded: false,
   error: '',
   message: '',
+  page: 1,
+  total: 0,
+  totalPages: 1,
 });
 
 export const ordersReducer = createReducer(
@@ -48,11 +54,14 @@ export const ordersReducer = createReducer(
     error: error.message,
   })),
 
-  on(getOrdersSuccess, (state, { orders }) =>
+  on(getOrdersSuccess, (state, { orders, page, total, totalPages }) =>
     ordersAdapter.setAll(orders, {
       ...state,
       loading: false,
       loaded: true,
+      page,
+      total,
+      totalPages,
     })
   ),
 
@@ -116,6 +125,27 @@ export const ordersReducer = createReducer(
   })),
 
   on(updateOrderStatusSuccess, (state, { order }) =>
+    ordersAdapter.upsertOne(order, {
+      ...state,
+      loading: false,
+      loaded: true,
+    })
+  ),
+
+  on(cancelOrder, state => ({
+    ...state,
+    loading: true,
+    loaded: false,
+  })),
+
+  on(cancelOrderError, (state, { error }) => ({
+    ...state,
+    loading: false,
+    loaded: false,
+    error: error.message,
+  })),
+
+  on(cancelOrderSuccess, (state, { order }) =>
     ordersAdapter.upsertOne(order, {
       ...state,
       loading: false,

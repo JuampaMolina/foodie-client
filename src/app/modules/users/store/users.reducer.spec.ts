@@ -6,6 +6,12 @@ import {
   logoutUser,
   registerUser,
   registerUserSuccess,
+  forgotPassword,
+  forgotPasswordError,
+  forgotPasswordSuccess,
+  resetPassword,
+  resetPasswordError,
+  resetPasswordSuccess,
 } from './users.actions';
 import { usersInitialState, usersReducer } from './users.reducer';
 
@@ -73,5 +79,50 @@ describe('usersReducer', () => {
     );
     expect(state.user).toBeUndefined();
     expect(state.token).toBeUndefined();
+  });
+
+  it('should set the error message on forgotPasswordError', () => {
+    const state = usersReducer(
+      usersInitialState,
+      forgotPasswordError({ error: { message: 'boom' } })
+    );
+    expect(state.error).toBe('boom');
+  });
+
+  it('should store the reset token on forgotPasswordSuccess', () => {
+    const state = usersReducer(
+      usersInitialState,
+      forgotPasswordSuccess({ token: 'reset-tok' })
+    );
+    expect(state.resetToken).toBe('reset-tok');
+  });
+
+  it('should clear a previous reset token on forgotPassword', () => {
+    const state = usersReducer(
+      { ...usersInitialState, resetToken: 'old-tok' },
+      forgotPassword({ email: 'ana@test.com' })
+    );
+    expect(state.resetToken).toBeUndefined();
+  });
+
+  it('should set the error message on resetPasswordError', () => {
+    const state = usersReducer(
+      usersInitialState,
+      resetPasswordError({ error: { message: 'boom' } })
+    );
+    expect(state.error).toBe('boom');
+  });
+
+  it('should mark resetPasswordDone on resetPasswordSuccess', () => {
+    const state = usersReducer(usersInitialState, resetPasswordSuccess());
+    expect(state.resetPasswordDone).toBeTrue();
+  });
+
+  it('should reset resetPasswordDone on resetPassword', () => {
+    const state = usersReducer(
+      { ...usersInitialState, resetPasswordDone: true },
+      resetPassword({ token: 'reset-tok', password: 'newpass' })
+    );
+    expect(state.resetPasswordDone).toBeFalse();
   });
 });

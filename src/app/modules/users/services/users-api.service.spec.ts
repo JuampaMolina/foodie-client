@@ -56,4 +56,28 @@ describe('UsersApiService', () => {
     expect(req.request.body).toEqual(command);
     req.flush(session);
   });
+
+  it('should POST to request a password reset token', () => {
+    const result = { token: 'reset-tok', warning: 'dev only' };
+    service.forgotPassword('ana@test.com').subscribe(response => {
+      expect(response).toEqual(result);
+    });
+
+    const req = httpMock.expectOne(usersApi + '/forgot-password');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ email: 'ana@test.com' });
+    req.flush(result);
+  });
+
+  it('should POST to reset the password with a token', () => {
+    service.resetPassword('reset-tok', 'newpass').subscribe();
+
+    const req = httpMock.expectOne(usersApi + '/reset-password');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({
+      token: 'reset-tok',
+      password: 'newpass',
+    });
+    req.flush(null);
+  });
 });

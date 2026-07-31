@@ -4,11 +4,16 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
 import { OrderStatus } from '../interface/order';
 import {
+  cancelOrder,
   getOrders,
   getOrdersByUserId,
   updateOrderStatus,
 } from '../store/orders.actions';
-import { selectOrders } from '../store/orders.selectors';
+import {
+  selectOrders,
+  selectOrdersPage,
+  selectOrdersTotalPages,
+} from '../store/orders.selectors';
 import { selectIsAdmin } from '../../users/store/users.selectors';
 import { OrderCardComponent } from './order-card.component';
 
@@ -31,10 +36,28 @@ import { OrderCardComponent } from './order-card.component';
       <app-order-card
         [order]="order"
         [isAdmin]="isAdmin()"
-        (statusChangeEvent)="onStatusChange($event)">
+        (statusChangeEvent)="onStatusChange($event)"
+        (cancelEvent)="onCancel($event)">
       </app-order-card>
       }
     </div>
+    @if (!userId && totalPages() > 1) {
+    <div class="mt-4 flex items-center justify-center gap-4">
+      <button
+        class="secondary-button"
+        [disabled]="page() <= 1"
+        (click)="goToPage(page() - 1)">
+        Anterior
+      </button>
+      <span>Página {{ page() }} de {{ totalPages() }}</span>
+      <button
+        class="secondary-button"
+        [disabled]="page() >= totalPages()"
+        (click)="goToPage(page() + 1)">
+        Siguiente
+      </button>
+    </div>
+    }
   `,
   styles: [],
   imports: [OrderCardComponent],
@@ -46,13 +69,21 @@ export class OrdersComponent implements OnInit {
 
   orders = toSignal(this.store.select(selectOrders), { initialValue: [] });
   isAdmin = toSignal(this.store.select(selectIsAdmin), { initialValue: false });
+  page = toSignal(this.store.select(selectOrdersPage), { initialValue: 1 });
+  totalPages = toSignal(this.store.select(selectOrdersTotalPages), {
+    initialValue: 1,
+  });
 
-  getOrders() {
+  getOrders(page: number = 1) {
     if (!this.userId) {
-      this.store.dispatch(getOrders());
+      this.store.dispatch(getOrders({ page }));
     } else {
       this.store.dispatch(getOrdersByUserId({ userId: this.userId }));
     }
+  }
+
+  goToPage(page: number) {
+    this.getOrders(page);
   }
 
   onStatusChange(event: { orderId: string; status: OrderStatus }) {
@@ -61,6 +92,10 @@ export class OrdersComponent implements OnInit {
         statusUpdate: { orderId: event.orderId, status: event.status },
       })
     );
+  }
+
+  onCancel(orderId: string) {
+    this.store.dispatch(cancelOrder({ orderId }));
   }
 
   ngOnInit() {

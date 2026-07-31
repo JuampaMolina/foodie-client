@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Item } from '../../items/interface/item';
 import { Order } from '../interface/order';
 import { OrderCardComponent } from './order-card.component';
 
@@ -16,14 +17,15 @@ describe('OrderCardComponent', () => {
   // the latter trips NG0100 inside p-dialog's internal state (see the same
   // workaround in categories.component.spec.ts).
   async function createFixture(
-    isAdmin: boolean
+    isAdmin: boolean,
+    orderOverride: Order = order
   ): Promise<ComponentFixture<OrderCardComponent>> {
     await TestBed.resetTestingModule()
       .configureTestingModule({ imports: [OrderCardComponent] })
       .compileComponents();
 
     const fixture = TestBed.createComponent(OrderCardComponent);
-    fixture.componentInstance.order = order;
+    fixture.componentInstance.order = orderOverride;
     fixture.componentInstance.isAdmin = isAdmin;
     fixture.componentInstance.showContent = true;
     fixture.detectChanges();
@@ -34,6 +36,18 @@ describe('OrderCardComponent', () => {
     fixture: ComponentFixture<OrderCardComponent>
   ): HTMLSelectElement | null {
     return fixture.nativeElement.querySelector('select#status');
+  }
+
+  function getCancelButton(
+    fixture: ComponentFixture<OrderCardComponent>
+  ): HTMLButtonElement | null {
+    const buttons: HTMLButtonElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('button')
+    );
+    return (
+      buttons.find(button => button.textContent?.includes('Cancelar pedido')) ??
+      null
+    );
   }
 
   it('should not render the status selector for non-admins', async () => {
@@ -75,5 +89,54 @@ describe('OrderCardComponent', () => {
     select.dispatchEvent(new Event('change'));
 
     expect(emitted).toEqual([]);
+  });
+
+  it('should show a cancel button for a pending order viewed by its owner', async () => {
+    const pendingOrder: Order = { ...order, status: 'pending' };
+    const fixture = await createFixture(false, pendingOrder);
+    expect(getCancelButton(fixture)).not.toBeNull();
+  });
+
+  it('should not show a cancel button for a non-pending order', async () => {
+    const fixture = await createFixture(false);
+    expect(getCancelButton(fixture)).toBeNull();
+  });
+
+  it('should not show a cancel button to admins', async () => {
+    const pendingOrder: Order = { ...order, status: 'pending' };
+    const fixture = await createFixture(true, pendingOrder);
+    expect(getCancelButton(fixture)).toBeNull();
+  });
+
+  it('should emit cancelEvent with the order id when cancelled', async () => {
+    const pendingOrder: Order = { ...order, status: 'pending' };
+    const fixture = await createFixture(false, pendingOrder);
+    const emitted: string[] = [];
+    fixture.componentInstance.cancelEvent.subscribe(orderId =>
+      emitted.push(orderId)
+    );
+
+    getCancelButton(fixture)!.click();
+
+    expect(emitted).toEqual(['1']);
+  });
+
+  it('should render each item with its quantity and subtotal', async () => {
+    const burger: Item = {
+      _id: 'b',
+      name: 'Burger',
+      description: '',
+      price: 10,
+    };
+    const orderWithItems: Order = {
+      ...order,
+      items: [{ item: burger, quantity: 3 }],
+    };
+    const fixture = await createFixture(false, orderWithItems);
+
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('Burger');
+    expect(text).toContain('x 3');
+    expect(text).toContain('30 EUR');
   });
 });

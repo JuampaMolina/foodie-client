@@ -4,14 +4,17 @@ import { CreateOrderCommand } from '../interface/createOrderCommand';
 import { Order } from '../interface/order';
 import { UpdateOrderStatusCommand } from '../interface/updateOrderStatusCommand';
 
-export const getOrders = createAction('[Orders] getOrders');
+export const getOrders = createAction(
+  '[Orders] getOrders',
+  props<{ page?: number; limit?: number }>()
+);
 export const getOrdersError = createAction(
   '[Orders] getOrdersError',
   props<{ error: any }>()
 );
 export const getOrdersSuccess = createAction(
   '[Orders] getOrdersSuccess',
-  props<{ orders: Order[] }>()
+  props<{ orders: Order[]; page: number; total: number; totalPages: number }>()
 );
 
 export const getOrdersByUserId = createAction(
@@ -50,6 +53,19 @@ export const updateOrderStatusError = createAction(
 );
 export const updateOrderStatusSuccess = createAction(
   '[Orders] updateOrderStatusSuccess',
+  props<{ order: Order }>()
+);
+
+export const cancelOrder = createAction(
+  '[Orders] cancelOrder',
+  props<{ orderId: string }>()
+);
+export const cancelOrderError = createAction(
+  '[Orders] cancelOrderError',
+  props<{ error: any }>()
+);
+export const cancelOrderSuccess = createAction(
+  '[Orders] cancelOrderSuccess',
   props<{ order: Order }>()
 );
 

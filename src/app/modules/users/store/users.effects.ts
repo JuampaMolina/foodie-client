@@ -10,6 +10,12 @@ import {
   loginUserError,
   loginUserSuccess,
   logoutUser,
+  forgotPassword,
+  forgotPasswordError,
+  forgotPasswordSuccess,
+  resetPassword,
+  resetPasswordError,
+  resetPasswordSuccess,
 } from './users.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
@@ -73,5 +79,29 @@ export class UsersEffects {
       );
     },
     { dispatch: false }
+  );
+
+  forgotPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(forgotPassword),
+      mergeMap(action =>
+        this.usersApi.forgotPassword(action.email).pipe(
+          map(result => forgotPasswordSuccess(result)),
+          catchError(error => of(forgotPasswordError({ error })))
+        )
+      )
+    )
+  );
+
+  resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(resetPassword),
+      mergeMap(action =>
+        this.usersApi.resetPassword(action.token, action.password).pipe(
+          map(() => resetPasswordSuccess()),
+          catchError(error => of(resetPasswordError({ error })))
+        )
+      )
+    )
   );
 }

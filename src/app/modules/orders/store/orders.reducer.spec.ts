@@ -2,6 +2,8 @@ import { Item } from '../../items/interface/item';
 import { Order } from '../interface/order';
 import {
   addItemToCart,
+  cancelOrderError,
+  cancelOrderSuccess,
   createOrderSuccess,
   getOrders,
   getOrdersError,
@@ -37,7 +39,7 @@ describe('ordersReducer', () => {
   });
 
   it('should set loading on getOrders', () => {
-    const state = ordersReducer(ordersInitalState, getOrders());
+    const state = ordersReducer(ordersInitalState, getOrders({}));
     expect(state.loading).toBeTrue();
   });
 
@@ -49,12 +51,15 @@ describe('ordersReducer', () => {
     expect(state.error).toBe('boom');
   });
 
-  it('should populate orders on getOrdersSuccess', () => {
+  it('should populate orders and pagination metadata on getOrdersSuccess', () => {
     const state = ordersReducer(
       ordersInitalState,
-      getOrdersSuccess({ orders: [order] })
+      getOrdersSuccess({ orders: [order], page: 2, total: 15, totalPages: 2 })
     );
     expect(selectAll(state)).toEqual([order]);
+    expect(state.page).toBe(2);
+    expect(state.total).toBe(15);
+    expect(state.totalPages).toBe(2);
   });
 
   it('should append the order and empty the cart on createOrderSuccess', () => {
@@ -92,5 +97,23 @@ describe('ordersReducer', () => {
       updateOrderStatusSuccess({ order: updated })
     );
     expect(selectAll(state)).toEqual([updated]);
+  });
+
+  it('should update the matching order on cancelOrderSuccess', () => {
+    const cancelled: Order = { ...order, status: 'cancelled' };
+    const seeded = ordersAdapter.setAll([order], ordersInitalState);
+    const state = ordersReducer(
+      seeded,
+      cancelOrderSuccess({ order: cancelled })
+    );
+    expect(selectAll(state)).toEqual([cancelled]);
+  });
+
+  it('should set the error message on cancelOrderError', () => {
+    const state = ordersReducer(
+      ordersInitalState,
+      cancelOrderError({ error: { message: 'boom' } })
+    );
+    expect(state.error).toBe('boom');
   });
 });

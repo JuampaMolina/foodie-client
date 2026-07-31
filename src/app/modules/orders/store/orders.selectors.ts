@@ -25,6 +25,16 @@ export const selectOrdersLoading = createSelector(
   (state: OrdersState) => state.loading
 );
 
+export const selectOrdersPage = createSelector(
+  _selectOrdersState,
+  (state: OrdersState) => state.page
+);
+
+export const selectOrdersTotalPages = createSelector(
+  _selectOrdersState,
+  (state: OrdersState) => state.totalPages
+);
+
 const { selectAll } = ordersAdapter.getSelectors();
 
 // The adapter's sortComparer already keeps orders sorted by date descending.

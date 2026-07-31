@@ -8,12 +8,14 @@ const STATUS_LABELS: Record<OrderStatus, string> = {
   pending: 'Pendiente',
   preparing: 'Preparando',
   delivered: 'Entregado',
+  cancelled: 'Cancelado',
 };
 
 const STATUS_CLASSES: Record<OrderStatus, string> = {
   pending: 'bg-slate-300 text-slate-800',
   preparing: 'bg-amber-300 text-amber-900',
   delivered: 'bg-emerald-300 text-emerald-900',
+  cancelled: 'bg-red-300 text-red-900',
 };
 
 const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
@@ -80,6 +82,12 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
           <p class="text-lg font-semibold">Usuario</p>
           <span>{{ order.user?.name }}</span>
         </div>
+        @if (order.address) {
+        <div>
+          <p class="text-lg font-semibold">Dirección de entrega</p>
+          <span>{{ order.address }}</span>
+        </div>
+        }
         <div>
           <p class="text-lg font-semibold">Estado</p>
           <span
@@ -90,12 +98,12 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
         </div>
         <div>
           <p class="text-lg font-semibold">Contenido</p>
-          @for (item of order.items; track item) {
+          @for (orderItem of order.items; track orderItem.item._id) {
           <div class="space-x-2">
-            <span>{{ item.name }}</span>
-            <span>x {{ getQuantity(item._id) }}</span>
+            <span>{{ orderItem.item.name }}</span>
+            <span>x {{ orderItem.quantity }}</span>
             <span class="float-right"
-              >{{ item.price * getQuantity(item._id) }} EUR</span
+              >{{ orderItem.item.price * orderItem.quantity }} EUR</span
             >
           </div>
           }
@@ -117,6 +125,10 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
             }
           </select>
         </div>
+        } @if (!isAdmin && status === 'pending') {
+        <button (click)="onCancel()" class="secondary-button w-full">
+          Cancelar pedido
+        </button>
         }
       </div>
       }
@@ -132,6 +144,7 @@ export class OrderCardComponent {
     orderId: string;
     status: OrderStatus;
   }>();
+  @Output() cancelEvent = new EventEmitter<string>();
 
   showContent: boolean = false;
 
@@ -152,14 +165,16 @@ export class OrderCardComponent {
     return STATUS_CLASSES[this.status];
   }
 
-  getQuantity(itemId: string): number {
-    return this.order?.items!.filter(item => item._id === itemId).length!;
-  }
-
   onStatusChange(event: Event) {
     const status = (event.target as HTMLSelectElement).value as OrderStatus;
     if (this.order && status !== this.status) {
       this.statusChangeEvent.emit({ orderId: this.order._id, status });
+    }
+  }
+
+  onCancel() {
+    if (this.order) {
+      this.cancelEvent.emit(this.order._id);
     }
   }
 }

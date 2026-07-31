@@ -8,4 +8,7 @@ export interface OrdersState extends EntityState<Order> {
   loaded: boolean;
   error: string;
   message: string;
+  page: number;
+  total: number;
+  totalPages: number;
 }
