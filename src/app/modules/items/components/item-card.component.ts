@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Item } from '../interface/item';
 
-const DEFAULT_ITEM_IMAGE = 'assets/items/placeholder.svg';
+const DEFAULT_ITEM_IMAGE = 'assets/categories/placeholder.svg';
 
 @Component({
   selector: 'app-item-card',
@@ -10,7 +10,7 @@ const DEFAULT_ITEM_IMAGE = 'assets/items/placeholder.svg';
     <div
       class="min-h-32 flex h-full gap-3 rounded bg-slate-200 p-3 text-slate-800 dark:bg-slate-700 dark:text-slate-100">
       <img
-        [src]="item.image || defaultImage"
+        [src]="item.category?.image || defaultImage"
         [alt]="item.name"
         class="h-full w-20 shrink-0 rounded object-cover" />
       <div class="flex grow flex-col overflow-hidden">
