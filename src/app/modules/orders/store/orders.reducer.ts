@@ -17,6 +17,7 @@ import {
   getOrdersError,
   getOrdersSuccess,
   removeItemFromCart,
+  setCartItemQuantity,
   updateOrderStatus,
   updateOrderStatusError,
   updateOrderStatusSuccess,
@@ -163,6 +164,20 @@ export const ordersReducer = createReducer(
   on(removeItemFromCart, (state, { itemId }) => {
     let index = state.cart.findIndex(item => item._id === itemId);
     let cart = [...state.cart.slice(0, index), ...state.cart.slice(index + 1)];
+
+    return {
+      ...state,
+      cart: cart.sort((a, b) =>
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+      ),
+    };
+  }),
+
+  on(setCartItemQuantity, (state, { item, quantity }) => {
+    const withoutItem = state.cart.filter(
+      cartItem => cartItem._id !== item._id
+    );
+    const cart = withoutItem.concat(Array(Math.max(quantity, 0)).fill(item));
 
     return {
       ...state,
