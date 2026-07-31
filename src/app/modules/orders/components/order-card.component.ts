@@ -11,14 +11,17 @@ const STATUS_LABELS: Record<OrderStatus, string> = {
   cancelled: 'Cancelado',
 };
 
+// Los modificadores de opacidad deben salir de la escala por defecto de
+// Tailwind (…/10, /20, /25, /30…). La 3.1.6 no admite valores sueltos como
+// /15: no genera la regla y el badge se queda con el fondo claro.
 const STATUS_CLASSES: Record<OrderStatus, string> = {
   pending:
     'bg-neutral-200 text-neutral-700 dark:bg-neutral-700/50 dark:text-neutral-300',
   preparing:
-    'bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300',
+    'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300',
   delivered:
-    'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300',
-  cancelled: 'bg-red-100 text-red-800 dark:bg-red-500/15 dark:text-red-300',
+    'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300',
+  cancelled: 'bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-300',
 };
 
 const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];

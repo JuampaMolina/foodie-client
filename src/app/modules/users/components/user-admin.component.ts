@@ -34,7 +34,7 @@ const ROLE_OPTIONS: UserRole[] = ['user', 'admin'];
         class="surface-card grid grid-cols-3 items-center gap-3 p-4 sm:grid-cols-4">
         <div class="flex items-center gap-3">
           <span
-            class="dark:bg-brand-500/15 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 font-semibold text-brand-700 dark:text-brand-400">
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 font-semibold text-brand-700 dark:bg-brand-500/20 dark:text-brand-400">
             {{ user.name.charAt(0).toUpperCase() }}
           </span>
           <span
