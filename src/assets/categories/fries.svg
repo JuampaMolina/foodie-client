@@ -1,10 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <circle cx="100" cy="100" r="96" fill="#FDECC8"/>
-  <path d="M62 90 L138 90 L128 165 L72 165 Z" fill="#DE4F3E"/>
-  <path d="M66 90 L134 90 L132 100 L68 100 Z" fill="#B23A2C"/>
-  <rect x="80" y="55" width="10" height="55" rx="4" fill="#F6C84C"/>
-  <rect x="95" y="45" width="10" height="65" rx="4" fill="#F8D877"/>
-  <rect x="110" y="55" width="10" height="55" rx="4" fill="#F6C84C"/>
-  <rect x="123" y="62" width="10" height="48" rx="4" fill="#F8D877"/>
-  <rect x="67" y="62" width="10" height="48" rx="4" fill="#F8D877"/>
+  <circle cx="100" cy="100" r="100" fill="#FDF0E1" />
+  <ellipse cx="100" cy="163" rx="44" ry="8" fill="#F2E1CB" />
+  <rect x="56" y="64" width="14" height="52" rx="7" fill="#F8D77E" />
+  <rect x="73" y="52" width="14" height="64" rx="7" fill="#F5C24F" />
+  <rect x="90" y="42" width="14" height="74" rx="7" fill="#F8D77E" />
+  <rect x="107" y="50" width="14" height="66" rx="7" fill="#F5C24F" />
+  <rect x="124" y="62" width="14" height="54" rx="7" fill="#E9AE35" />
+  <path d="M58 98 h84 l-10 60 q-32 8 -64 0 z" fill="#E2574C" />
+  <path d="M100 98 h42 l-10 60 q-16 4 -32 4 z" fill="#CF4A40" />
+  <path d="M58 98 h84 l-2.2 14 h-79.6 z" fill="#FBF6EB" />
 </svg>

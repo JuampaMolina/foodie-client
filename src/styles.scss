@@ -39,6 +39,24 @@
     @apply rounded-2xl border border-neutral-200/70 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900;
   }
 
+  /* Round icon-only call to action, e.g. "add to cart" on a product card. */
+  .action-button {
+    @apply flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-brand-600 text-white shadow-sm transition duration-150 hover:bg-brand-700 active:scale-95;
+  }
+
+  /* Small square control used by the cart quantity stepper. */
+  .stepper-button {
+    @apply flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-neutral-100 text-neutral-600 transition duration-150 hover:bg-neutral-200 active:scale-95 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700;
+  }
+
+  /* Two-line truncation (Tailwind 3.1 has no built-in line-clamp). */
+  .clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .form-input {
     @apply w-full appearance-none rounded-xl border-2 border-neutral-200 bg-neutral-100 py-2.5 px-4 leading-tight text-neutral-800 transition duration-150 placeholder:text-neutral-400 focus:border-brand-600 focus:bg-white focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-brand-500 dark:focus:bg-neutral-900;
   }

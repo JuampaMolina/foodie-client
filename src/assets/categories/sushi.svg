@@ -1,12 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <circle cx="100" cy="100" r="96" fill="#E4EEF5"/>
-  <circle cx="70" cy="115" r="30" fill="#2E2A26"/>
-  <circle cx="70" cy="115" r="21" fill="#F5EFE0"/>
-  <circle cx="70" cy="115" r="10" fill="#E8827A"/>
-  <circle cx="130" cy="105" r="30" fill="#2E2A26"/>
-  <circle cx="130" cy="105" r="21" fill="#F5EFE0"/>
-  <circle cx="130" cy="105" r="10" fill="#4E9147"/>
-  <circle cx="100" cy="150" r="30" fill="#2E2A26"/>
-  <circle cx="100" cy="150" r="21" fill="#F5EFE0"/>
-  <circle cx="100" cy="150" r="10" fill="#EFA93F"/>
+  <circle cx="100" cy="100" r="100" fill="#FDF0E1" />
+  <ellipse cx="100" cy="166" rx="52" ry="8" fill="#F2E1CB" />
+  <circle cx="100" cy="100" r="58" fill="#3A463F" />
+  <circle cx="100" cy="100" r="47" fill="#FBF6EB" />
+  <path d="M100 53 a47 47 0 0 1 0 94 a47 47 0 0 0 0 -94" fill="#EFE7D6" />
+  <circle cx="100" cy="80" r="15" fill="#F08C7E" />
+  <circle cx="82" cy="112" r="14" fill="#6BA644" />
+  <circle cx="118" cy="112" r="14" fill="#F5C24F" />
 </svg>

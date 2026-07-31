@@ -42,13 +42,17 @@ const normalize = (value: string): string =>
 @Component({
   selector: 'app-items',
   template: `
-    <div class="mb-4 flex flex-wrap gap-4">
-      <input
-        [value]="search()"
-        (input)="onSearchChange($event)"
-        placeholder="Buscar por nombre..."
-        class="form-input grow"
-        type="text" />
+    <div class="mb-5 flex flex-wrap gap-3">
+      <div class="relative grow">
+        <i
+          class="fa-solid fa-magnifying-glass pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-neutral-400"></i>
+        <input
+          [value]="search()"
+          (input)="onSearchChange($event)"
+          placeholder="Buscar por nombre..."
+          class="form-input pl-10"
+          type="text" />
+      </div>
       <input
         [value]="minPrice() ?? ''"
         (input)="onMinPriceChange($event)"
@@ -65,15 +69,24 @@ const normalize = (value: string): string =>
         min="0" />
     </div>
     @if (items().length > 0 && filteredItems().length === 0) {
-    <span class="text-xl font-semibold"
-      >No hay productos que coincidan con la búsqueda</span
-    >
+    <div
+      class="surface-card flex flex-col items-center gap-2 py-16 text-center">
+      <i
+        class="fa-solid fa-magnifying-glass text-3xl text-neutral-300 dark:text-neutral-600"></i>
+      <span class="text-lg font-semibold text-neutral-500 dark:text-neutral-400"
+        >No hay productos que coincidan con la búsqueda</span
+      >
+    </div>
     }
-    <div class="grid-responsive-container-xl">
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
       @if (isAdmin()) {
-      <div (click)="create = true" class="primary-button h-32">
-        <i class="fa-solid fa-circle-plus text-3xl"></i>
-      </div>
+      <button
+        type="button"
+        (click)="create = true"
+        class="flex min-h-[14rem] cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-neutral-300 text-neutral-500 transition duration-150 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-700 dark:border-neutral-700 dark:text-neutral-400 dark:hover:border-brand-500 dark:hover:bg-brand-500/10 dark:hover:text-brand-400">
+        <i class="fa-solid fa-plus text-2xl"></i>
+        <span class="text-sm font-semibold">Nuevo producto</span>
+      </button>
       } @for (item of filteredItems(); track item) {
       <app-item-card
         (modifyItemEvent)="modifyItem($event)"
