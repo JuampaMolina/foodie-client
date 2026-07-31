@@ -14,15 +14,21 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
   template: `
-    <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">
-      <h2 class="title-2 text-center">Iniciar Sesión</h2>
+    <div class="surface-card mx-auto w-full max-w-md space-y-6 p-8">
+      <div class="flex flex-col items-center gap-2">
+        <span
+          class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-sm">
+          <i class="fa-solid fa-utensils text-lg"></i>
+        </span>
+        <h2 class="title-2 text-center text-3xl">Iniciar Sesión</h2>
+      </div>
 
       <form
-        class="flex flex-col space-y-6"
+        class="flex flex-col space-y-4"
         [formGroup]="loginForm"
         (ngSubmit)="onSubmit()">
         <div>
-          <label class="form-label" for="name">Email </label>
+          <label class="form-label" for="email">Email</label>
           <input
             class="form-input"
             id="email"
@@ -31,7 +37,7 @@ import { RouterLink } from '@angular/router';
             formControlName="email" />
         </div>
         <div>
-          <label class="form-label" for="name">Contraseña </label>
+          <label class="form-label" for="password">Contraseña</label>
           <input
             class="form-input"
             id="password"
@@ -40,18 +46,24 @@ import { RouterLink } from '@angular/router';
             formControlName="password" />
         </div>
         <button
-          class="primary-button col-start-2"
+          class="primary-button mt-2"
           type="submit"
           [disabled]="!loginForm.valid">
           Enviar
         </button>
       </form>
-      <a class="text-center hover:underline" routerLink="/register"
-        >Crea una cuenta</a
-      >
-      <a class="text-center hover:underline" routerLink="/forgot-password"
-        >¿Olvidaste tu contraseña?</a
-      >
+      <div class="flex flex-col items-center gap-2 text-sm">
+        <a
+          class="font-medium text-brand-700 hover:underline dark:text-brand-400"
+          routerLink="/register"
+          >Crea una cuenta</a
+        >
+        <a
+          class="text-neutral-500 hover:underline dark:text-neutral-400"
+          routerLink="/forgot-password"
+          >¿Olvidaste tu contraseña?</a
+        >
+      </div>
     </div>
   `,
   styles: [],

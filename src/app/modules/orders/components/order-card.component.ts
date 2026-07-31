@@ -12,10 +12,13 @@ const STATUS_LABELS: Record<OrderStatus, string> = {
 };
 
 const STATUS_CLASSES: Record<OrderStatus, string> = {
-  pending: 'bg-slate-300 text-slate-800',
-  preparing: 'bg-amber-300 text-amber-900',
-  delivered: 'bg-emerald-300 text-emerald-900',
-  cancelled: 'bg-red-300 text-red-900',
+  pending:
+    'bg-neutral-200 text-neutral-700 dark:bg-neutral-700/50 dark:text-neutral-300',
+  preparing:
+    'bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300',
+  delivered:
+    'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300',
+  cancelled: 'bg-red-100 text-red-800 dark:bg-red-500/15 dark:text-red-300',
 };
 
 const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
@@ -26,38 +29,44 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
     @if (order) {
     <div
       (click)="showContent = true"
-      class="secondary-button grid grid-cols-4 sm:grid-cols-5">
-      <span class="">Fecha</span>
-      <span class="border-l-2 border-l-slate-800 dark:border-l-slate-500"
-        >Usuario</span
-      >
-      <span class="border-l-2 border-l-slate-800 dark:border-l-slate-500"
-        >Estado</span
-      >
-      <span class="border-l-2 border-l-slate-800 dark:border-l-slate-500"
-        >Total</span
-      >
-      <span
-        class="row-span-2 hidden h-12 items-center justify-center border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500 sm:flex"
-        >Ver Detalles</span
-      >
-      <span class="font-semibold">{{ order.date | date: 'dd/MM/yyyy' }}</span>
-      <span
-        class="border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500"
-        >{{ order.user?.name }}</span
-      >
-      <span
-        class="border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500">
+      class="surface-card grid cursor-pointer grid-cols-4 items-center gap-3 p-4 transition duration-150 hover:-translate-y-0.5 hover:shadow-md sm:grid-cols-5">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-wide text-neutral-400">
+          Fecha
+        </p>
+        <p class="font-semibold text-neutral-900 dark:text-white">
+          {{ order.date | date: 'dd/MM/yyyy' }}
+        </p>
+      </div>
+      <div>
+        <p class="text-xs font-medium uppercase tracking-wide text-neutral-400">
+          Usuario
+        </p>
+        <p class="font-semibold text-neutral-900 dark:text-white">
+          {{ order.user?.name }}
+        </p>
+      </div>
+      <div>
+        <p class="text-xs font-medium uppercase tracking-wide text-neutral-400">
+          Estado
+        </p>
         <span
-          class="rounded-full px-2 py-1 text-xs font-semibold"
+          class="rounded-full px-2 py-0.5 text-xs font-semibold"
           [class]="statusClass">
           {{ statusLabel }}
         </span>
-      </span>
-      <span
-        class="border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500"
-        >{{ order.totalPrice }} EUR</span
-      >
+      </div>
+      <div>
+        <p class="text-xs font-medium uppercase tracking-wide text-neutral-400">
+          Total
+        </p>
+        <p class="font-semibold text-brand-700 dark:text-brand-400">
+          {{ order.totalPrice }} EUR
+        </p>
+      </div>
+      <div class="hidden items-center justify-center sm:flex">
+        <span class="secondary-button px-3 py-1.5 text-sm">Ver detalles</span>
+      </div>
     </div>
     }
 
@@ -71,25 +80,25 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
       @if (order) {
       <div class="space-y-4">
         <div>
-          <p class="text-lg font-semibold">Id</p>
+          <p class="detail-label">Id</p>
           <span>{{ order._id }}</span>
         </div>
         <div>
-          <p class="text-lg font-semibold">Fecha</p>
+          <p class="detail-label">Fecha</p>
           <span>{{ order.date | date: 'dd/MM/yyyy hh:mm:ss' }}</span>
         </div>
         <div>
-          <p class="text-lg font-semibold">Usuario</p>
+          <p class="detail-label">Usuario</p>
           <span>{{ order.user?.name }}</span>
         </div>
         @if (order.address) {
         <div>
-          <p class="text-lg font-semibold">Dirección de entrega</p>
+          <p class="detail-label">Dirección de entrega</p>
           <span>{{ order.address }}</span>
         </div>
         }
         <div>
-          <p class="text-lg font-semibold">Estado</p>
+          <p class="detail-label">Estado</p>
           <span
             class="rounded-full px-2 py-1 text-xs font-semibold"
             [class]="statusClass">
@@ -97,23 +106,30 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
           </span>
         </div>
         <div>
-          <p class="text-lg font-semibold">Contenido</p>
-          @for (orderItem of order.items; track orderItem.item._id) {
-          <div class="space-x-2">
-            <span>{{ orderItem.item.name }}</span>
-            <span>x {{ orderItem.quantity }}</span>
-            <span class="float-right"
-              >{{ orderItem.item.price * orderItem.quantity }} EUR</span
+          <p class="detail-label">Contenido</p>
+          <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
+            @for (orderItem of order.items; track orderItem.item._id) {
+            <div class="flex justify-between py-1.5">
+              <span
+                >{{ orderItem.item.name }}
+                <span class="text-neutral-400"
+                  >x {{ orderItem.quantity }}</span
+                ></span
+              >
+              <span>{{ orderItem.item.price * orderItem.quantity }} EUR</span>
+            </div>
+            }
+          </div>
+          <div class="flex justify-between pt-2 font-semibold">
+            <span>Total</span>
+            <span class="text-brand-700 dark:text-brand-400"
+              >{{ order.totalPrice }} EUR</span
             >
           </div>
-          }
-          <span class="float-right font-medium"
-            >Total {{ order.totalPrice }} EUR</span
-          >
         </div>
         @if (isAdmin) {
         <div>
-          <label class="form-label mb-1" for="status">Cambiar estado</label>
+          <label class="form-label" for="status">Cambiar estado</label>
           <select
             id="status"
             class="select-background form-input w-full cursor-pointer"
@@ -134,7 +150,13 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
       }
     </p-dialog>
   `,
-  styles: [],
+  styles: [
+    `
+      .detail-label {
+        @apply text-xs font-semibold uppercase tracking-wide text-neutral-400;
+      }
+    `,
+  ],
   imports: [Bind, Dialog, DatePipe],
 })
 export class OrderCardComponent {

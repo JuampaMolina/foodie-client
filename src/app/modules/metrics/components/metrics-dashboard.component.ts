@@ -30,11 +30,13 @@ interface ChartPoint {
     <h2 class="title-2 mb-4">Métricas</h2>
 
     <div class="mb-4 flex items-center gap-2">
-      <span class="form-label">Periodo</span>
+      <span class="form-label mb-0">Periodo</span>
       @for (range of dayRanges; track range) {
       <button
         class="secondary-button px-3 py-1"
-        [class]="days() === range ? 'bg-slate-300 dark:bg-slate-600' : ''"
+        [class]="
+          days() === range ? 'bg-brand-600 text-white hover:bg-brand-600' : ''
+        "
         (click)="onDaysChange(range)">
         {{ range }} días
       </button>
@@ -42,24 +44,33 @@ interface ChartPoint {
     </div>
 
     <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <div
-        class="rounded bg-slate-200 p-4 text-slate-800 dark:bg-slate-700 dark:text-slate-100">
-        <span class="text-sm font-light">Ingresos ({{ days() }} días)</span>
-        <div class="text-2xl font-semibold">{{ totalRevenue() }} EUR</div>
+      <div class="surface-card p-4">
+        <span class="text-sm text-neutral-500 dark:text-neutral-400"
+          >Ingresos ({{ days() }} días)</span
+        >
+        <div class="text-2xl font-semibold text-brand-700 dark:text-brand-400">
+          {{ totalRevenue() }} EUR
+        </div>
       </div>
-      <div
-        class="rounded bg-slate-200 p-4 text-slate-800 dark:bg-slate-700 dark:text-slate-100">
-        <span class="text-sm font-light">Pedidos ({{ days() }} días)</span>
-        <div class="text-2xl font-semibold">{{ totalOrders() }}</div>
+      <div class="surface-card p-4">
+        <span class="text-sm text-neutral-500 dark:text-neutral-400"
+          >Pedidos ({{ days() }} días)</span
+        >
+        <div class="text-2xl font-semibold text-neutral-900 dark:text-white">
+          {{ totalOrders() }}
+        </div>
       </div>
-      <div
-        class="rounded bg-slate-200 p-4 text-slate-800 dark:bg-slate-700 dark:text-slate-100">
-        <span class="text-sm font-light">Media diaria</span>
-        <div class="text-2xl font-semibold">{{ avgRevenuePerDay() }} EUR</div>
+      <div class="surface-card p-4">
+        <span class="text-sm text-neutral-500 dark:text-neutral-400"
+          >Media diaria</span
+        >
+        <div class="text-2xl font-semibold text-neutral-900 dark:text-white">
+          {{ avgRevenuePerDay() }} EUR
+        </div>
       </div>
     </div>
 
-    <div class="viz-root mb-6 rounded p-4">
+    <div class="viz-root mb-6 p-4">
       <div class="mb-2 flex items-center justify-between">
         <h3 class="font-semibold" style="color: var(--text-primary)">
           Ingresos por día
@@ -171,7 +182,7 @@ interface ChartPoint {
       }
     </div>
 
-    <div class="viz-root rounded p-4">
+    <div class="viz-root p-4">
       <div class="mb-2 flex items-center justify-between">
         <h3 class="font-semibold" style="color: var(--text-primary)">
           Productos más pedidos
@@ -253,6 +264,9 @@ interface ChartPoint {
         --series-1: #2a78d6;
         --series-1-wash: rgba(42, 120, 214, 0.1);
         background: var(--surface-1);
+        border: 1px solid var(--gridline);
+        border-radius: 1rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
       }
       :host-context(.dark) .viz-root {
         --surface-1: #27272a;

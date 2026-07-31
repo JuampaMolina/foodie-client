@@ -8,40 +8,51 @@ const DEFAULT_ITEM_IMAGE = 'assets/categories/placeholder.svg';
   template: `
     @if (item) {
     <div
-      class="min-h-32 flex h-full gap-3 rounded bg-slate-200 p-3 text-slate-800 dark:bg-slate-700 dark:text-slate-100">
+      class="min-h-32 flex h-full gap-4 rounded-2xl border border-neutral-200/70 bg-white p-3 shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
       <img
         [src]="item.category?.image || defaultImage"
         [alt]="item.name"
-        class="h-full w-20 shrink-0 rounded object-cover" />
-      <div class="flex grow flex-col overflow-hidden">
-        <div class="space-x-2">
-          <span class="font-semibold">{{ item.name }}</span>
-          <span class="text-xs font-extralight">{{ item.category?.name }}</span>
+        class="h-full w-24 shrink-0 rounded-xl bg-neutral-100 object-cover dark:bg-neutral-800" />
+      <div class="flex grow flex-col overflow-hidden py-0.5">
+        <div class="flex flex-wrap items-baseline gap-x-2">
+          <span class="font-semibold text-neutral-900 dark:text-white">{{
+            item.name
+          }}</span>
+          <span
+            class="text-xs font-medium uppercase tracking-wide text-neutral-400"
+            >{{ item.category?.name }}</span
+          >
         </div>
-        <span class="grow font-light">{{ item.description }}</span>
-        <span class="flex items-center justify-between">
-          <span class="">{{ item.price }} EUR</span>
+        <span
+          class="grow text-sm font-light text-neutral-500 dark:text-neutral-400"
+          >{{ item.description }}</span
+        >
+        <span class="flex items-center justify-between pt-1">
+          <span
+            class="font-mukta text-lg font-bold text-brand-700 dark:text-brand-400"
+            >{{ item.price }} EUR</span
+          >
           @if (!isAdmin) {
-          <span class="flex items-center justify-center space-x-2 text-xl">
+          <span class="flex items-center justify-center gap-1.5 text-lg">
             @if (quantity > 0) {
             <i
               (click)="removeItem(quantity)"
-              class="fa-solid fa-square-xmark cursor-pointer"></i>
+              class="quantity-icon fa-solid fa-square-xmark"></i>
             } @if (quantity > 0 && modifyQuantity) {
             <i
               (click)="removeItem()"
-              class="fa-solid fa-square-minus cursor-pointer"></i>
+              class="quantity-icon fa-solid fa-square-minus"></i>
             } @if (quantity > 0 && modifyQuantity) {
             <input
               type="number"
               min="0"
-              class="form-input w-14 select-none px-1 py-0 text-center text-base"
+              class="form-input w-14 select-none px-1 py-1 text-center text-sm"
               [value]="quantity"
               (change)="onQuantityInput($event)" />
             } @if (quantity < 1 || modifyQuantity) {
             <i
               (click)="addItem()"
-              class="fa-solid fa-square-plus cursor-pointer">
+              class="quantity-icon fa-solid fa-square-plus">
             </i>
             }
           </span>
@@ -49,7 +60,7 @@ const DEFAULT_ITEM_IMAGE = 'assets/categories/placeholder.svg';
           <span>
             <i
               (click)="modifyItem()"
-              class="fa-solid fa-square-pen cursor-pointer text-2xl"></i>
+              class="quantity-icon fa-solid fa-square-pen text-2xl"></i>
           </span>
           }
         </span>
@@ -57,7 +68,13 @@ const DEFAULT_ITEM_IMAGE = 'assets/categories/placeholder.svg';
     </div>
     }
   `,
-  styles: [],
+  styles: [
+    `
+      .quantity-icon {
+        @apply cursor-pointer text-neutral-500 transition hover:text-brand-600 dark:text-neutral-400 dark:hover:text-brand-400;
+      }
+    `,
+  ],
 })
 export class ItemCardComponent {
   @Input() item?: Item;

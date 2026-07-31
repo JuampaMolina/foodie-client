@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,ts}'],
@@ -22,7 +24,12 @@ module.exports = {
         'Noto Color Emoji',
       ],
     },
-    extend: {},
+    extend: {
+      colors: {
+        brand: colors.orange,
+        neutral: colors.stone,
+      },
+    },
   },
   plugins: [],
 };

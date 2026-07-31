@@ -8,9 +8,11 @@ import { ToastComponent } from './shared/toast.component';
 @Component({
   selector: 'app-root',
   imports: [NavbarComponent, RouterOutlet, ToastComponent],
-  template: `<div class="p-8">
+  template: `<div class="flex min-h-screen flex-col">
     <app-navbar [title]="title"></app-navbar>
-    <router-outlet></router-outlet>
+    <main class="mx-auto w-full max-w-6xl flex-1 p-4 sm:p-6 lg:p-8">
+      <router-outlet></router-outlet>
+    </main>
     <app-toast></app-toast>
   </div> `,
   styles: [],

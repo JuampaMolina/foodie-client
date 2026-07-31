@@ -9,17 +9,20 @@ const DEFAULT_CATEGORY_IMAGE = 'assets/categories/placeholder.svg';
     @if (category) {
     <div
       (click)="selectCategory()"
-      class="secondary-button flex h-14 items-center justify-center gap-2"
+      class="flex h-14 cursor-pointer items-center justify-center gap-2 rounded-full border px-4 font-semibold transition duration-150"
       [class]="
         selectedCategory === this.category._id
-          ? 'bg-slate-300 dark:bg-slate-600'
-          : ''
+          ? 'border-brand-600 bg-brand-600 text-white shadow-sm'
+          : 'border-neutral-200 bg-white text-neutral-700 hover:border-brand-300 hover:bg-brand-50 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800'
       ">
-      <img
-        [src]="category.image || defaultImage"
-        [alt]="category.name"
-        class="h-8 w-8 shrink-0 rounded object-cover" />
-      <span class="font-semibold">{{ category.name }}</span>
+      <span
+        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/70 p-1 dark:bg-black/10">
+        <img
+          [src]="category.image || defaultImage"
+          [alt]="category.name"
+          class="h-full w-full rounded-full object-cover" />
+      </span>
+      <span>{{ category.name }}</span>
     </div>
     }
   `,
