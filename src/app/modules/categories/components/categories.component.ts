@@ -25,7 +25,12 @@ import { CategoryFormComponent } from './category-form.component';
 @Component({
   selector: 'app-categories',
   template: `
-    <div class="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2 sm:gap-3">
+    <!--
+      overflow-x-auto también recorta en vertical, así que el padding deja sitio
+      al anillo de selección y al desplazamiento del hover. Los márgenes
+      negativos lo compensan para no alterar la posición de la fila.
+    -->
+    <div class="-mx-2 -mt-2 flex gap-2 overflow-x-auto px-2 pt-2 pb-3 sm:gap-3">
       @if (isAdmin()) {
       <button
         type="button"

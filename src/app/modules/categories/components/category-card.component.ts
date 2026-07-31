@@ -13,7 +13,7 @@ const DEFAULT_CATEGORY_IMAGE = 'assets/categories/placeholder.svg';
       class="group flex w-[4.5rem] shrink-0 cursor-pointer flex-col items-center gap-2 sm:w-20"
       [attr.aria-pressed]="isSelected">
       <span
-        class="flex h-16 w-16 items-center justify-center rounded-full ring-2 ring-offset-2 ring-offset-neutral-50 transition duration-150 group-hover:-translate-y-0.5 dark:ring-offset-[#0c0a09]"
+        class="flex h-16 w-16 items-center justify-center rounded-full ring-2 transition duration-150 group-hover:-translate-y-0.5"
         [class]="
           isSelected
             ? 'ring-brand-600'
