@@ -3,9 +3,9 @@ export interface Item {
   name: string;
   description: string;
   price: number;
-  image?: string;
   category?: {
     _id: string;
     name: string;
+    image?: string;
   };
 }

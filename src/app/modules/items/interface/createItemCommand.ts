@@ -3,5 +3,4 @@ export interface CreateItemCommand {
   description: string;
   price: number;
   category: string;
-  image?: string;
 }
