@@ -26,25 +26,34 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
       (click)="showContent = true"
       class="secondary-button grid grid-cols-4 sm:grid-cols-5">
       <span class="">Fecha</span>
-      <span class="border-l-2 border-l-slate-800">Usuario</span>
-      <span class="border-l-2 border-l-slate-800">Estado</span>
-      <span class="border-l-2 border-l-slate-800">Total</span>
+      <span class="border-l-2 border-l-slate-800 dark:border-l-slate-500"
+        >Usuario</span
+      >
+      <span class="border-l-2 border-l-slate-800 dark:border-l-slate-500"
+        >Estado</span
+      >
+      <span class="border-l-2 border-l-slate-800 dark:border-l-slate-500"
+        >Total</span
+      >
       <span
-        class="row-span-2 hidden h-12 items-center justify-center border-l-2 border-l-slate-800 font-semibold sm:flex"
+        class="row-span-2 hidden h-12 items-center justify-center border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500 sm:flex"
         >Ver Detalles</span
       >
       <span class="font-semibold">{{ order.date | date: 'dd/MM/yyyy' }}</span>
-      <span class="border-l-2 border-l-slate-800 font-semibold">{{
-        order.user?.name
-      }}</span>
-      <span class="border-l-2 border-l-slate-800 font-semibold">
+      <span
+        class="border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500"
+        >{{ order.user?.name }}</span
+      >
+      <span
+        class="border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500">
         <span
           class="rounded-full px-2 py-1 text-xs font-semibold"
           [class]="statusClass">
           {{ statusLabel }}
         </span>
       </span>
-      <span class="border-l-2 border-l-slate-800 font-semibold"
+      <span
+        class="border-l-2 border-l-slate-800 font-semibold dark:border-l-slate-500"
         >{{ order.totalPrice }} EUR</span
       >
     </div>

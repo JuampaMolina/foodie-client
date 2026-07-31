@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply bg-white text-slate-800 dark:bg-slate-900 dark:text-slate-100;
+  }
+
   .title-2 {
-    @apply text-4xl font-bold tracking-wide text-slate-800;
+    @apply text-4xl font-bold tracking-wide text-slate-800 dark:text-slate-100;
   }
 }
 
@@ -28,15 +32,15 @@
   }
 
   .secondary-button {
-    @apply primary-button bg-slate-200 text-slate-800 hover:bg-slate-300;
+    @apply primary-button bg-slate-200 text-slate-800 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600;
   }
 
   .form-input {
-    @apply w-full appearance-none rounded border-2 border-slate-100 bg-slate-100 py-2 px-4 leading-tight text-slate-800 focus:border-slate-800 focus:bg-white focus:outline-none;
+    @apply w-full appearance-none rounded border-2 border-slate-100 bg-slate-100 py-2 px-4 leading-tight text-slate-800 focus:border-slate-800 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-700 dark:text-slate-100 dark:focus:border-slate-100 dark:focus:bg-slate-800;
   }
 
   .form-label {
-    @apply block font-semibold text-slate-800;
+    @apply block font-semibold text-slate-800 dark:text-slate-100;
   }
 
   .toast-error {
@@ -54,5 +58,9 @@
     background-repeat: no-repeat;
     background-position-x: 100%;
     background-position-y: 5px;
+
+    .dark & {
+      background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    }
   }
 }

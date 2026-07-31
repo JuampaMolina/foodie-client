@@ -8,7 +8,7 @@ const DEFAULT_ITEM_IMAGE = 'assets/items/placeholder.svg';
   template: `
     @if (item) {
     <div
-      class="min-h-32 flex h-full gap-3 rounded bg-slate-200 p-3 text-slate-800">
+      class="min-h-32 flex h-full gap-3 rounded bg-slate-200 p-3 text-slate-800 dark:bg-slate-700 dark:text-slate-100">
       <img
         [src]="item.image || defaultImage"
         [alt]="item.name"

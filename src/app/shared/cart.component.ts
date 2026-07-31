@@ -24,9 +24,10 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
     <div class="mb-4 flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>
       @if (cartCount() > 0) {
-      <span class="rounded bg-slate-300 px-2 py-1 text-xl font-bold">{{
-        cartCount()
-      }}</span>
+      <span
+        class="rounded bg-slate-300 px-2 py-1 text-xl font-bold dark:bg-slate-600"
+        >{{ cartCount() }}</span
+      >
       }
     </div>
     @if (cartCount() < 1) {
@@ -44,7 +45,8 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
       }
     </div>
     @if (cart().length > 0) {
-    <span class="my-2 flex justify-end text-2xl font-semibold text-slate-800"
+    <span
+      class="my-2 flex justify-end text-2xl font-semibold text-slate-800 dark:text-slate-100"
       >Total: {{ totalPrice() }} EUR
     </span>
     } @if (cartCount() > 0) {
