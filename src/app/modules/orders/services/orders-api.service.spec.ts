@@ -30,14 +30,23 @@ describe('OrdersApiService', () => {
 
   afterEach(() => httpMock.verify());
 
-  it('should GET all orders', () => {
-    service.getOrders().subscribe(orders => {
-      expect(orders).toEqual([order]);
+  it('should GET a page of orders', () => {
+    const page = {
+      items: [order],
+      page: 1,
+      limit: 10,
+      total: 1,
+      totalPages: 1,
+    };
+    service.getOrders(1, 10).subscribe(result => {
+      expect(result).toEqual(page);
     });
 
-    const req = httpMock.expectOne(ordersApi);
+    const req = httpMock.expectOne(req => req.url === ordersApi);
     expect(req.request.method).toBe('GET');
-    req.flush([order]);
+    expect(req.request.params.get('page')).toBe('1');
+    expect(req.request.params.get('limit')).toBe('10');
+    req.flush(page);
   });
 
   it('should GET orders by user id', () => {

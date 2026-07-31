@@ -37,7 +37,7 @@ describe('ordersReducer', () => {
   });
 
   it('should set loading on getOrders', () => {
-    const state = ordersReducer(ordersInitalState, getOrders());
+    const state = ordersReducer(ordersInitalState, getOrders({}));
     expect(state.loading).toBeTrue();
   });
 
@@ -49,12 +49,15 @@ describe('ordersReducer', () => {
     expect(state.error).toBe('boom');
   });
 
-  it('should populate orders on getOrdersSuccess', () => {
+  it('should populate orders and pagination metadata on getOrdersSuccess', () => {
     const state = ordersReducer(
       ordersInitalState,
-      getOrdersSuccess({ orders: [order] })
+      getOrdersSuccess({ orders: [order], page: 2, total: 15, totalPages: 2 })
     );
     expect(selectAll(state)).toEqual([order]);
+    expect(state.page).toBe(2);
+    expect(state.total).toBe(15);
+    expect(state.totalPages).toBe(2);
   });
 
   it('should append the order and empty the cart on createOrderSuccess', () => {

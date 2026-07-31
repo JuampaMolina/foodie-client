@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { CreateOrderCommand } from '../interface/createOrderCommand';
 import { Order } from '../interface/order';
+import { PaginatedResult } from '../interface/paginatedResult';
 import { UpdateOrderStatusCommand } from '../interface/updateOrderStatusCommand';
 
 const ordersApi = environment.apiBaseUri + '/orders';
@@ -14,8 +15,10 @@ const ordersApi = environment.apiBaseUri + '/orders';
 export class OrdersApiService {
   private http = inject(HttpClient);
 
-  getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(ordersApi);
+  getOrders(page: number, limit: number): Observable<PaginatedResult<Order>> {
+    return this.http.get<PaginatedResult<Order>>(ordersApi, {
+      params: { page, limit },
+    });
   }
 
   getOrdersByUserId(userId: string): Observable<Order[]> {

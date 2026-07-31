@@ -17,6 +17,8 @@ import {
   updateOrderStatusSuccess,
 } from './orders.actions';
 
+const DEFAULT_PAGE_SIZE = 10;
+
 @Injectable()
 export class OrdersEffects {
   private ordersApi = inject(OrdersApiService);
@@ -25,9 +27,11 @@ export class OrdersEffects {
   getOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getOrders),
-      mergeMap(() =>
-        this.ordersApi.getOrders().pipe(
-          map(orders => getOrdersSuccess({ orders })),
+      mergeMap(({ page = 1, limit = DEFAULT_PAGE_SIZE }) =>
+        this.ordersApi.getOrders(page, limit).pipe(
+          map(({ items, page, total, totalPages }) =>
+            getOrdersSuccess({ orders: items, page, total, totalPages })
+          ),
           catchError(error => of(getOrdersError({ error })))
         )
       )

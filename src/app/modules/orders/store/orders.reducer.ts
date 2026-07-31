@@ -30,6 +30,9 @@ export const ordersInitalState: OrdersState = ordersAdapter.getInitialState({
   loaded: false,
   error: '',
   message: '',
+  page: 1,
+  total: 0,
+  totalPages: 1,
 });
 
 export const ordersReducer = createReducer(
@@ -48,11 +51,14 @@ export const ordersReducer = createReducer(
     error: error.message,
   })),
 
-  on(getOrdersSuccess, (state, { orders }) =>
+  on(getOrdersSuccess, (state, { orders, page, total, totalPages }) =>
     ordersAdapter.setAll(orders, {
       ...state,
       loading: false,
       loaded: true,
+      page,
+      total,
+      totalPages,
     })
   ),
 
