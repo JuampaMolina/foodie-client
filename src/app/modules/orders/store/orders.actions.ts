@@ -78,3 +78,8 @@ export const removeItemFromCart = createAction(
   '[Orders] removeItemFromCart',
   props<{ itemId: string }>()
 );
+
+export const setCartItemQuantity = createAction(
+  '[Orders] setCartItemQuantity',
+  props<{ item: Item; quantity: number }>()
+);

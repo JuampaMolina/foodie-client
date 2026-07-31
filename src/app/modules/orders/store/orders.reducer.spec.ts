@@ -9,6 +9,7 @@ import {
   getOrdersError,
   getOrdersSuccess,
   removeItemFromCart,
+  setCartItemQuantity,
   updateOrderStatusSuccess,
 } from './orders.actions';
 import {
@@ -115,5 +116,21 @@ describe('ordersReducer', () => {
       cancelOrderError({ error: { message: 'boom' } })
     );
     expect(state.error).toBe('boom');
+  });
+
+  it('should set the exact quantity of an item in the cart', () => {
+    const state = ordersReducer(
+      { ...ordersInitalState, cart: [apple, burger] },
+      setCartItemQuantity({ item: burger, quantity: 3 })
+    );
+    expect(state.cart.map(i => i._id)).toEqual(['a', 'b', 'b', 'b']);
+  });
+
+  it('should remove the item from the cart when quantity is set to 0', () => {
+    const state = ordersReducer(
+      { ...ordersInitalState, cart: [apple, burger] },
+      setCartItemQuantity({ item: burger, quantity: 0 })
+    );
+    expect(state.cart).toEqual([apple]);
   });
 });

@@ -8,6 +8,7 @@ import {
   addItemToCart,
   createOrder,
   removeItemFromCart,
+  setCartItemQuantity,
 } from 'src/app/modules/orders/store/orders.actions';
 import { CreateOrderCommand } from 'src/app/modules/orders/interface/createOrderCommand';
 import { AppState } from 'src/app/store/app.reducers';
@@ -40,6 +41,7 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
       <app-item-card
         (addItemEvent)="addItem($event)"
         (removeItemEvent)="removeItem($event)"
+        (quantityChangeEvent)="setQuantity(item, $event)"
         [item]="item"
         [quantity]="getQuantity(item._id)"
         [modifyQuantity]="true">
@@ -112,6 +114,10 @@ export class CartComponent {
 
   removeItem(itemId: string) {
     this.store.dispatch(removeItemFromCart({ itemId }));
+  }
+
+  setQuantity(item: Item, quantity: number) {
+    this.store.dispatch(setCartItemQuantity({ item, quantity }));
   }
 
   getQuantity(itemId: string) {

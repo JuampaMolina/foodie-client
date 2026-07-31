@@ -32,7 +32,12 @@ const DEFAULT_ITEM_IMAGE = 'assets/categories/placeholder.svg';
               (click)="removeItem()"
               class="fa-solid fa-square-minus cursor-pointer"></i>
             } @if (quantity > 0 && modifyQuantity) {
-            <span class="select-none text-base">{{ quantity }} </span>
+            <input
+              type="number"
+              min="0"
+              class="form-input w-14 select-none px-1 py-0 text-center text-base"
+              [value]="quantity"
+              (change)="onQuantityInput($event)" />
             } @if (quantity < 1 || modifyQuantity) {
             <i
               (click)="addItem()"
@@ -63,6 +68,7 @@ export class ItemCardComponent {
   @Output() addItemEvent = new EventEmitter<Item>();
   @Output() modifyItemEvent = new EventEmitter<Item>();
   @Output() removeItemEvent = new EventEmitter<string>();
+  @Output() quantityChangeEvent = new EventEmitter<number>();
 
   readonly defaultImage = DEFAULT_ITEM_IMAGE;
 
@@ -78,6 +84,14 @@ export class ItemCardComponent {
     for (let index = quantity; index > 0; index--) {
       this.removeItemEvent.emit(this.item!._id);
     }
+  }
+
+  onQuantityInput(event: Event) {
+    const value = Number((event.target as HTMLInputElement).value);
+    const quantity = Number.isFinite(value)
+      ? Math.max(Math.trunc(value), 0)
+      : 0;
+    this.quantityChangeEvent.emit(quantity);
   }
 
   constructor() {}
