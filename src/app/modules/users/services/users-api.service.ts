@@ -2,9 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { PaginatedResult } from '../../orders/interface/paginatedResult';
 import { ForgotPasswordResult } from '../interface/ForgotPasswordResult';
 import { LoginUserCommand } from '../interface/LoginUserCommand';
 import { RegisterUserCommand } from '../interface/RegisterUserCommand';
+import { UpdateUserRoleCommand } from '../interface/updateUserRoleCommand';
 import { User } from '../interface/user';
 import { UserSession } from '../interface/UserSession';
 
@@ -35,5 +37,16 @@ export class UsersApiService {
       token,
       password,
     });
+  }
+
+  getUsers(page: number, limit: number): Observable<PaginatedResult<User>> {
+    return this.http.get<PaginatedResult<User>>(usersApi, {
+      params: { page, limit },
+    });
+  }
+
+  updateUserRole(roleUpdate: UpdateUserRoleCommand): Observable<User> {
+    const { userId, role } = roleUpdate;
+    return this.http.put<User>(usersApi + `/${userId}/role`, { role });
   }
 }

@@ -53,3 +53,23 @@ export const selectResetPasswordDone = createSelector(
   _selectUsersState,
   (state: UsersState) => state.resetPasswordDone
 );
+
+export const selectAdminUsers = createSelector(
+  _selectUsersState,
+  (state: UsersState) => state.adminUsers
+);
+
+export const selectAdminUsersLoading = createSelector(
+  _selectUsersState,
+  (state: UsersState) => state.adminUsersLoading
+);
+
+export const selectAdminUsersPage = createSelector(
+  _selectUsersState,
+  (state: UsersState) => state.adminUsersPage
+);
+
+export const selectAdminUsersTotalPages = createSelector(
+  _selectUsersState,
+  (state: UsersState) => state.adminUsersTotalPages
+);

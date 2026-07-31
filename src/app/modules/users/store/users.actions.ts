@@ -4,6 +4,7 @@ import { UserSession } from '../interface/UserSession';
 import { RegisterUserCommand } from '../interface/RegisterUserCommand';
 import { LoginUserCommand } from '../interface/LoginUserCommand';
 import { ForgotPasswordResult } from '../interface/ForgotPasswordResult';
+import { UpdateUserRoleCommand } from '../interface/updateUserRoleCommand';
 
 export const registerUser = createAction(
   '[Users] registerUser',
@@ -56,4 +57,30 @@ export const resetPasswordError = createAction(
 );
 export const resetPasswordSuccess = createAction(
   '[Users] resetPasswordSuccess'
+);
+
+export const getUsers = createAction(
+  '[Users] getUsers',
+  props<{ page?: number; limit?: number }>()
+);
+export const getUsersError = createAction(
+  '[Users] getUsersError',
+  props<{ error: any }>()
+);
+export const getUsersSuccess = createAction(
+  '[Users] getUsersSuccess',
+  props<{ users: User[]; page: number; total: number; totalPages: number }>()
+);
+
+export const updateUserRole = createAction(
+  '[Users] updateUserRole',
+  props<{ roleUpdate: UpdateUserRoleCommand }>()
+);
+export const updateUserRoleError = createAction(
+  '[Users] updateUserRoleError',
+  props<{ error: any }>()
+);
+export const updateUserRoleSuccess = createAction(
+  '[Users] updateUserRoleSuccess',
+  props<{ user: User }>()
 );

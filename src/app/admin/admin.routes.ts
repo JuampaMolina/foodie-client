@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
 import { CategoriesComponent } from '../modules/categories/components/categories.component';
 import { ItemsComponent } from '../modules/items/components/items.component';
+import { MetricsDashboardComponent } from '../modules/metrics/components/metrics-dashboard.component';
 import { OrdersComponent } from '../modules/orders/components/orders.component';
+import { UserAdminComponent } from '../modules/users/components/user-admin.component';
 import { AdminComponent } from './admin.component';
 
 export const adminRoutes: Routes = [
@@ -25,6 +27,14 @@ export const adminRoutes: Routes = [
       {
         path: 'pedidos',
         component: OrdersComponent,
+      },
+      {
+        path: 'usuarios',
+        component: UserAdminComponent,
+      },
+      {
+        path: 'metricas',
+        component: MetricsDashboardComponent,
       },
     ],
   },

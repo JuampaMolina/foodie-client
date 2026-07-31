@@ -12,6 +12,12 @@ import {
   resetPassword,
   resetPasswordError,
   resetPasswordSuccess,
+  getUsers,
+  getUsersError,
+  getUsersSuccess,
+  updateUserRole,
+  updateUserRoleError,
+  updateUserRoleSuccess,
 } from './users.actions';
 import { usersInitialState, usersReducer } from './users.reducer';
 
@@ -124,5 +130,46 @@ describe('usersReducer', () => {
       resetPassword({ token: 'reset-tok', password: 'newpass' })
     );
     expect(state.resetPasswordDone).toBeFalse();
+  });
+
+  it('should set loading on getUsers', () => {
+    const state = usersReducer(usersInitialState, getUsers({}));
+    expect(state.adminUsersLoading).toBeTrue();
+  });
+
+  it('should set the error message on getUsersError', () => {
+    const state = usersReducer(
+      usersInitialState,
+      getUsersError({ error: { message: 'boom' } })
+    );
+    expect(state.adminUsersError).toBe('boom');
+  });
+
+  it('should populate admin users and pagination metadata on getUsersSuccess', () => {
+    const state = usersReducer(
+      usersInitialState,
+      getUsersSuccess({ users: [user], page: 2, total: 15, totalPages: 2 })
+    );
+    expect(state.adminUsers).toEqual([user]);
+    expect(state.adminUsersPage).toBe(2);
+    expect(state.adminUsersTotal).toBe(15);
+    expect(state.adminUsersTotalPages).toBe(2);
+  });
+
+  it('should set the error message on updateUserRoleError', () => {
+    const state = usersReducer(
+      usersInitialState,
+      updateUserRoleError({ error: { message: 'boom' } })
+    );
+    expect(state.adminUsersError).toBe('boom');
+  });
+
+  it('should update the matching admin user on updateUserRoleSuccess', () => {
+    const updated: User = { ...user, role: 'admin' };
+    const state = usersReducer(
+      { ...usersInitialState, adminUsers: [user] },
+      updateUserRoleSuccess({ user: updated })
+    );
+    expect(state.adminUsers).toEqual([updated]);
   });
 });

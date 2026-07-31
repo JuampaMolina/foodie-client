@@ -80,4 +80,35 @@ describe('UsersApiService', () => {
     });
     req.flush(null);
   });
+
+  it('should GET a page of users', () => {
+    const page = {
+      items: [user],
+      page: 1,
+      limit: 10,
+      total: 1,
+      totalPages: 1,
+    };
+    service.getUsers(1, 10).subscribe(result => {
+      expect(result).toEqual(page);
+    });
+
+    const req = httpMock.expectOne(req => req.url === usersApi);
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('page')).toBe('1');
+    expect(req.request.params.get('limit')).toBe('10');
+    req.flush(page);
+  });
+
+  it('should PUT the new role of a user', () => {
+    const updated: User = { ...user, role: 'admin' };
+    service.updateUserRole({ userId: '1', role: 'admin' }).subscribe(result => {
+      expect(result).toEqual(updated);
+    });
+
+    const req = httpMock.expectOne(usersApi + '/1/role');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ role: 'admin' });
+    req.flush(updated);
+  });
 });
