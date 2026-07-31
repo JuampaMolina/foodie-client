@@ -6,4 +6,6 @@ export interface UsersState {
   loading: boolean;
   loaded: boolean;
   error: any;
+  resetToken?: string;
+  resetPasswordDone: boolean;
 }

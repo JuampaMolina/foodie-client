@@ -3,6 +3,7 @@ import { User } from '../interface/user';
 import { UserSession } from '../interface/UserSession';
 import { RegisterUserCommand } from '../interface/RegisterUserCommand';
 import { LoginUserCommand } from '../interface/LoginUserCommand';
+import { ForgotPasswordResult } from '../interface/ForgotPasswordResult';
 
 export const registerUser = createAction(
   '[Users] registerUser',
@@ -31,3 +32,28 @@ export const loginUserSuccess = createAction(
 );
 
 export const logoutUser = createAction('[Users] logoutUser');
+
+export const forgotPassword = createAction(
+  '[Users] forgotPassword',
+  props<{ email: string }>()
+);
+export const forgotPasswordError = createAction(
+  '[Users] forgotPasswordError',
+  props<{ error: any }>()
+);
+export const forgotPasswordSuccess = createAction(
+  '[Users] forgotPasswordSuccess',
+  props<ForgotPasswordResult>()
+);
+
+export const resetPassword = createAction(
+  '[Users] resetPassword',
+  props<{ token: string; password: string }>()
+);
+export const resetPasswordError = createAction(
+  '[Users] resetPasswordError',
+  props<{ error: any }>()
+);
+export const resetPasswordSuccess = createAction(
+  '[Users] resetPasswordSuccess'
+);

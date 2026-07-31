@@ -43,3 +43,13 @@ export const selectIsAuthenticated = createSelector(
   _selectUsersState,
   (state: UsersState) => state.user !== undefined
 );
+
+export const selectResetToken = createSelector(
+  _selectUsersState,
+  (state: UsersState) => state.resetToken
+);
+
+export const selectResetPasswordDone = createSelector(
+  _selectUsersState,
+  (state: UsersState) => state.resetPasswordDone
+);
