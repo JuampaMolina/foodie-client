@@ -6,10 +6,11 @@ import { selectUser } from 'src/app/modules/users/store/users.selectors';
 import { AppState } from '../store/app.reducers';
 import { CategoriesComponent } from '../modules/categories/components/categories.component';
 import { ItemsComponent } from '../modules/items/components/items.component';
+import { FeaturedItemsComponent } from './featured-items.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CategoriesComponent, ItemsComponent],
+  imports: [CategoriesComponent, ItemsComponent, FeaturedItemsComponent],
   template: `
     <div class="flex flex-col gap-8">
       <div
@@ -33,6 +34,16 @@ import { ItemsComponent } from '../modules/items/components/items.component';
           </p>
         </div>
       </div>
+
+      <section>
+        <div class="mb-3 flex items-baseline justify-between gap-3">
+          <h3 class="title-2 text-2xl">Destacados</h3>
+          <span class="text-sm text-neutral-500 dark:text-neutral-400"
+            >Lo más pedido</span
+          >
+        </div>
+        <app-featured-items></app-featured-items>
+      </section>
 
       <section>
         <div class="mb-3 flex items-baseline justify-between gap-3">
