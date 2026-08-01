@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { UsersApiService } from '../services/users-api.service';
@@ -34,6 +35,7 @@ export class UsersEffects {
   private usersApi = inject(UsersApiService);
   private actions$ = inject(Actions);
   private router = inject(Router);
+  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   registerUser$ = createEffect(() =>
     this.actions$.pipe(
@@ -59,14 +61,22 @@ export class UsersEffects {
     )
   );
 
+  // Estos dos efectos sólo se disparan como reacción a una acción de un
+  // usuario real (enviar el formulario de login, pulsar cerrar sesión), así
+  // que en la práctica nunca se ejecutan durante el SSR de una petición
+  // anónima. Se guardan igualmente por si en el futuro se sirve alguna
+  // ruta protegida en SSR: sin esto, tocar localStorage en el servidor
+  // reventaría el render.
   loginUserSuccess$ = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(loginUserSuccess),
         tap(({ userSession }) => {
-          localStorage.clear();
-          localStorage.setItem('user', JSON.stringify(userSession.user));
-          localStorage.setItem('token', userSession.token);
+          if (this.isBrowser) {
+            localStorage.clear();
+            localStorage.setItem('user', JSON.stringify(userSession.user));
+            localStorage.setItem('token', userSession.token);
+          }
           userSession.user.role === 'admin'
             ? this.router.navigateByUrl('/admin')
             : this.router.navigateByUrl('/');
@@ -82,7 +92,9 @@ export class UsersEffects {
         ofType(logoutUser),
         tap(() => {
           this.router.navigateByUrl('/');
-          localStorage.clear();
+          if (this.isBrowser) {
+            localStorage.clear();
+          }
         })
       );
     },

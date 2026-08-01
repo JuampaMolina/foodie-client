@@ -41,20 +41,12 @@ import { ItemsComponent } from '../modules/items/components/items.component';
             >Toca para filtrar</span
           >
         </div>
-        @defer (on idle) {
         <app-categories></app-categories>
-        } @loading {
-        <p class="text-center">Cargando categorías...</p>
-        }
       </section>
 
       <section>
         <h3 class="title-2 mb-4 text-2xl">Productos</h3>
-        @defer (on idle) {
         <app-items></app-items>
-        } @loading {
-        <p class="text-center">Cargando productos...</p>
-        }
       </section>
     </div>
   `,

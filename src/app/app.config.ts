@@ -1,4 +1,8 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import {
   ApplicationConfig,
   provideZonelessChangeDetection,
@@ -17,12 +21,20 @@ import { routes } from './app.routes';
 import { appEffects } from './store/app.effects';
 import { appReducers } from './store/app.reducers';
 import { provideServiceWorker } from '@angular/service-worker';
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    // withFetch(): sin esto, el SSR usa el backend XHR de
+    // @angular/platform-server, marcado obsoleto (problemas de seguridad
+    // reenviando cabeceras Authorization en redirecciones cross-origin, y
+    // sujeto a DoS por bucles de redirección) y pendiente de eliminarse.
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideAnimationsAsync(),
     provideStore(appReducers),
     provideEffects(appEffects),
@@ -39,5 +51,6 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    provideClientHydration(withEventReplay()),
   ],
 };
