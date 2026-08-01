@@ -43,7 +43,7 @@ import { ThemeService } from './theme.service';
             <i
               class="fa-solid"
               [class.fa-moon]="isDark()"
-              [class.fa-sun]="!isDark()"></i>
+              [class.fa-circle-half-stroke]="!isDark()"></i>
           </button>
           @if (isAdmin()) {
           <button
