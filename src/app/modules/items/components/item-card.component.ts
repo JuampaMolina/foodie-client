@@ -71,12 +71,12 @@ export type ItemCardLayout = 'grid' | 'row';
           class="h-4/5 w-4/5 rounded-full object-contain transition duration-300 group-hover:scale-105" />
         @if (item.category?.name) {
         <span
-          class="bg-white/85 absolute left-3 top-3 rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-600 backdrop-blur dark:bg-black/50 dark:text-neutral-300"
+          class="absolute left-3 top-3 rounded-full bg-white/85 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-600 backdrop-blur dark:bg-black/50 dark:text-neutral-300"
           >{{ item.category?.name }}</span
         >
         } @if (quantity > 0 && !isAdmin) {
         <span
-          class="min-w-6 absolute right-3 top-3 flex h-6 items-center justify-center rounded-full bg-brand-600 px-1.5 text-xs font-bold text-white shadow-sm"
+          class="absolute right-3 top-3 flex h-6 min-w-6 items-center justify-center rounded-full bg-brand-600 px-1.5 text-xs font-bold text-white shadow-sm"
           >{{ quantity }}</span
         >
         }
@@ -86,7 +86,7 @@ export type ItemCardLayout = 'grid' | 'row';
           item.name
         }}</span>
         <span
-          class="clamp-2 grow text-sm text-neutral-500 dark:text-neutral-400"
+          class="line-clamp-2 grow text-sm text-neutral-500 dark:text-neutral-400"
           >{{ item.description }}</span
         >
         <span class="flex items-center justify-between gap-2 pt-2">

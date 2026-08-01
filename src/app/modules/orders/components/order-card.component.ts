@@ -11,9 +11,10 @@ const STATUS_LABELS: Record<OrderStatus, string> = {
   cancelled: 'Cancelado',
 };
 
-// Los modificadores de opacidad deben salir de la escala por defecto de
-// Tailwind (…/10, /20, /25, /30…). La 3.1.6 no admite valores sueltos como
-// /15: no genera la regla y el badge se queda con el fondo claro.
+// Los contrastes de estas combinaciones están medidos sobre la app real
+// (7,3:1 el peor en oscuro, por encima de AAA). Si se tocan las opacidades o
+// los tonos, conviene volver a medirlos: un texto claro sobre el fondo claro
+// del modo claro pasa desapercibido leyendo sólo el código.
 const STATUS_CLASSES: Record<OrderStatus, string> = {
   pending:
     'bg-neutral-200 text-neutral-700 dark:bg-neutral-700/50 dark:text-neutral-300',

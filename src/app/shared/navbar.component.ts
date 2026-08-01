@@ -69,7 +69,7 @@ import { ThemeService } from './theme.service';
             <i class="fa-solid fa-cart-shopping"></i>
             @if (cartCount() > 0) {
             <span
-              class="min-w-4 absolute -top-1 -right-1 flex h-4 items-center justify-center rounded-full bg-brand-600 px-1 text-[11px] font-bold text-white"
+              class="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-600 px-1 text-[11px] font-bold text-white"
               >{{ cartCount() }}</span
             >
             }

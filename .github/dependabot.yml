@@ -5,6 +5,15 @@ updates:
     schedule:
       interval: 'weekly'
     open-pull-requests-limit: 10
+    # Angular 22 queda bloqueado hasta que @angular-eslint lo soporte: su
+    # builder exige @angular/cli ">= 21.0.0 < 22.0.0", así que cualquier PR
+    # que suba Angular a 22 rompe npm ci con ERESOLVE. Se ignoran las majors
+    # del paquete angular hasta que hagamos la subida completa a la vez.
+    ignore:
+      - dependency-name: '@angular/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@angular-devkit/*'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: 'github-actions'
     directory: '/'

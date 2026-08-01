@@ -30,7 +30,7 @@ import { CategoryFormComponent } from './category-form.component';
       al anillo de selección y al desplazamiento del hover. Los márgenes
       negativos lo compensan para no alterar la posición de la fila.
     -->
-    <div class="-mx-2 -mt-2 flex gap-2 overflow-x-auto px-2 pt-2 pb-3 sm:gap-3">
+    <div class="-mx-2 -mt-2 flex gap-2 overflow-x-auto px-2 pb-3 pt-2 sm:gap-3">
       @if (isAdmin()) {
       <button
         type="button"
