@@ -1,15 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Order, OrderStatus } from '../interface/order';
+import { ORDER_STATUS_LABELS, Order, OrderStatus } from '../interface/order';
 import { Bind } from 'primeng/bind';
 import { Dialog } from 'primeng/dialog';
 import { DatePipe } from '@angular/common';
 
-const STATUS_LABELS: Record<OrderStatus, string> = {
-  pending: 'Pendiente',
-  preparing: 'Preparando',
-  delivered: 'Entregado',
-  cancelled: 'Cancelado',
-};
+const STATUS_LABELS = ORDER_STATUS_LABELS;
 
 // Los contrastes de estas combinaciones están medidos sobre la app real
 // (7,3:1 el peor en oscuro, por encima de AAA). Si se tocan las opacidades o

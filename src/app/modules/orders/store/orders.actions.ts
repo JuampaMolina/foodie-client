@@ -69,6 +69,18 @@ export const cancelOrderSuccess = createAction(
   props<{ order: Order }>()
 );
 
+// Recibidas por WebSocket (RealtimeService), no por HTTP: no llevan
+// loading/error propios, sólo actualizan la entidad y avisan con un toast.
+export const orderCreatedRemotely = createAction(
+  '[Orders] orderCreatedRemotely',
+  props<{ order: Order }>()
+);
+
+export const orderStatusChangedRemotely = createAction(
+  '[Orders] orderStatusChangedRemotely',
+  props<{ order: Order }>()
+);
+
 export const addItemToCart = createAction(
   '[Orders] addItemToOrder',
   props<{ item: Item }>()

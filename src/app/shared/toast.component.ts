@@ -67,15 +67,10 @@ export class ToastComponent {
 
   handleMessage(m: string) {
     clearTimeout(this.messageTimeout);
-    // El effect se ejecuta también en el primer render, con el mensaje inicial
-    // vacío. Sin esta guarda navegábamos a "/" siempre que se montaba el toast,
-    // así que entrar directo a cualquier URL (/login, /cart…) rebotaba a la
-    // home. Sólo se vuelve a la home cuando hay un mensaje de verdad.
     if (!m) {
       this.message.set('');
       return;
     }
-    this.router.navigateByUrl('/');
     this.message.set(m);
     this.messageTimeout = setTimeout(() => {
       this.message.set('');

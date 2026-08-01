@@ -1,6 +1,6 @@
 import { createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { Order } from '../interface/order';
+import { ORDER_STATUS_LABELS, Order } from '../interface/order';
 import { OrdersState } from '../interface/orders-state';
 import {
   addItemToCart,
@@ -16,6 +16,8 @@ import {
   getOrdersByUserIdSuccess,
   getOrdersError,
   getOrdersSuccess,
+  orderCreatedRemotely,
+  orderStatusChangedRemotely,
   removeItemFromCart,
   setCartItemQuantity,
   updateOrderStatus,
@@ -151,6 +153,22 @@ export const ordersReducer = createReducer(
       ...state,
       loading: false,
       loaded: true,
+    })
+  ),
+
+  on(orderCreatedRemotely, (state, { order }) =>
+    ordersAdapter.upsertOne(order, {
+      ...state,
+      message: `Nuevo pedido de ${order.user?.name ?? 'un cliente'}`,
+    })
+  ),
+
+  on(orderStatusChangedRemotely, (state, { order }) =>
+    ordersAdapter.upsertOne(order, {
+      ...state,
+      message: order.status
+        ? `Tu pedido ahora está: ${ORDER_STATUS_LABELS[order.status]}`
+        : state.message,
     })
   ),
 
