@@ -39,7 +39,7 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
           Fecha
         </p>
         <p class="font-semibold text-neutral-900 dark:text-white">
-          {{ order.date | date: 'dd/MM/yyyy' }}
+          {{ order.date | date : 'dd/MM/yyyy' }}
         </p>
       </div>
       <div>
@@ -89,7 +89,7 @@ const STATUS_OPTIONS: OrderStatus[] = ['pending', 'preparing', 'delivered'];
         </div>
         <div>
           <p class="detail-label">Fecha</p>
-          <span>{{ order.date | date: 'dd/MM/yyyy hh:mm:ss' }}</span>
+          <span>{{ order.date | date : 'dd/MM/yyyy hh:mm:ss' }}</span>
         </div>
         <div>
           <p class="detail-label">Usuario</p>
