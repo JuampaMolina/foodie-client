@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { OrdersApiService } from '../services/orders-api.service';
 import {
   cancelOrder,
@@ -26,6 +27,7 @@ const DEFAULT_PAGE_SIZE = 10;
 export class OrdersEffects {
   private ordersApi = inject(OrdersApiService);
   private actions$ = inject(Actions);
+  private router = inject(Router);
 
   getOrders$ = createEffect(() =>
     this.actions$.pipe(
@@ -87,5 +89,14 @@ export class OrdersEffects {
         )
       )
     )
+  );
+
+  navigateHomeAfterCreateOrder$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createOrderSuccess),
+        tap(() => this.router.navigateByUrl('/'))
+      ),
+    { dispatch: false }
   );
 }

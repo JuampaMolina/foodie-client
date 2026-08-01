@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { NavbarComponent } from './shared/navbar.component';
+import { RealtimeService } from './shared/realtime.service';
 import { ThemeService } from './shared/theme.service';
 import { ToastComponent } from './shared/toast.component';
 
@@ -20,6 +21,7 @@ import { ToastComponent } from './shared/toast.component';
 export class AppComponent implements OnInit {
   private auth = inject(AuthService);
   private theme = inject(ThemeService);
+  private realtime = inject(RealtimeService);
 
   title = "foodie's";
 

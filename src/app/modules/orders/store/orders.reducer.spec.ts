@@ -8,6 +8,8 @@ import {
   getOrders,
   getOrdersError,
   getOrdersSuccess,
+  orderCreatedRemotely,
+  orderStatusChangedRemotely,
   removeItemFromCart,
   setCartItemQuantity,
   updateOrderStatusSuccess,
@@ -116,6 +118,38 @@ describe('ordersReducer', () => {
       cancelOrderError({ error: { message: 'boom' } })
     );
     expect(state.error).toBe('boom');
+  });
+
+  it('should upsert the order and set a toast message on orderCreatedRemotely', () => {
+    const remoteOrder: Order = {
+      ...order,
+      user: { _id: 'u1', name: 'Ana' } as any,
+    };
+    const state = ordersReducer(
+      ordersInitalState,
+      orderCreatedRemotely({ order: remoteOrder })
+    );
+    expect(selectAll(state)).toEqual([remoteOrder]);
+    expect(state.message).toBe('Nuevo pedido de Ana');
+  });
+
+  it('falls back to a generic name on orderCreatedRemotely when the order has no user', () => {
+    const state = ordersReducer(
+      ordersInitalState,
+      orderCreatedRemotely({ order })
+    );
+    expect(state.message).toBe('Nuevo pedido de un cliente');
+  });
+
+  it('should upsert the order and set a toast message on orderStatusChangedRemotely', () => {
+    const updated: Order = { ...order, status: 'preparing' };
+    const seeded = ordersAdapter.setAll([order], ordersInitalState);
+    const state = ordersReducer(
+      seeded,
+      orderStatusChangedRemotely({ order: updated })
+    );
+    expect(selectAll(state)).toEqual([updated]);
+    expect(state.message).toBe('Tu pedido ahora está: Preparando');
   });
 
   it('should set the exact quantity of an item in the cart', () => {
