@@ -10,7 +10,7 @@ const DEFAULT_CATEGORY_IMAGE = 'assets/categories/placeholder.svg';
     <button
       type="button"
       (click)="selectCategory()"
-      class="group flex w-[4.5rem] shrink-0 cursor-pointer flex-col items-center gap-2 sm:w-20"
+      class="group flex w-[4.5rem] shrink-0 cursor-pointer snap-start flex-col items-center gap-2 sm:w-20"
       [attr.aria-pressed]="isSelected">
       <span
         class="flex h-16 w-16 items-center justify-center rounded-full ring-2 transition duration-150 group-hover:-translate-y-0.5"
