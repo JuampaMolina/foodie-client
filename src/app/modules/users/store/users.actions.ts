@@ -32,6 +32,15 @@ export const loginUserSuccess = createAction(
   props<{ userSession: UserSession }>()
 );
 
+// Guarda el mismo estado que un login real, pero al restaurar una sesión
+// desde localStorage al arrancar la app no debe redirigir: si no, entrar
+// directo a una URL (/cart, /admin/metricas...) con la app ya abierta en otra
+// pestaña rebotaría siempre a la home o al panel de admin.
+export const restoreUserSession = createAction(
+  '[Users] restoreUserSession',
+  props<{ userSession: UserSession }>()
+);
+
 export const logoutUser = createAction('[Users] logoutUser');
 
 export const forgotPassword = createAction(
