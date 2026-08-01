@@ -29,13 +29,19 @@ import { CategoryFormComponent } from './category-form.component';
       overflow-x-auto también recorta en vertical, así que el padding deja sitio
       al anillo de selección y al desplazamiento del hover. Los márgenes
       negativos lo compensan para no alterar la posición de la fila.
+
+      snap-x/snap-mandatory (+ snap-start en cada tarjeta) evita que el
+      scroll deje una categoría a medio recortar; el fundido del borde
+      derecho (fade-edge) avisa en móvil de que hay más categorías fuera
+      de la pantalla, ya que ahí no hay scrollbar visible que lo sugiera.
     -->
-    <div class="-mx-2 -mt-2 flex gap-2 overflow-x-auto px-2 pb-3 pt-2 sm:gap-3">
+    <div
+      class="fade-edge -mx-2 -mt-2 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 pb-3 pt-2 sm:gap-3">
       @if (isAdmin()) {
       <button
         type="button"
         (click)="create = true"
-        class="group flex w-[4.5rem] shrink-0 cursor-pointer flex-col items-center gap-2 sm:w-20">
+        class="group flex w-[4.5rem] shrink-0 cursor-pointer snap-start flex-col items-center gap-2 sm:w-20">
         <span
           class="primary-button h-16 w-16 rounded-full p-0 transition duration-150 group-hover:-translate-y-0.5">
           <i class="fa-solid fa-plus text-xl"></i>
@@ -79,6 +85,22 @@ import { CategoryFormComponent } from './category-form.component';
       </app-category-form>
     </p-dialog>
   `,
+  styles: [
+    `
+      .fade-edge {
+        mask-image: linear-gradient(
+          to right,
+          black calc(100% - 2.5rem),
+          transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+          to right,
+          black calc(100% - 2.5rem),
+          transparent 100%
+        );
+      }
+    `,
+  ],
   imports: [CategoryCardComponent, Bind, Dialog, CategoryFormComponent],
 })
 export class CategoriesComponent implements OnInit {
