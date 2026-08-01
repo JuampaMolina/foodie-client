@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +15,7 @@ import {
 import { Category } from '../interface/category';
 import { CreateCategoryCommand } from '../interface/createCategoryCommand';
 import { UpdateCategoryCommand } from '../interface/updateCategoryCommand';
+import { CategoryImageUploadService } from '../services/category-image-upload.service';
 
 interface StockImage {
   name: string;
@@ -56,15 +64,38 @@ const STOCK_IMAGES: StockImage[] = [
           [class.border-transparent]="
             categoryForm.value.image !== stockImage.path
           " />
+        } @if (customImagePreview()) {
+        <img
+          [src]="customImagePreview()"
+          alt="Icono personalizado"
+          title="Icono personalizado"
+          class="h-14 w-14 rounded-xl border-2 border-brand-600 bg-brand-50 object-cover" />
         }
+        <label
+          class="flex h-14 w-14 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl border-2 border-dashed border-neutral-300 text-neutral-400 transition hover:border-brand-500 hover:text-brand-600 dark:border-neutral-700 dark:text-neutral-500"
+          title="Subir icono propio">
+          @if (uploading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          } @else {
+          <i class="fa-solid fa-upload"></i>
+          <span class="text-[10px] font-semibold">Subir</span>
+          }
+          <input
+            type="file"
+            accept="image/*"
+            class="hidden"
+            [disabled]="uploading()"
+            (change)="onFileSelected($event)" />
+        </label>
       </div>
-
-      @if (!updating) {
+      @if (uploadError()) {
+      <p class="text-sm text-red-600">{{ uploadError() }}</p>
+      } @if (!updating) {
       <button
         (click)="create()"
         class="primary-button"
         type="button"
-        [disabled]="!categoryForm.valid">
+        [disabled]="!categoryForm.valid || uploading()">
         Enviar
       </button>
       } @if (updating) {
@@ -80,7 +111,7 @@ const STOCK_IMAGES: StockImage[] = [
           (click)="update()"
           class="primary-button"
           type="button"
-          [disabled]="!categoryForm.valid">
+          [disabled]="!categoryForm.valid || uploading()">
           Modificar
         </button>
       </div>
@@ -91,6 +122,8 @@ const STOCK_IMAGES: StockImage[] = [
   imports: [ReactiveFormsModule],
 })
 export class CategoryFormComponent {
+  private uploadService = inject(CategoryImageUploadService);
+
   @Input() set modify(category: Category | undefined) {
     if (category) {
       this.categoryForm.patchValue({
@@ -105,6 +138,8 @@ export class CategoryFormComponent {
   @Input() set reset(reset: boolean) {
     if (reset) {
       this.categoryForm.reset();
+      this.uploading.set(false);
+      this.uploadError.set('');
     }
   }
 
@@ -116,6 +151,9 @@ export class CategoryFormComponent {
 
   readonly stockImages = STOCK_IMAGES;
 
+  uploading = signal(false);
+  uploadError = signal('');
+
   categoryForm = new FormGroup({
     name: new FormControl('', Validators.required),
     image: new FormControl(''),
@@ -123,9 +161,43 @@ export class CategoryFormComponent {
 
   constructor() {}
 
+  customImagePreview(): string | null {
+    const image = this.categoryForm.value.image;
+    if (!image) {
+      return null;
+    }
+    return this.stockImages.some(stockImage => stockImage.path === image)
+      ? null
+      : image;
+  }
+
   selectImage(path: string) {
     const current = this.categoryForm.value.image;
     this.categoryForm.patchValue({ image: current === path ? '' : path });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    this.uploading.set(true);
+    this.uploadError.set('');
+
+    this.uploadService.upload(file).subscribe({
+      next: url => {
+        this.categoryForm.patchValue({ image: url });
+        this.uploading.set(false);
+        input.value = '';
+      },
+      error: () => {
+        this.uploadError.set('No se pudo subir la imagen. Inténtalo de nuevo.');
+        this.uploading.set(false);
+        input.value = '';
+      },
+    });
   }
 
   create() {

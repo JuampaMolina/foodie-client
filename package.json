@@ -11,7 +11,8 @@
     "lint:fix": "ng lint --fix",
     "e2e": "playwright test",
     "analyse": "webpack-bundle-analyzer dist/foodie-client/stats.json",
-    "serve:ssr:foodie-client": "node dist/foodie-client/server/server.mjs"
+    "serve:ssr:foodie-client": "node dist/foodie-client/server/server.mjs",
+    "upload-stock-icons": "node scripts/upload-stock-icons.mjs"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +57,8 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "autoprefixer": "^10.4.7",
+    "cloudinary": "^2.10.0",
+    "dotenv": "^17.4.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^4.2.5",
