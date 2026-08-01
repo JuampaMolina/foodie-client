@@ -14,28 +14,34 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-register',
   template: `
-    <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">
-      <h2 class="title-2 text-center">Crear Cuenta</h2>
+    <div class="surface-card mx-auto w-full max-w-md space-y-6 p-8">
+      <div class="flex flex-col items-center gap-2">
+        <span
+          class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-sm">
+          <i class="fa-solid fa-utensils text-lg"></i>
+        </span>
+        <h2 class="title-2 text-center text-3xl">Crear Cuenta</h2>
+      </div>
 
       <form
-        class="flex flex-col space-y-6"
+        class="flex flex-col space-y-4"
         [formGroup]="registerForm"
         (ngSubmit)="onSubmit()">
         <div>
-          <label class="form-label" for="name">Nombre </label>
+          <label class="form-label" for="name">Nombre</label>
           <input
             class="form-input"
-            id="text"
-            type="name"
+            id="name"
+            type="text"
             placeholder="Nombre"
             formControlName="name" />
           @if ( this.registerForm.get('name')?.hasError('required') &&
           showErrors ) {
-          <small class="text-red-400"> El nombre es requerido </small>
+          <small class="text-red-500"> El nombre es requerido </small>
           }
         </div>
         <div>
-          <label class="form-label" for="name">Email </label>
+          <label class="form-label" for="email">Email</label>
           <input
             class="form-input"
             id="email"
@@ -44,16 +50,16 @@ import { RouterLink } from '@angular/router';
             formControlName="email" />
           @if ( this.registerForm.get('email')?.hasError('required') &&
           showErrors ) {
-          <small class="text-red-400"> El email es requerido </small>
+          <small class="text-red-500"> El email es requerido </small>
           } @if ( !this.registerForm.get('email')?.hasError('required') &&
           this.registerForm.get('email')?.hasError('email') && showErrors ) {
-          <small class="text-red-400">
+          <small class="text-red-500">
             El email debe tener el siguiente formato: example&#64;example.com
           </small>
           }
         </div>
         <div>
-          <label class="form-label" for="name">Contraseña </label>
+          <label class="form-label" for="password">Contraseña</label>
           <input
             class="form-input"
             id="password"
@@ -62,18 +68,20 @@ import { RouterLink } from '@angular/router';
             formControlName="password" />
           @if ( this.registerForm.get('password')?.hasError('required') &&
           showErrors ) {
-          <small class="text-red-400"> La contraseña es requerida </small>
+          <small class="text-red-500"> La contraseña es requerida </small>
           } @if ( !this.registerForm.get('password')?.hasError('required') &&
           this.registerForm.get('password')?.hasError('minlength') && showErrors
           ) {
-          <small class="text-red-400">
+          <small class="text-red-500">
             La contraseña debe tener al menos 4 carácteres
           </small>
           }
         </div>
-        <button class="primary-button col-start-2" type="submit">Enviar</button>
+        <button class="primary-button mt-2" type="submit">Enviar</button>
       </form>
-      <a class="text-center hover:underline" routerLink="/login"
+      <a
+        class="block text-center text-sm font-medium text-brand-700 hover:underline dark:text-brand-400"
+        routerLink="/login"
         >Iniciar Sesión</a
       >
     </div>

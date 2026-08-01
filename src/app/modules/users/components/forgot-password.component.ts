@@ -15,16 +15,22 @@ import { selectResetToken } from '../store/users.selectors';
 @Component({
   selector: 'app-forgot-password',
   template: `
-    <div class="mx-auto flex w-full flex-col space-y-4 p-8 md:w-2/3 xl:w-1/2">
-      <h2 class="title-2 text-center">Recuperar contraseña</h2>
+    <div class="surface-card mx-auto w-full max-w-md space-y-6 p-8">
+      <div class="flex flex-col items-center gap-2">
+        <span
+          class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-sm">
+          <i class="fa-solid fa-key text-lg"></i>
+        </span>
+        <h2 class="title-2 text-center text-3xl">Recuperar contraseña</h2>
+      </div>
 
       @if (!resetToken()) {
       <form
-        class="flex flex-col space-y-6"
+        class="flex flex-col space-y-4"
         [formGroup]="form"
         (ngSubmit)="onSubmit()">
         <div>
-          <label class="form-label" for="email">Email </label>
+          <label class="form-label" for="email">Email</label>
           <input
             class="form-input"
             id="email"
@@ -33,7 +39,7 @@ import { selectResetToken } from '../store/users.selectors';
             formControlName="email" />
         </div>
         <button
-          class="primary-button col-start-2"
+          class="primary-button mt-2"
           type="submit"
           [disabled]="!form.valid">
           Enviar
@@ -41,11 +47,11 @@ import { selectResetToken } from '../store/users.selectors';
       </form>
       } @if (resetToken()) {
       <div class="space-y-4 text-center">
-        <p>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
           Este proyecto todavía no envía emails. Tu token de recuperación es:
         </p>
         <p
-          class="font-mono break-all rounded bg-slate-200 p-2 text-sm dark:bg-slate-700">
+          class="font-mono break-all rounded-xl bg-neutral-100 p-3 text-sm dark:bg-neutral-800">
           {{ resetToken() }}
         </p>
         <a
@@ -57,7 +63,9 @@ import { selectResetToken } from '../store/users.selectors';
       </div>
       }
 
-      <a class="text-center hover:underline" routerLink="/login"
+      <a
+        class="block text-center text-sm font-medium text-brand-700 hover:underline dark:text-brand-400"
+        routerLink="/login"
         >Volver a iniciar sesión</a
       >
     </div>

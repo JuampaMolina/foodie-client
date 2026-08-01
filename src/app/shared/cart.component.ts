@@ -24,17 +24,24 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
   selector: 'app-cart',
   imports: [ItemCardComponent, ReactiveFormsModule],
   template: `
-    <div class="mb-4 flex items-center gap-2">
+    <div class="mb-6 flex items-center gap-2">
       <h2 class="title-2">Carrito</h2>
       @if (cartCount() > 0) {
       <span
-        class="rounded bg-slate-300 px-2 py-1 text-xl font-bold dark:bg-slate-600"
+        class="rounded-full bg-brand-600 px-2.5 py-1 text-sm font-bold text-white"
         >{{ cartCount() }}</span
       >
       }
     </div>
     @if (cartCount() < 1) {
-    <span class="text-xl font-semibold">El carrito está vacío</span>
+    <div
+      class="surface-card flex flex-col items-center gap-2 py-16 text-center">
+      <i
+        class="fa-solid fa-cart-shopping text-3xl text-neutral-300 dark:text-neutral-600"></i>
+      <span class="text-lg font-semibold text-neutral-500 dark:text-neutral-400"
+        >El carrito está vacío</span
+      >
+    </div>
     }
     <div class="flex flex-col gap-4">
       @for (item of uniqueItems(); track item) {
@@ -48,27 +55,30 @@ import { ItemCardComponent } from '../modules/items/components/item-card.compone
       </app-item-card>
       }
     </div>
-    @if (cart().length > 0) {
-    <span
-      class="my-2 flex justify-end text-2xl font-semibold text-slate-800 dark:text-slate-100"
-      >Total: {{ totalPrice() }} EUR
-    </span>
-    } @if (cartCount() > 0) {
-    <div>
-      <label class="form-label" for="address">Dirección de entrega </label>
-      <input
-        class="form-input"
-        id="address"
-        type="text"
-        placeholder="Dirección de entrega"
-        [formControl]="addressControl" />
+    @if (cartCount() > 0) {
+    <div class="surface-card mt-6 space-y-4 p-6">
+      <span class="flex justify-between text-lg font-semibold">
+        <span class="text-neutral-500 dark:text-neutral-400">Total</span>
+        <span class="text-brand-700 dark:text-brand-400"
+          >{{ totalPrice() }} EUR</span
+        >
+      </span>
+      <div>
+        <label class="form-label" for="address">Dirección de entrega</label>
+        <input
+          class="form-input"
+          id="address"
+          type="text"
+          placeholder="Dirección de entrega"
+          [formControl]="addressControl" />
+      </div>
+      <button
+        (click)="createOrder()"
+        class="primary-button w-full"
+        [disabled]="addressControl.invalid">
+        Realizar pedido
+      </button>
     </div>
-    <button
-      (click)="createOrder()"
-      class="primary-button"
-      [disabled]="addressControl.invalid">
-      Realizar pedido
-    </button>
     }
   `,
   styles: [],

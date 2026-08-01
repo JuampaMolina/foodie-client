@@ -25,11 +25,26 @@ import { CategoryFormComponent } from './category-form.component';
 @Component({
   selector: 'app-categories',
   template: `
-    <div class="grid-responsive-container-md">
+    <!--
+      overflow-x-auto también recorta en vertical, así que el padding deja sitio
+      al anillo de selección y al desplazamiento del hover. Los márgenes
+      negativos lo compensan para no alterar la posición de la fila.
+    -->
+    <div class="-mx-2 -mt-2 flex gap-2 overflow-x-auto px-2 pt-2 pb-3 sm:gap-3">
       @if (isAdmin()) {
-      <div (click)="create = true" class="primary-button">
-        <i class="fa-solid fa-circle-plus text-xl"></i>
-      </div>
+      <button
+        type="button"
+        (click)="create = true"
+        class="group flex w-[4.5rem] shrink-0 cursor-pointer flex-col items-center gap-2 sm:w-20">
+        <span
+          class="primary-button h-16 w-16 rounded-full p-0 transition duration-150 group-hover:-translate-y-0.5">
+          <i class="fa-solid fa-plus text-xl"></i>
+        </span>
+        <span
+          class="w-full truncate text-center text-xs font-semibold text-neutral-600 dark:text-neutral-300"
+          >Nueva</span
+        >
+      </button>
       } @for (category of categories(); track category) {
       <app-category-card
         [category]="category"

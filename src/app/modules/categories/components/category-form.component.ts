@@ -48,10 +48,11 @@ const STOCK_IMAGES: StockImage[] = [
           [alt]="stockImage.name"
           [title]="stockImage.name"
           (click)="selectImage(stockImage.path)"
-          class="h-14 w-14 cursor-pointer rounded border-2 object-cover"
-          [class.border-slate-800]="
+          class="h-14 w-14 cursor-pointer rounded-xl border-2 object-cover transition"
+          [class.border-brand-600]="
             categoryForm.value.image === stockImage.path
           "
+          [class.bg-brand-50]="categoryForm.value.image === stockImage.path"
           [class.border-transparent]="
             categoryForm.value.image !== stockImage.path
           " />

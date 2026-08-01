@@ -256,3 +256,12 @@ Estos efectos son algo especiales porque no devuelven una acción, ya que lo ún
 ![users.effects.ts](<docs/carbon_(3)%201.png>)
 
 users.effects.ts
+
+## Créditos
+
+Los iconos de categoría (`src/assets/categories/`) provienen de
+[Twemoji](https://github.com/jdecked/twemoji), copyright 2019 Twitter, Inc y
+otros colaboradores, con licencia
+[CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/). Cada icono se ha
+compuesto sobre un disco de color para integrarlo con el sistema de diseño de
+la aplicación; el dibujo en sí no se ha modificado.

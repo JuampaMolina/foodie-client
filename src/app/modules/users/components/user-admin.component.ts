@@ -22,18 +22,30 @@ const ROLE_OPTIONS: UserRole[] = ['user', 'admin'];
   template: `
     <h2 class="title-2 mb-4">Usuarios</h2>
     @if (users().length < 1) {
-    <span class="text-xl font-semibold">No hay usuarios</span>
+    <div class="surface-card py-16 text-center">
+      <span class="text-lg font-semibold text-neutral-500 dark:text-neutral-400"
+        >No hay usuarios</span
+      >
+    </div>
     }
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-3">
       @for (user of users(); track user._id) {
       <div
-        class="secondary-button grid grid-cols-3 items-center sm:grid-cols-4">
-        <span class="font-semibold">{{ user.name }}</span>
-        <span class="border-l-2 border-l-slate-800 dark:border-l-slate-500">
+        class="surface-card grid grid-cols-3 items-center gap-3 p-4 sm:grid-cols-4">
+        <div class="flex items-center gap-3">
+          <span
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 font-semibold text-brand-700 dark:bg-brand-500/20 dark:text-brand-400">
+            {{ user.name.charAt(0).toUpperCase() }}
+          </span>
+          <span
+            class="truncate font-semibold text-neutral-900 dark:text-white"
+            >{{ user.name }}</span
+          >
+        </div>
+        <span class="truncate text-neutral-500 dark:text-neutral-400">
           {{ user.email }}
         </span>
-        <span
-          class="col-span-2 border-l-2 border-l-slate-800 dark:border-l-slate-500 sm:col-span-1">
+        <span class="col-span-2 sm:col-span-1">
           <select
             class="select-background form-input w-full cursor-pointer"
             (change)="onRoleChange(user, $event)">
