@@ -2,6 +2,11 @@
 
 Guía paso a paso para tener la app accesible desde fuera (por ejemplo, desde el móvil) usando capas gratuitas. Se despliega primero el backend, porque el cliente necesita su URL.
 
+## URLs desplegadas
+
+- Cliente (Vercel): https://foodie-client-seven.vercel.app/
+- Backend (Render): https://foodie-server-41mw.onrender.com
+
 ## 1. Base de datos: MongoDB Atlas
 
 1. Crea una cuenta en [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) (gratis).

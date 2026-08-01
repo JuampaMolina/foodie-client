@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
@@ -39,6 +32,8 @@ const normalize = (value: string): string =>
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
+type SortBy = 'name' | 'price-asc' | 'price-desc';
+
 @Component({
   selector: 'app-items',
   template: `
@@ -67,6 +62,23 @@ const normalize = (value: string): string =>
         class="form-input w-32"
         type="number"
         min="0" />
+      <select
+        [value]="categoryFilter()"
+        (change)="onCategoryFilterChange($event)"
+        class="select-background form-input w-44 cursor-pointer">
+        <option value="">Todas las categorías</option>
+        @for (category of categories(); track category._id) {
+        <option [value]="category._id">{{ category.name }}</option>
+        }
+      </select>
+      <select
+        [value]="sortBy()"
+        (change)="onSortByChange($event)"
+        class="select-background form-input w-44 cursor-pointer">
+        <option value="name">Nombre (A-Z)</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+      </select>
     </div>
     @if (items().length > 0 && filteredItems().length === 0) {
     <div
@@ -148,27 +160,35 @@ export class ItemsComponent implements OnInit {
   search = signal('');
   minPrice = signal<number | null>(null);
   maxPrice = signal<number | null>(null);
+  categoryFilter = signal('');
+  sortBy = signal<SortBy>('name');
 
   filteredItems = computed(() => {
     const search = normalize(this.search().trim());
     const min = this.minPrice();
     const max = this.maxPrice();
+    const categoryId = this.categoryFilter();
+    const sortBy = this.sortBy();
 
-    return this.items().filter(item => {
+    const filtered = this.items().filter(item => {
       const matchesSearch = !search || normalize(item.name).includes(search);
       const matchesMin = min == null || item.price >= min;
       const matchesMax = max == null || item.price <= max;
-      return matchesSearch && matchesMin && matchesMax;
+      const matchesCategory = !categoryId || item.category?._id === categoryId;
+      return matchesSearch && matchesMin && matchesMax && matchesCategory;
     });
-  });
 
-  constructor() {
-    effect(() => {
-      if (this.isAdmin()) {
-        this.getCategories();
+    return filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'price-asc':
+          return a.price - b.price;
+        case 'price-desc':
+          return b.price - a.price;
+        default:
+          return a.name.localeCompare(b.name);
       }
     });
-  }
+  });
 
   onSearchChange(event: Event) {
     this.search.set((event.target as HTMLInputElement).value);
@@ -182,6 +202,14 @@ export class ItemsComponent implements OnInit {
   onMaxPriceChange(event: Event) {
     const value = (event.target as HTMLInputElement).valueAsNumber;
     this.maxPrice.set(Number.isNaN(value) ? null : value);
+  }
+
+  onCategoryFilterChange(event: Event) {
+    this.categoryFilter.set((event.target as HTMLSelectElement).value);
+  }
+
+  onSortByChange(event: Event) {
+    this.sortBy.set((event.target as HTMLSelectElement).value as SortBy);
   }
 
   modifyItem(item: Item) {
@@ -234,5 +262,6 @@ export class ItemsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getItems();
+    this.getCategories();
   }
 }
