@@ -1,7 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
+import { OfflineCacheService } from 'src/app/shared/offline-cache.service';
 import { ItemsApiService } from '../services/items-api.service';
+import { Item } from '../interface/item';
 import {
   createItem,
   createItemError,
@@ -20,18 +22,34 @@ import {
   updateItemSuccess,
 } from './items.actions';
 
+const OFFLINE_CACHE_KEY = 'items';
+
 @Injectable()
 export class ItemsEffects {
   private itemsApi = inject(ItemsApiService);
   private actions$ = inject(Actions);
+  private offlineCache = inject(OfflineCacheService);
 
   getItems$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getItems),
       mergeMap(() =>
         this.itemsApi.getItems().pipe(
-          map(items => getItemsSuccess({ items })),
-          catchError(error => of(getItemsError({ error })))
+          map(items => {
+            this.offlineCache.write(OFFLINE_CACHE_KEY, items);
+            return getItemsSuccess({ items });
+          }),
+          catchError(error => {
+            // Sin red: si hay un menú visto antes, mejor mostrar eso que
+            // una sección vacía. Sólo se cachea el listado completo (no el
+            // filtrado por categoría), que es el que pinta la home.
+            const cached = this.offlineCache.read<Item[]>(OFFLINE_CACHE_KEY);
+            return of(
+              cached
+                ? getItemsSuccess({ items: cached })
+                : getItemsError({ error })
+            );
+          })
         )
       )
     )
