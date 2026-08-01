@@ -20,6 +20,26 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <meta name="theme-color" content="#ea580c" />
+    <script>
+      // Aplica el modo oscuro antes de que arranque Angular. ThemeService
+      // siempre parte de "light" en su primer render (para no desajustar la
+      // hidratación de SSR, donde localStorage no existe); sin este script,
+      // quien tuviera el modo oscuro guardado vería un parpadeo en claro
+      // hasta que el cliente termine de hidratar y vuelva a leer su
+      // preferencia real.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var dark =
+            stored === 'dark' ||
+            (stored !== 'light' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>
