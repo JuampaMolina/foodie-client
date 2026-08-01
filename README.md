@@ -259,9 +259,9 @@ users.effects.ts
 
 ## Créditos
 
-Los iconos de categoría (`src/assets/categories/`) provienen de
-[Twemoji](https://github.com/jdecked/twemoji), copyright 2019 Twitter, Inc y
-otros colaboradores, con licencia
+Los iconos de categoría (alojados en Cloudinary, no bundleados en el repo)
+provienen de [Twemoji](https://github.com/jdecked/twemoji), copyright 2019
+Twitter, Inc y otros colaboradores, con licencia
 [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/). Cada icono se ha
 compuesto sobre un disco de color para integrarlo con el sistema de diseño de
 la aplicación; el dibujo en sí no se ha modificado.

@@ -13,8 +13,16 @@ import { Page, Route, test as base } from '@playwright/test';
 const API = 'http://localhost:3000';
 
 export const CATEGORIES = [
-  { _id: 'c1', name: 'Pizza', image: 'assets/categories/pizza.svg' },
-  { _id: 'c2', name: 'Hamburguesa', image: 'assets/categories/burger.svg' },
+  {
+    _id: 'c1',
+    name: 'Pizza',
+    image: 'https://res.cloudinary.com/demo/image/upload/pizza.svg',
+  },
+  {
+    _id: 'c2',
+    name: 'Hamburguesa',
+    image: 'https://res.cloudinary.com/demo/image/upload/hamburguesa.svg',
+  },
 ];
 
 export const ITEMS = [

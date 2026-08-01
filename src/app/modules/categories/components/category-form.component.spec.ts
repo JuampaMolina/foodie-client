@@ -34,12 +34,12 @@ describe('CategoryFormComponent', () => {
   });
 
   it('selects and deselects a stock image on click', () => {
-    component.selectImage('assets/categories/pizza.svg');
-    expect(component.categoryForm.value.image).toBe(
-      'assets/categories/pizza.svg'
-    );
+    const stockPath = component.stockImages[0].path;
 
-    component.selectImage('assets/categories/pizza.svg');
+    component.selectImage(stockPath);
+    expect(component.categoryForm.value.image).toBe(stockPath);
+
+    component.selectImage(stockPath);
     expect(component.categoryForm.value.image).toBe('');
   });
 

@@ -22,9 +22,7 @@ describe('ItemCardComponent', () => {
     fixture.componentRef.setInput('item', item);
     fixture.detectChanges();
 
-    expect(getImage().getAttribute('src')).toBe(
-      'assets/categories/placeholder.svg'
-    );
+    expect(getImage().getAttribute('src')).toBe('assets/placeholder.svg');
   });
 
   it("should render the item's category image when set", () => {
@@ -36,13 +34,15 @@ describe('ItemCardComponent', () => {
       category: {
         _id: 'c1',
         name: 'Pizzas',
-        image: 'assets/categories/pizza.svg',
+        image: 'https://res.cloudinary.com/demo/image/upload/pizza.svg',
       },
     };
     fixture.componentRef.setInput('item', item);
     fixture.detectChanges();
 
-    expect(getImage().getAttribute('src')).toBe('assets/categories/pizza.svg');
+    expect(getImage().getAttribute('src')).toBe(
+      'https://res.cloudinary.com/demo/image/upload/pizza.svg'
+    );
   });
 
   describe('editable quantity', () => {

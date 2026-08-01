@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Item } from '../interface/item';
 
-const DEFAULT_ITEM_IMAGE = 'assets/categories/placeholder.svg';
+const DEFAULT_ITEM_IMAGE = 'assets/placeholder.svg';
 
 export type ItemCardLayout = 'grid' | 'row';
 

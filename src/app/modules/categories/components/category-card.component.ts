@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Category } from '../interface/category';
 
-const DEFAULT_CATEGORY_IMAGE = 'assets/categories/placeholder.svg';
+const DEFAULT_CATEGORY_IMAGE = 'assets/placeholder.svg';
 
 @Component({
   selector: 'app-category-card',
