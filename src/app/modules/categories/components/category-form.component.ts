@@ -22,15 +22,41 @@ interface StockImage {
   path: string;
 }
 
+// Alojados en Cloudinary (carpeta foodie/categories) en vez de bundleados
+// como assets locales — subidos a mano desde el propio formulario.
 const STOCK_IMAGES: StockImage[] = [
-  { name: 'Pizza', path: 'assets/categories/pizza.svg' },
-  { name: 'Hamburguesa', path: 'assets/categories/burger.svg' },
-  { name: 'Patatas fritas', path: 'assets/categories/fries.svg' },
-  { name: 'Bebida', path: 'assets/categories/drink.svg' },
-  { name: 'Postre', path: 'assets/categories/dessert.svg' },
-  { name: 'Ensalada', path: 'assets/categories/salad.svg' },
-  { name: 'Pasta', path: 'assets/categories/pasta.svg' },
-  { name: 'Sushi', path: 'assets/categories/sushi.svg' },
+  {
+    name: 'Pizza',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610636/pizza_zgsgcs.svg',
+  },
+  {
+    name: 'Hamburguesa',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610631/hamburguesa_zbw9nf.svg',
+  },
+  {
+    name: 'Patatas fritas',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610634/patatas-fritas_a8xvym.svg',
+  },
+  {
+    name: 'Bebida',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610637/refresco_sfqv0l.svg',
+  },
+  {
+    name: 'Postre',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610639/tarta_id3afu.svg',
+  },
+  {
+    name: 'Ensalada',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610629/ensalada_rntplr.svg',
+  },
+  {
+    name: 'Pasta',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610634/pasta_m9rlbe.svg',
+  },
+  {
+    name: 'Sushi',
+    path: 'https://res.cloudinary.com/qnby7ejl/image/upload/v1785610639/sushi_abgw2n.svg',
+  },
 ];
 
 @Component({
