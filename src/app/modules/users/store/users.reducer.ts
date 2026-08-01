@@ -7,6 +7,7 @@ import {
   loginUserError,
   loginUserSuccess,
   logoutUser,
+  restoreUserSession,
   forgotPassword,
   forgotPasswordError,
   forgotPasswordSuccess,
@@ -76,7 +77,7 @@ export const usersReducer = createReducer(
     error: error.message,
   })),
 
-  on(loginUserSuccess, (state, { userSession }) => ({
+  on(loginUserSuccess, restoreUserSession, (state, { userSession }) => ({
     ...state,
     loading: false,
     loaded: true,

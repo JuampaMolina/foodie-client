@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducers';
-import { loginUserSuccess } from '../modules/users/store/users.actions';
+import { restoreUserSession } from '../modules/users/store/users.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class AuthService {
         user: JSON.parse(retrievedUser),
         token: retrievedToken,
       };
-      this.store.dispatch(loginUserSuccess({ userSession }));
+      this.store.dispatch(restoreUserSession({ userSession }));
     }
   }
 }

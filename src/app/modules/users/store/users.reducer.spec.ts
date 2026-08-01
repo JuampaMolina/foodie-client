@@ -5,6 +5,7 @@ import {
   loginUserSuccess,
   logoutUser,
   registerUser,
+  restoreUserSession,
   registerUserSuccess,
   forgotPassword,
   forgotPasswordError,
@@ -54,6 +55,16 @@ describe('usersReducer', () => {
     const state = usersReducer(
       usersInitialState,
       loginUserSuccess({ userSession: { user, token: 'tok' } })
+    );
+    expect(state.user).toEqual(user);
+    expect(state.token).toBe('tok');
+    expect(state.loaded).toBeTrue();
+  });
+
+  it('should store the user and token on restoreUserSession, same as loginUserSuccess', () => {
+    const state = usersReducer(
+      usersInitialState,
+      restoreUserSession({ userSession: { user, token: 'tok' } })
     );
     expect(state.user).toEqual(user);
     expect(state.token).toBe('tok');
